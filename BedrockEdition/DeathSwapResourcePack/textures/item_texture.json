@@ -1,0 +1,12 @@
+{
+  "resource_pack_name": "deathswap",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "blood_chalice_empty": {
+      "textures": "textures/items/blood_chalice_empty"
+    },
+    "blood_chalice_full": {
+      "textures": "textures/items/blood_chalice_full"
+    }
+  }
+}

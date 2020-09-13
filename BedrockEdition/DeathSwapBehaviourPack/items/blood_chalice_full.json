@@ -1,0 +1,19 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:item": {
+        "description": {
+            "identifier": "deathswap:blood_chalice_full"
+        },
+        "components": {
+            "minecraft:hand_equipped": false,
+            "minecraft:stacked_by_data": true,
+            "minecraft:foil": false,
+            "minecraft:max_stack_size": 1,
+            "minecraft:use_duration": 32,
+            "minecraft:food": {
+                "can_always_eat": true,
+                "using_converts_to": "deathswap:blood_chalice_empty"
+            }
+        }
+    }
+}
