@@ -11,26 +11,14 @@
         "name": "Death Swap",
         "description": "Every 5 minutes everyone swaps position. Goal is to kill everyone without attacking them. Last person standing wins!",
         "uuid": "85a3835e-665c-4e0f-bcda-a147d288b719",
-        "version": [
-            0,
-            0,
-            1
-        ],
-        "min_engine_version": [
-            1,
-            14,
-            0
-        ]
+        "version": [0, 0, 2],
+        "min_engine_version": [1, 14, 0]
     },
     "modules": [
         {
             "type": "resources",
             "uuid": "5c639355-9332-424c-8560-e7e27d577492",
-            "version": [
-                0,
-                0,
-                1
-            ]
+            "version": [0, 0, 2]
         }
     ]
 }
