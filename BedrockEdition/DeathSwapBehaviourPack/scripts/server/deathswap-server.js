@@ -2,6 +2,43 @@ const systemServer = server.registerSystem(0, 0);
 
 const debug = true;
 
+class Player {
+	constructor(playerData) {
+		this.data = playerData;
+	}
+
+	getID() {
+		return this.data.id;
+	}
+
+	getName() {
+		return systemServer.getComponent(this.data, "minecraft:nameable").data.name;
+	}
+
+	getPosition() {
+		return systemServer.getComponent(this.data, "minecraft:position").data;
+	}
+}
+
+class DeathSwap {
+	constructor() {
+		this.players = {};
+	}
+
+	addPlayer(playerData) {
+		const player = new Player(playerData);
+		this.players[player.getID()] = player;
+
+		systemServer.log(`${player.getName()} joined the game!`);
+		const position = player.getPosition();
+		systemServer.log(`${player.getName()} is at position x=${position.x} y=${position.y} z=${position.z}`);
+	}
+
+	removePerson(id) {
+		delete this.players[id]
+	}
+}
+
 systemServer.initialize = function() {
     if (debug) {
         const scriptLoggerConfig = this.createEventData("minecraft:script_logger_config");
@@ -9,7 +46,10 @@ systemServer.initialize = function() {
         scriptLoggerConfig.data.log_information = true;
         scriptLoggerConfig.data.log_warnings = true;
         this.broadcastEvent("minecraft:script_logger_config", scriptLoggerConfig);
-    }
+	}
+	
+	// init vars
+	this.deathSwap = new DeathSwap()
 
     // listen for events
     this.listenForEvent("DeathSwap:client_entered_world", (eventData) => this.onClientEnteredWorld(eventData));
@@ -20,11 +60,7 @@ systemServer.update = function() {};
 systemServer.shutdown = function() {};
 
 systemServer.onClientEnteredWorld = function(eventData) {
-    const clientNameable = this.getComponent(eventData.data.player, "minecraft:nameable");
-    this.log(`${clientNameable.data.name} joined the game!`);
-
-    const clientPosition = this.getComponent(eventData.data.player, "minecraft:position");
-    this.log(`${clientNameable.data.name} is at position x=${clientPosition.data.x} y=${clientPosition.data.y} z=${clientPosition.data.z}`);
+    this.deathSwap.addPlayer(eventData.data.player);
 }
 
 systemServer.log = function(...items) {
