@@ -18,6 +18,11 @@ class Player {
 	getPosition() {
 		return systemServer.getComponent(this.data, "minecraft:position").data;
 	}
+
+	getRotation() {
+		systemServer.log(systemServer.getComponent(this.data, "minecraft:rotation"));
+		return systemServer.getComponent(this.data, "minecraft:rotation").data;
+	}
 }
 
 class DeathSwap {
@@ -30,8 +35,6 @@ class DeathSwap {
 		this.players[player.getID()] = player;
 
 		systemServer.log(`${player.getName()} joined the game!`);
-		const position = player.getPosition();
-		systemServer.log(`${player.getName()} is at position x=${position.x} y=${position.y} z=${position.z}`);
 	}
 
 	removePerson(id) {
