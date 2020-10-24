@@ -1,6 +1,6 @@
 const systemServer = server.registerSystem(0, 0);
 
-const debug = false;
+const debug = true;
 
 const PlayerStates = Object.freeze({"LOBBY":0, "READY":1, "DEATHSWAP":2, "SPECTATING":3});
 const GamemodeStates = Object.freeze({"SURVIVAL":0,"CREATIVE":1,"ADVENTURE":2});

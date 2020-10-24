@@ -10,7 +10,7 @@ const gulpOptions = {
     ignoreInitial: false
 };
 
-const devJavascriptPath = "./src/*.js";
+const devJavascriptPath = ["./src/*.js", "./webpack.config.js"];
 const devBehaviourPackPath = "./DeathSwapBehaviourPack/**/*";
 const devResourcePackPath = "./DeathSwapResourcePack/**/*";
 
@@ -79,34 +79,13 @@ function zipAddon() {
 
 exports.development = function() {
     // watch behaviour pack changes
-    watch(
-        devBehaviourPackPath,
-        {
-            events: 'all',
-            ignoreInitial: false
-        },
-        series(cleanMinecraftDevBehaviourPack, transferBehaviourPack)
-    );
+    watch(devBehaviourPackPath, {events: 'all'}, series(cleanMinecraftDevBehaviourPack, transferBehaviourPack));
 
     // watch resource pack changes
-    watch(
-        devResourcePackPath,
-        {
-            events: 'all',
-            ignoreInitial: false
-        },
-        series(cleanMinecraftDevBehaviourPack, transferResourcePack)
-    );
+    watch(devResourcePackPath, {events: 'all', ignoreInitial: false}, series(cleanMinecraftDevResourcePack, transferResourcePack));
 
     // watch javascript changes
-    watch(
-        devJavascriptPath,
-        {
-            events: 'all',
-            ignoreInitial: false
-        },
-        compileJavascript
-    );
+    watch(devJavascriptPath, {events: 'all', ignoreInitial: false}, compileJavascript);
 };
 
 exports.production = series(
