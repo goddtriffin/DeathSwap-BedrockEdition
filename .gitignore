@@ -1,4 +1,9 @@
-/tmp
+tmp/
+bin/
+node_modules/
+
+BedrockEdition/DeathSwapBehaviourPack/scripts/client/*
+BedrockEdition/DeathSwapBehaviourPack/scripts/server/*
 
 *.mcpack
 *.mcaddon
