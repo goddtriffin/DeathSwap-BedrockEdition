@@ -23,7 +23,7 @@ const prodAddonName = "DeathSwap-BE-v0.0.0.mcaddon";
 
 // bundles the server and client javascript code into bundles via webpack
 function compileJavascript() {
-    return gulp.src("./src/*")
+    return gulp.src(["./src/server.js", "./src/client.js"])
         .pipe(
             webpack(require("./webpack.config.js"),
             compiler,
@@ -48,10 +48,17 @@ function transferResourcePack() {
         .pipe(gulp.dest(minecraftDevResourcePackPath));
 }
 
+// removes the bundled js files inside the internal behaviour pack's scripts folder
+function cleanInternalPackJavascript() {
+    return del(["./DeathSwapBehaviourPack/scripts/server/**", "./DeathSwapBehaviourPack/scripts/client/**"], {force:true});
+}
+
+// removes behaviour pack from Minecraft's dev location
 function cleanMinecraftDevBehaviourPack() {
     return del(minecraftDevBehaviourPackPath + "/**", {force:true});
 }
 
+// removes resource pack from Minecraft's dev location
 function cleanMinecraftDevResourcePack() {
     return del(minecraftDevResourcePackPath + "/**", {force:true});
 }
@@ -77,6 +84,7 @@ function zipAddon() {
         .pipe(gulp.dest("./bin"));
 }
 
+// hot reload dev packs on save
 exports.development = function() {
     // watch behaviour pack changes
     watch(devBehaviourPackPath, {events: 'all'}, series(cleanMinecraftDevBehaviourPack, transferBehaviourPack));
@@ -85,9 +93,10 @@ exports.development = function() {
     watch(devResourcePackPath, {events: 'all', ignoreInitial: false}, series(cleanMinecraftDevResourcePack, transferResourcePack));
 
     // watch javascript changes
-    watch(devJavascriptPath, {events: 'all', ignoreInitial: false}, compileJavascript);
+    watch(devJavascriptPath, {events: 'all', ignoreInitial: false}, series(cleanInternalPackJavascript, compileJavascript));
 };
 
+// create zipped .mcpack for distribution
 exports.production = series(
     parallel(
         series(compileJavascript, zipBehaviourPack),
