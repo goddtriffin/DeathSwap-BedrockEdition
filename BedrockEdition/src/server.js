@@ -143,7 +143,7 @@ class DeathSwap {
 			`/gamerule keepInventory false`,
 			`/gamerule mobGriefing true`,
             `/gamerule naturalRegeneration true`,
-            `/gamerule pvp false`
+            `/gamerule pvp false`,
 			`/gamerule sendCommandFeedback false`,
 			`/gamerule showCoordinates false`,
 			`/gamerule showDeathMessages true`,
