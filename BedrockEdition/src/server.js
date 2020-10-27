@@ -1,6 +1,6 @@
 const systemServer = server.registerSystem(0, 0);
 
-const debug = false;
+const debug = true;
 
 const PlayerStates = Object.freeze({"LOBBY":0, "READY":1, "DEATHSWAP":2, "SPECTATING":3});
 const GamemodeStates = Object.freeze({"SURVIVAL":0,"CREATIVE":1,"ADVENTURE":2});
@@ -84,14 +84,11 @@ class DeathSwap {
 
 		switch (state) {
 			case DeathSwapStates.LOBBY:
-				this.setPvP(false);
 				break;
 			case DeathSwapStates.DEATHSWAP:
-				this.setPvP(true);
 				this.displayTitle("Death Swap... BEGINS!!");
 				break;
 			case DeathSwapStates.GAMEOVER:
-				this.setPvP(true);
 				break;
 		}
 	}
@@ -145,7 +142,8 @@ class DeathSwap {
 			`/gamerule doWeatherCycle true`,
 			`/gamerule keepInventory false`,
 			`/gamerule mobGriefing true`,
-			`/gamerule naturalRegeneration true`,
+            `/gamerule naturalRegeneration true`,
+            `/gamerule pvp false`,
 			`/gamerule sendCommandFeedback false`,
 			`/gamerule showCoordinates false`,
 			`/gamerule showDeathMessages true`,
@@ -155,10 +153,6 @@ class DeathSwap {
 		gamerules.forEach(function(gamerule) {
 			systemServer.executeCommand(gamerule, (commandResultData) => systemServer.commandCallback(commandResultData));
 		});
-	}
-
-	setPvP(state) {
-		systemServer.executeCommand(`/gamerule pvp ${state}`, (commandResultData) => systemServer.commandCallback(commandResultData));
 	}
 
 	displayTitle(title) {

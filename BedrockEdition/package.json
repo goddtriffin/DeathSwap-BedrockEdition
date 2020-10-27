@@ -1,0 +1,22 @@
+{
+  "name": "deathswapbedrockedition",
+  "version": "0.0.3",
+  "description": "Custom Minecraft gamemode where every 5 minutes you swap positions with your opponent(s). Your goal is to make everybody die without attacking them - last person standing wins!",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goddtriffin/DeathSwap.git"
+  },
+  "author": "Todd Everett Griffin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goddtriffin/DeathSwap/issues"
+  },
+  "homepage": "https://github.com/goddtriffin/DeathSwap",
+  "devDependencies": {
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.2",
+    "webpack-stream": "^6.1.0"
+  }
+}
