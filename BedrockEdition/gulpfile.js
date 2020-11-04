@@ -10,7 +10,7 @@ const gulpOptions = {
     ignoreInitial: false
 };
 
-const devJavascriptPath = ["./src/*.js", "./webpack.config.js"];
+const devJavascriptPath = ["./src/*", "./webpack.config.js"];
 const devBehaviourPackPath = "./DeathSwapBehaviourPack/**/*";
 const devResourcePackPath = "./DeathSwapResourcePack/**/*";
 
@@ -23,7 +23,7 @@ const prodAddonName = "DeathSwap-BE-v0.0.0.mcaddon";
 
 // bundles the server and client javascript code into bundles via webpack
 function compileJavascript() {
-    return gulp.src(["./src/server.js", "./src/client.js"])
+    return gulp.src(["./src/server/server.ts", "./src/client/client.ts"])
         .pipe(
             webpack(require("./webpack.config.js"),
             compiler,

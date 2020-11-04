@@ -1,6 +1,10 @@
-const systemClient = client.registerSystem(0, 0);
+'use strict';
 
-const debug = true;
+import { debug } from '../shared/base';
+
+declare var client: any;
+
+const systemClient = client.registerSystem(0, 0);
 
 systemClient.initialize = function() {
     if (debug) {
@@ -15,21 +19,21 @@ systemClient.initialize = function() {
     this.registerEventData("DeathSwap:client_entered_world", {});
 
     // listen for events
-    this.listenForEvent("minecraft:client_entered_world", (eventData) => this.onClientEnteredWorld(eventData));
+    this.listenForEvent("minecraft:client_entered_world", (eventData: any) => this.onClientEnteredWorld(eventData));
 };
 
 systemClient.update = function() {};
 
 systemClient.shutdown = function() {};
 
-systemClient.onClientEnteredWorld = function(eventData) {
+systemClient.onClientEnteredWorld = function(eventData: any) {
     const playerData = this.createEventData("DeathSwap:client_entered_world");
     playerData.data = eventData.data;
     this.broadcastEvent("DeathSwap:client_entered_world", playerData);
 };
 
-systemClient.log = function(...items) {
-	const toString = item => {
+systemClient.log = function(...items: any[]) {
+	const toString = (item: any) => {
 		switch(Object.prototype.toString.call(item)) {
 			case '[object Undefined]':
 				return 'undefined';
@@ -41,8 +45,7 @@ systemClient.log = function(...items) {
 				const array = item.map(toString);
 				return `[${array.join(', ')}]`;
 			case '[object Object]':
-				const object = Object.keys(item).map(key => `${key}: ${toString(item[key])}`);
-				return `{${object.join(', ')}}`;
+				return JSON.stringify(item, null, "    ");
 			case '[object Function]':
 				return item.toString();
 			default:
