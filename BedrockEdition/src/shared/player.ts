@@ -8,7 +8,10 @@ class Player {
     state: PlayerState = PlayerState.LOBBY;
 
 	constructor(public system: any, playerData: any) {
-		this.data = playerData;
+        this.data = playerData;
+        
+        // need to set this again so that state is set properly
+        this.setState(PlayerState.LOBBY);
 	}
 
 	getID(): any {

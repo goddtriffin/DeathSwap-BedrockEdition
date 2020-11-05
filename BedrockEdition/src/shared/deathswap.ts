@@ -12,7 +12,10 @@ class DeathSwap {
         this.players = {};
 
 		this.setGamerules();
-		this.setDifficulty(Difficulty.HARD);
+        this.setDifficulty(Difficulty.HARD);
+        
+        // need to set this again so that state is set properly
+        this.setState(DeathSwapState.LOBBY);
 	}
 
 	setState(state: DeathSwapState): void {
