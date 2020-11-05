@@ -2,26 +2,13 @@
 
 const debug: boolean = true;
 
-enum DifficultyStates {
-    PEACEFUL,
-    EASY,
-    NORMAL,
-    HARD
-}
-
-enum GamemodeStates {
-    SURVIVAL,
-    CREATIVE,
-    ADVENTURE
-}
-
-enum DeathSwapStates {
+enum DeathSwapState {
     LOBBY,
     DEATHSWAP,
     GAMEOVER
 }
 
-enum PlayerStates {
+enum PlayerState {
     LOBBY,
     READY,
     DEATHSWAP,
@@ -31,9 +18,6 @@ enum PlayerStates {
 export {
     debug,
 
-    DifficultyStates,
-    GamemodeStates,
-
-    DeathSwapStates,
-    PlayerStates
+    DeathSwapState,
+    PlayerState
 };

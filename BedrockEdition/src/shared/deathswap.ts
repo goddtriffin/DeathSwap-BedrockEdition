@@ -1,79 +1,77 @@
 'use strict';
 
-import { DifficultyStates, DeathSwapStates, PlayerStates } from '../shared/base';
+import { Difficulty } from '../shared/minecraft-bedrock-edition'
+import { DeathSwapState, PlayerState } from '../shared/base';
 import { Player } from '../shared/player';
 
 class DeathSwap {
-    players: { [key: string]: Player };
-    state: any;
+    players: { [id: string]: Player };
+    state: DeathSwapState = DeathSwapState.LOBBY;
 
 	constructor(public system: any) {
-        this.system = system;
         this.players = {};
 
 		this.setGamerules();
-		this.setDifficulty(DifficultyStates.HARD);
-
-		this.setState(DeathSwapStates.LOBBY);
+		this.setDifficulty(Difficulty.HARD);
 	}
 
-	setState(state: any) {
+	setState(state: DeathSwapState): void {
 		this.state = state;
 
 		switch (state) {
-			case DeathSwapStates.LOBBY:
+			case DeathSwapState.LOBBY:
 				break;
-			case DeathSwapStates.DEATHSWAP:
+			case DeathSwapState.DEATHSWAP:
 				this.displayTitle("Death Swap... BEGINS!!");
 				break;
-			case DeathSwapStates.GAMEOVER:
+			case DeathSwapState.GAMEOVER:
 				break;
 		}
 	}
 
-	checkState() {
-		if (this.state === DeathSwapStates.LOBBY) {
+	checkState(): void {
+		if (this.state === DeathSwapState.LOBBY) {
             let ready = true;
 
             for (const id in this.players) {
                 const player = this.players[id];
-                if (player.state !== PlayerStates.READY) {
+                if (player.state !== PlayerState.READY) {
 					ready = false;
 				}
             }
 
 			if (ready) {
-				this.setState(DeathSwapStates.DEATHSWAP);
+				this.setState(DeathSwapState.DEATHSWAP);
 			}
-		} else if (this.state === DeathSwapStates.DEATHSWAP) {
+		} else if (this.state === DeathSwapState.DEATHSWAP) {
 
-		} else if (this.state === DeathSwapStates.GAMEOVER) {
+		} else if (this.state === DeathSwapState.GAMEOVER) {
 
 		}
 	}
 
-	addPlayer(playerData: any) {
+	addPlayer(playerData: any): void {
 		const player = new Player(this.system, playerData);
 		this.players[player.getID()] = player;
 
 		this.system.log(`${player.getName()} joined the game!`);
 	}
 
-	removePlayer(id: any) {
+	removePlayer(id: any): void {
 		delete this.players[id];
 	}
 
-	readyPlayer(id: any) {
-		this.players[id].setState(PlayerStates.READY);
+	readyPlayer(id: any): void {
+		this.players[id].setState(PlayerState.READY);
 
 		this.checkState();
 	}
 
-	setDifficulty(difficulty: any) {
+	setDifficulty(difficulty: Difficulty): void {
 		this.system.executeCommand(`/difficulty ${difficulty}`, (commandResultData: any) => this.system.commandCallback(commandResultData));
 	}
 
-	setGamerules() {
+	setGamerules(): void {
 		const gamerules = [
 			`/gamerule commandBlocksEnabled false`,
 			`/gamerule doDaylightCycle true`,
@@ -96,7 +94,7 @@ class DeathSwap {
         }
 	}
 
-	displayTitle(title: string) {
+	displayTitle(title: string): void {
 		this.system.executeCommand(`/title @a title ${title}`, (commandResultData: any) => this.system.commandCallback(commandResultData));
 	}
 }

@@ -2,11 +2,11 @@
 
 import { debug } from '../shared/base';
 
-declare var client: any;
+declare const client: any;
 
 const systemClient = client.registerSystem(0, 0);
 
-systemClient.initialize = function() {
+systemClient.initialize = function(): void {
     if (debug) {
         const scriptLoggerConfig = this.createEventData("minecraft:script_logger_config");
         scriptLoggerConfig.data.log_errors = true;
@@ -22,17 +22,17 @@ systemClient.initialize = function() {
     this.listenForEvent("minecraft:client_entered_world", (eventData: any) => this.onClientEnteredWorld(eventData));
 };
 
-systemClient.update = function() {};
+systemClient.update = function(): void {};
 
-systemClient.shutdown = function() {};
+systemClient.shutdown = function(): void {};
 
-systemClient.onClientEnteredWorld = function(eventData: any) {
+systemClient.onClientEnteredWorld = function(eventData: any): void {
     const playerData = this.createEventData("DeathSwap:client_entered_world");
     playerData.data = eventData.data;
     this.broadcastEvent("DeathSwap:client_entered_world", playerData);
 };
 
-systemClient.log = function(...items: any[]) {
+systemClient.log = function(...items: any[]): void {
 	const toString = (item: any) => {
 		switch(Object.prototype.toString.call(item)) {
 			case '[object Undefined]':

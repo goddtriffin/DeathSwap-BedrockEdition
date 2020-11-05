@@ -3,11 +3,11 @@
 import { debug } from '../shared/base';
 import { DeathSwap } from '../shared/deathswap';
 
-declare var server: any;
+declare const server: any;
 
 const systemServer = server.registerSystem(0, 0);
 
-systemServer.initialize = function() {
+systemServer.initialize = function(): void {
     if (debug) {
         const scriptLoggerConfig = this.createEventData("minecraft:script_logger_config");
         scriptLoggerConfig.data.log_errors = true;
@@ -24,15 +24,15 @@ systemServer.initialize = function() {
 	this.listenForEvent("minecraft:entity_use_item", (eventData: any) => this.onEntityUseItem(eventData));
 };
 
-systemServer.update = function() {};
+systemServer.update = function(): void {};
 
-systemServer.shutdown = function() {};
+systemServer.shutdown = function(): void {};
 
-systemServer.onClientEnteredWorld = function(eventData: any) {
+systemServer.onClientEnteredWorld = function(eventData: any): void {
     this.deathSwap.addPlayer(eventData.data.player);
 }
 
-systemServer.onEntityUseItem = function(eventData: any) {
+systemServer.onEntityUseItem = function(eventData: any): void {
 	if (eventData.data.use_method === "eat") {
 		if (eventData.data.item_stack.item === "deathswap:blood_chalice_full") {
 			this.deathSwap.readyPlayer(eventData.data.entity.id);
@@ -40,13 +40,13 @@ systemServer.onEntityUseItem = function(eventData: any) {
 	}
 }
 
-systemServer.commandCallback = function(eventData: any) {
+systemServer.commandCallback = function(eventData: any): void {
 	if (debug) {
 		this.log(`Callback called! Command: ${eventData.command} Data: ${JSON.stringify(eventData.data, null, "    ")}`);
 	}
 }
 
-systemServer.log = function(...items: any[]) {
+systemServer.log = function(...items: any[]): void {
 	const toString = (item: any) => {
 		switch(Object.prototype.toString.call(item)) {
 			case '[object Undefined]':
