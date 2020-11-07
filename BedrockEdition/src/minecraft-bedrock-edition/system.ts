@@ -6,10 +6,28 @@ export interface System {
      * LIFECYCLE BINDINGS
      */
 
+    /**
+     * initialize is the first method that gets called immediately after the system is registered.
+     * It will run as soon as the script loads at world start.
+     * You can use this to set up the environment for your script: register custom components and events, sign up event listeners, etc.
+     * This will run BEFORE the world is ready and the player has been added to it.
+     * This function should be used to initialize variables and setup event listeners.
+     * You shouldn't try to spawn or interact with any entities at this point!
+     * You should also avoid interaction with UI elements or sending messages to the chat window since this is called before the player is ready.
+     */
     initialize(): void;
 
+    /**
+     * update gets called once every game tick.
+     * The server and client tick at 20 times per second.
+     * This is a good place to get, check, and react to component changes.
+     */
     update(): void;
 
+    /**
+     * shutdown gets called when the Minecraft Script Engine is shutting down.
+     * For the client this is when they leave the world; for the server this is after the last player has exited the world.
+     */
     shutdown(): void;
 
     /**
