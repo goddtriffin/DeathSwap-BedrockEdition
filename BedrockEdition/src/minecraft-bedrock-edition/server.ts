@@ -1,6 +1,13 @@
 import { System } from 'system';
 
 export interface Server {
+    /**
+     * registerSystem signs up our script to be set-up on the server threads of the game.
+     * 
+     * @param {number} majorVersion - This is the major version of the Minecraft Script Engine your script was designed to work with. Integer.
+     * @param {number} minorVersion - This is the revision of the Minecraft Script Engine your script was designed to work with. Integer.
+     * @return {System}
+     */
     registerSystem(majorVersion: number, minorVersion: number): System;
 
     /**
