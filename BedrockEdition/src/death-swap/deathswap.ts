@@ -1,14 +1,14 @@
-'use strict';
+import { Difficulty, System } from '../minecraft-bedrock-edition/index';
+import { debug } from '../shared/base';
+import { commandCallback, log } from '../shared/utils';
+import { DeathSwapState, PlayerState } from './enums';
+import { Player } from './player';
 
-import { Difficulty } from '../shared/minecraft-bedrock-edition'
-import { DeathSwapState, PlayerState } from '../shared/base';
-import { Player } from '../shared/player';
-
-class DeathSwap {
+export class DeathSwap {
     players: { [id: string]: Player };
     state: DeathSwapState = DeathSwapState.LOBBY;
 
-	constructor(public system: any) {
+	constructor(public system: System) {
         this.players = {};
 
 		this.setGamerules();
@@ -57,7 +57,7 @@ class DeathSwap {
 		const player = new Player(this.system, playerData);
 		this.players[player.getID()] = player;
 
-		this.system.log(`${player.getName()} joined the game!`);
+		log(this.system, `${player.getName()} joined the game!`);
 	}
 
 	removePlayer(id: any): void {
@@ -71,7 +71,7 @@ class DeathSwap {
 	}
 
 	setDifficulty(difficulty: Difficulty): void {
-		this.system.executeCommand(`/difficulty ${difficulty}`, (commandResultData: any) => this.system.commandCallback(commandResultData));
+		this.system.executeCommand(`/difficulty ${difficulty}`, (commandResultData: any) => commandCallback(this.system, commandResultData));
 	}
 
 	setGamerules(): void {
@@ -93,15 +93,23 @@ class DeathSwap {
         
         for (let i=0; i<gamerules.length; i++) {
             const gamerule = gamerules[i];
-            this.system.executeCommand(gamerule, (commandResultData: any) => this.system.commandCallback(commandResultData));
+            this.system.executeCommand(gamerule, (commandResultData: any) => commandCallback(this.system, commandResultData));
         }
 	}
 
 	displayTitle(title: string): void {
-		this.system.executeCommand(`/title @a title ${title}`, (commandResultData: any) => this.system.commandCallback(commandResultData));
+		this.system.executeCommand(`/title @a title ${title}`, (commandResultData: any) => commandCallback(this.system, commandResultData));
+	}
+
+	onClientEnteredWorld(eventData: any): void {
+		this.addPlayer(eventData.data.player);
+	}
+
+	onEntityUseItem(eventData: any): void {
+		if (eventData.data.use_method === "eat") {
+			if (eventData.data.item_stack.item === "deathswap:blood_chalice_full") {
+				this.readyPlayer(eventData.data.entity.id);
+			}
+		}
 	}
 }
-
-export {
-    DeathSwap
-};

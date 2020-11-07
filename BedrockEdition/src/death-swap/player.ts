@@ -1,13 +1,12 @@
-'use strict';
+import { Gamemode, System } from '../minecraft-bedrock-edition/index';
+import { commandCallback, log } from '../shared/utils';
+import { PlayerState } from './enums';
 
-import { Gamemode } from '../shared/minecraft-bedrock-edition'
-import { PlayerState } from '../shared/base';
-
-class Player {
+export class Player {
     data: any;
     state: PlayerState = PlayerState.LOBBY;
 
-	constructor(public system: any, playerData: any) {
+	constructor(public system: System, playerData: any) {
         this.data = playerData;
         
         // need to set this again so that state is set properly
@@ -27,7 +26,6 @@ class Player {
 	}
 
 	getRotation(): any {
-		this.system.log(this.system.getComponent(this.data, "minecraft:rotation"));
 		return this.system.getComponent(this.data, "minecraft:rotation").data;
 	}
 
@@ -40,7 +38,7 @@ class Player {
 				this.resetInventory();
 				break;
 			case PlayerState.READY:
-				this.system.log(`${this.getName()} readied up!`);
+				log(this.system, `${this.getName()} readied up!`);
 				break;
 			case PlayerState.DEATHSWAP:
 				this.setGamemode(Gamemode.SURVIVAL);
@@ -54,20 +52,16 @@ class Player {
 	}
 
 	setGamemode(gamemode: Gamemode): void {
-		this.system.executeCommand(`/gamemode ${gamemode} "${this.getName()}"`, (commandResultData: any) => this.system.commandCallback(commandResultData));
+		this.system.executeCommand(`/gamemode ${gamemode} "${this.getName()}"`, (commandResultData: any) => commandCallback(this.system, commandResultData));
 	}
 
 	emptyInventory(): void {
-		this.system.executeCommand(`/clear "${this.getName()}"`, (commandResultData: any) => this.system.commandCallback(commandResultData));
+		this.system.executeCommand(`/clear "${this.getName()}"`, (commandResultData: any) => commandCallback(this.system, commandResultData));
 	}
 
 	resetInventory(): void {
 		this.emptyInventory();
 
-		this.system.executeCommand(`/give "${this.getName()}" deathswap:blood_chalice_full`, (commandResultData: any) => this.system.commandCallback(commandResultData));
+		this.system.executeCommand(`/give "${this.getName()}" deathswap:blood_chalice_full`, (commandResultData: any) => commandCallback(this.system, commandResultData));
 	}
 }
-
-export {
-    Player
-};

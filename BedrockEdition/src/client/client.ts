@@ -1,10 +1,8 @@
-'use strict';
-
+import { Client, System } from '../minecraft-bedrock-edition/index';
 import { debug } from '../shared/base';
 
-declare const client: any;
-
-const systemClient = client.registerSystem(0, 0);
+declare const client: Client;
+const systemClient: System = client.registerSystem(0, 0);
 
 systemClient.initialize = function(): void {
     if (debug) {
@@ -19,41 +17,15 @@ systemClient.initialize = function(): void {
     this.registerEventData("DeathSwap:client_entered_world", {});
 
     // listen for events
-    this.listenForEvent("minecraft:client_entered_world", (eventData: any) => this.onClientEnteredWorld(eventData));
+    this.listenForEvent("minecraft:client_entered_world", (eventData: any) => onClientEnteredWorld(eventData));
 };
 
 systemClient.update = function(): void {};
 
 systemClient.shutdown = function(): void {};
 
-systemClient.onClientEnteredWorld = function(eventData: any): void {
-    const playerData = this.createEventData("DeathSwap:client_entered_world");
+function onClientEnteredWorld(eventData: any): void {
+    const playerData = systemClient.createEventData("DeathSwap:client_entered_world");
     playerData.data = eventData.data;
-    this.broadcastEvent("DeathSwap:client_entered_world", playerData);
+    systemClient.broadcastEvent("DeathSwap:client_entered_world", playerData);
 };
-
-systemClient.log = function(...items: any[]): void {
-	const toString = (item: any) => {
-		switch(Object.prototype.toString.call(item)) {
-			case '[object Undefined]':
-				return 'undefined';
-			case '[object Null]':
-				return 'null';
-			case '[object String]':
-				return `"${item}"`;
-			case '[object Array]':
-				const array = item.map(toString);
-				return `[${array.join(', ')}]`;
-			case '[object Object]':
-				return JSON.stringify(item, null, "    ");
-			case '[object Function]':
-				return item.toString();
-			default:
-				return item;
-		}
-    }
-    
-    const chatEvent = this.createEventData("minecraft:display_chat_event");
-    chatEvent.data.message = items.map(toString).join(' ');
-    this.broadcastEvent("minecraft:display_chat_event", chatEvent);
-}

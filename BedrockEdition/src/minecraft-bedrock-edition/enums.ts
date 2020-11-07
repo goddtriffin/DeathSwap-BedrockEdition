@@ -1,19 +1,12 @@
-'use strict';
-
-enum Difficulty {
+export enum Difficulty {
     PEACEFUL,
     EASY,
     NORMAL,
     HARD
 }
 
-enum Gamemode {
+export enum Gamemode {
     SURVIVAL,
     CREATIVE,
     ADVENTURE
-}
-
-export {
-    Difficulty,
-    Gamemode
 }
