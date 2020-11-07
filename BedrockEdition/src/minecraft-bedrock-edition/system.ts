@@ -1,5 +1,5 @@
 import { ComponentIdentifier } from "./component-identifiers";
-import { Block, Component, Entity, Query, TickingArea } from "./script-api-objects";
+import { Block, Component, Entity, Query, TickingArea } from "./objects";
 
 export interface System {
     /**
@@ -293,10 +293,10 @@ export interface System {
      * Only custom events need to be registered.
      * 
      * @param {string} eventIdentifier - This is the identifier of the custom event we are registering. The namespace is required and can't be set to minecraft.
-     * @param {object} eventData - The JavaScript object with the correct fields and default values for the event.
+     * @param {any} eventData - The JavaScript object with the correct fields and default values for the event.
      * @return {boolean} - Successfully registered the event data.
      */
-    registerEventData(eventIdentifier: string, eventData: object): boolean;
+    registerEventData(eventIdentifier: string, eventData: any): boolean;
 
     /**
      * SLASH COMMANDS
