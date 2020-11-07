@@ -1,8 +1,12 @@
+import { DeathSwapClient } from '../death-swap/index';
 import { Client, System } from '../minecraft-bedrock-edition/index';
-import { debug } from '../shared/base';
+import { debug } from '../settings';
 
-declare const client: Client;
+// attach scripting system to the client threads
+declare var client: Client;
 const systemClient: System = client.registerSystem(0, 0);
+
+let deathSwapClient: DeathSwapClient;
 
 systemClient.initialize = function(): void {
     if (debug) {
@@ -13,19 +17,16 @@ systemClient.initialize = function(): void {
         this.broadcastEvent("minecraft:script_logger_config", scriptLoggerConfig);
     }
 
+    // init vars
+	deathSwapClient = new DeathSwapClient(this);
+
     // register event data
     this.registerEventData("DeathSwap:client_entered_world", {});
 
     // listen for events
-    this.listenForEvent("minecraft:client_entered_world", (eventData: any) => onClientEnteredWorld(eventData));
+    this.listenForEvent("minecraft:client_entered_world", (eventData: any) => deathSwapClient.onClientEnteredWorld(eventData));
 };
 
 systemClient.update = function(): void {};
 
 systemClient.shutdown = function(): void {};
-
-function onClientEnteredWorld(eventData: any): void {
-    const playerData = systemClient.createEventData("DeathSwap:client_entered_world");
-    playerData.data = eventData.data;
-    systemClient.broadcastEvent("DeathSwap:client_entered_world", playerData);
-};

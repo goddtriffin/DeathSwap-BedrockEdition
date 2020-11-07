@@ -1,5 +1,5 @@
 /**
- * EventIdentifier defines all possible Minecraft Bedrock Edition event identifiers.
+ * `EventIdentifier` defines all possible event identifiers.
  */
 export type EventIdentifier =
     | EventIdentifierDisplayChatEvent

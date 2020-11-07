@@ -7,7 +7,7 @@ export interface System {
      */
 
     /**
-     * initialize is the first method that gets called immediately after the system is registered.
+     * `initialize` is the first method that gets called immediately after the system is registered.
      * It will run as soon as the script loads at world start.
      * You can use this to set up the environment for your script: register custom components and events, sign up event listeners, etc.
      * This will run BEFORE the world is ready and the player has been added to it.
@@ -18,14 +18,14 @@ export interface System {
     initialize(): void;
 
     /**
-     * update gets called once every game tick.
+     * `update` gets called once every game tick.
      * The server and client tick at 20 times per second.
      * This is a good place to get, check, and react to component changes.
      */
     update(): void;
 
     /**
-     * shutdown gets called when the Minecraft Script Engine is shutting down.
+     * `shutdown` gets called when the Minecraft Script Engine is shutting down.
      * For the client this is when they leave the world; for the server this is after the last player has exited the world.
      */
     shutdown(): void;
@@ -37,7 +37,7 @@ export interface System {
      */
 
     /**
-     * getBlock allows you to get a block from the world when provided a JavaScript object containing a position.
+     * `getBlock` allows you to get a block from the world when provided a JavaScript object containing a position.
      * The block must be within a ticking area.
      * 
      * @param {TickingArea} tickingArea - The ticking area the block is in.
@@ -47,7 +47,7 @@ export interface System {
     getBlock(tickingArea: TickingArea, position: Position): Block | null;
 
     /**
-     * getBlock allows you to get a block from the world when provided an x, y, and z position.
+     * `getBlock` allows you to get a block from the world when provided an x, y, and z position.
      * The block must be within a ticking area.
      * 
      * @param {TickingArea} tickingArea - The ticking area the block is in.
@@ -59,7 +59,7 @@ export interface System {
     getBlock(tickingArea: TickingArea, x: number, y: number, z: number): Block | null;
 
     /**
-     * getBlocks allows you to get an array of blocks from the world when provided a minimum and maximum position.
+     * `getBlocks` allows you to get an array of blocks from the world when provided a minimum and maximum position.
      * The blocks must be within a ticking area.
      * This call can be slow if given a lot of blocks, and should be used infrequently.
      * 
@@ -71,7 +71,7 @@ export interface System {
     getBlocks(tickingArea: TickingArea, minimum: Position, maximum: Position): Array<Array<Array<Block>>> | null;
 
     /**
-     * getBlocks allows you to get an array of blocks from the world when provided a minimum and maximum x, y, and z position.
+     * `getBlocks` allows you to get an array of blocks from the world when provided a minimum and maximum x, y, and z position.
      * The blocks must be within a ticking area.
      * This call can be slow if given a lot of blocks, and should be used infrequently.
      * 
@@ -92,7 +92,7 @@ export interface System {
      */
 
     /**
-     * applyComponentChanges applies the component and any changes made to it in script back to the entity.
+     * `applyComponentChanges` applies the component and any changes made to it in script back to the entity.
      * What this means for each component can be slightly different: it makes the component reload on the entity with the new data as if it had just been added to the entity.
      * 
      * @param {Entity} entity - The entity object that we are applying the component changes to.
@@ -102,7 +102,7 @@ export interface System {
     applyComponentChanges(entity: Entity, component: Component): boolean;
 
     /**
-     * createComponent creates the specified component and adds it to the entity.
+     * `createComponent` creates the specified component and adds it to the entity.
      * This should only be used with custom components which need to be registered first.
      * If the entity already has the component, this will retrieve the component already there instead.
      * 
@@ -113,7 +113,7 @@ export interface System {
     createComponent(entity: Entity, componentIdentifier: ComponentIdentifier): Component;
 
     /**
-     * destroyComponent removes the specified component from the given entity.
+     * `destroyComponent` removes the specified component from the given entity.
      * If the entity has the component, it will be removed.
      * Currently this only works with custom components and can't be used to remove components defined for an entity in JSON.
      * 
@@ -124,7 +124,7 @@ export interface System {
     destroyComponent(entity: Entity, componentIdentifier: ComponentIdentifier): boolean;
 
     /**
-     * getComponent looks for the specified component in the entity.
+     * `getComponent` looks for the specified component in the entity.
      * If it exists, retrieves the data from the component and returns it.
      * 
      * @param {Entity} entity - The EntityObject that was retrieved from a call to createEntity() or retrieved from an event.
@@ -134,7 +134,7 @@ export interface System {
     getComponent(entity: Entity, componentIdentifier: ComponentIdentifier): Component;
 
     /**
-     * hasComponent checks if the given entity has the specified component.
+     * `hasComponent` checks if the given entity has the specified component.
      * 
      * @param {Entity} entity - The EntityObject that was retrieved from a call to createEntity() or retrieved from an event.
      * @param {ComponentIdentifier} componentIdentifier - The identifier of the component to check on the entity. This is either the identifier of a built-in component (check the Script Components section) or a custom component created with a call to registerComponent().
@@ -143,7 +143,7 @@ export interface System {
     hasComponent(entity: Entity, componentIdentifier: ComponentIdentifier): boolean;
 
     /**
-     * registerComponent creates a custom component that only exists in script.
+     * `registerComponent` creates a custom component that only exists in script.
      * It can be then added, removed, and updated from entities.
      * These custom components only exist while the Script Engine is running.
      * 
@@ -159,7 +159,7 @@ export interface System {
      */
 
      /**
-     * createEntity creates an empty entity with no components and does not place it in the world.
+     * `createEntity` creates an empty entity with no components and does not place it in the world.
      * The empty entity will be of type custom and have a blank identifier.
      * This is NOT a valid entity that exists in the world, just an empty one that only scripts know about.
      * 
@@ -171,7 +171,7 @@ export interface System {
     createEntity(): Entity
 
      /**
-     * createEntity creates an entity and applies the specified template as defined in JSON.
+     * `createEntity` creates an entity and applies the specified template as defined in JSON.
      * This allows you to quickly create an entity from the applied Behavior Packs as the base for an entity created in scripting.
      * The entity will be spawned into the world with all the components, component groups, and event triggers that are defined in the JSON file of the identifier specified.
      * Only works on scripts registered on the server.
@@ -186,7 +186,7 @@ export interface System {
     createEntity(type: string, templateIdentifier: string): Entity;
 
     /**
-     * destroyEntity destroys an entity identified by the EntityObject.
+     * `destroyEntity` destroys an entity identified by the EntityObject.
      * If the entity exists in the world this will remove it from the world and destroy it.
      * This also makes the EntityObject no longer valid - you should only destroy an entity after you are done with it and no longer need to reference it again.
      * This does NOT kill the entity.
@@ -198,7 +198,7 @@ export interface System {
     destroyEntity(entity: Entity): boolean;
 
     /**
-     * isValidEntity checks if the given EntityObject corresponds to a valid entity.
+     * `isValidEntity` checks if the given EntityObject corresponds to a valid entity.
      * 
      * @param {Entity} entity - The Entity object that was retrieved from a call to createEntity() or retrieved from an entity event
      * @return {boolean} - The entity is in the Script Engine's database of entities.
@@ -215,7 +215,7 @@ export interface System {
      */
 
     /**
-     * addFilterToQuery allows you to add filters to your query.
+     * `addFilterToQuery` allows you to add filters to your query.
      * The query will only contain entities that have all the components specified.
      * By default no filters are added.
      * This will allow queries to capture all entities.
@@ -226,7 +226,7 @@ export interface System {
     addFilterToQuery(query: Query, componentIdentifier: ComponentIdentifier): void;
 
     /**
-     * getEntitiesFromQuery allows you to fetch the entities captured by a query.
+     * `getEntitiesFromQuery` allows you to fetch the entities captured by a query.
      * 
      * @param {Query} query - This is the query you registered earlier using registerQuery().
      * @return {Array<Entity>} - An array of Entitys representing the entities found within the query.
@@ -234,7 +234,7 @@ export interface System {
     getEntitiesFromQuery(query: Query): Array<Entity>;
 
     /**
-     * getEntitiesFromQuery allows you to fetch the entities captured by a query that was created with a component filter built-in.
+     * `getEntitiesFromQuery` allows you to fetch the entities captured by a query that was created with a component filter built-in.
      * The only entities that will be returned are those entities that have the component that was defined when the query was registered and that have a value in the three fields on that component that were defined in the query within the values specified in the call to getEntitiesFromQuery.
      * 
      * @param {Query} query - This is the query you created earlier using registerQuery(...).
@@ -249,7 +249,7 @@ export interface System {
     getEntitiesFromQuery(query: Query, componentField1Min: number, componentField2Min: number, componentField3Min: number, componentField1Max: number, componentField2Max: number, componentField3Max: number): Array<Entity>;
 
     /**
-     * registerQuery allows you to register a query.
+     * `registerQuery` allows you to register a query.
      * A query will contain all entities that meet the filter requirement.
      * No filters are added by default when you register a query so it will capture all entities.
      * 
@@ -258,7 +258,7 @@ export interface System {
     registerQuery(): Query;
 
     /**
-     * registerQuery allows you to register a query that will only show entities that have the given component and define which fields of that component will be used as a filter when getting the entities from the query.
+     * `registerQuery` allows you to register a query that will only show entities that have the given component and define which fields of that component will be used as a filter when getting the entities from the query.
      * You can either provide just the component identifier, or the component identifier and the name of 3 properties on that component to be tested (If you do specify property names, you must specify 3).
      * 
      * @param {ComponentIdentifier} componentIdentifier - This is the identifier of the component that will be used to filter entities when.
@@ -277,7 +277,7 @@ export interface System {
      */
 
     /**
-     * broadcastEvent allows you to trigger an event with the desired data from script.
+     * `broadcastEvent` allows you to trigger an event with the desired data from script.
      * Anything that signed up to listen for the event will be notified and the given data delivered to them.
      * 
      * @param {string} eventIdentifier - This is the identifier of the event we want to react to. Can be the identifier of a built-in event or a custom one from script.
@@ -287,7 +287,7 @@ export interface System {
     broadcastEvent(eventIdentifier: string, eventData: object): boolean;
 
     /**
-     * createEventData creates an object with all the required fields and default data for the specified event.
+     * `createEventData` creates an object with all the required fields and default data for the specified event.
      * If the event is a custom event, it needs to have been previously registered.
      * 
      * @param {string} eventIdentifier - This is the identifier of the custom event we are registering. The namespace is required and can't be set to minecraft.
@@ -296,7 +296,7 @@ export interface System {
     createEventData(eventIdentifier: string): any;
 
     /**
-     * listenForEvent allows you to register a JavaScript object that gets called whenever the specified event is broadcast.
+     * `listenForEvent` allows you to register a JavaScript object that gets called whenever the specified event is broadcast.
      * The event can either be a built-in event or an event specified in script.
      * 
      * @param {string} eventIdentifier - This is the identifier of the event to which we want to react. Can be the identifier of a built-in event or a custom one from script.
@@ -306,7 +306,7 @@ export interface System {
     listenForEvent(eventIdentifier: string, callback: {(eventData: object): void;}): boolean;
 
     /**
-     * registerEventData registers the Event to the script engine.
+     * `registerEventData` registers the Event to the script engine.
      * This allows you to create Event Data by calling createEventData and have it initialized with the correct default data and fields.
      * Only custom events need to be registered.
      * 
@@ -325,7 +325,7 @@ export interface System {
      */
 
     /**
-     * executeCommand allows you to execute a Slash Command on the server.
+     * `executeCommand` allows you to execute a Slash Command on the server.
      * The command will be queried and executed at the end of the current frame.
      * All data output from the command will be compiled on a JavaScript Object and sent to the Callback object specified in the second parameter.
      * 

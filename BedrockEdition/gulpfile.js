@@ -5,12 +5,7 @@ const webpack = require("webpack-stream");
 var compiler = require("webpack");
 const del = require('del');
 
-const gulpOptions = {
-    events: 'all',
-    ignoreInitial: false
-};
-
-const devJavascriptPath = ["./src/*", "./webpack.config.js"];
+const devJavascriptPath = ["./src/**/*.ts", "./webpack.config.js", "tsconfig.json"];
 const devBehaviourPackPath = "./DeathSwapBehaviourPack/**/*";
 const devResourcePackPath = "./DeathSwapResourcePack/**/*";
 

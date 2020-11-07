@@ -1,5 +1,5 @@
 /**
- * ComponentIdentifiers defines all possible Minecraft Bedrock Edition component identifiers.
+ * `ComponentIdentifiers` defines all possible component identifiers.
  */
 export type ComponentIdentifier =
     | ComponentIdentifierBlockstate
