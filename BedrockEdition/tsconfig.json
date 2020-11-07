@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "isolatedModules": true,
+        "removeComments": true,
+        "strict": true,
+        "target": "ES6",
+        "esModuleInterop": true,
+    }
+}
