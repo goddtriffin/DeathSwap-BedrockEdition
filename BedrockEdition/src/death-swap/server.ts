@@ -8,22 +8,22 @@ export class DeathSwapServer {
     state: DeathSwapState = DeathSwapState.LOBBY;
 
 	/**
-     * @param {System} system - Minecraft server/client system.
+   * @param {System} system - Minecraft server/client system.
 	 */
 	constructor(public system: System) {
         this.players = {};
 
-		this.setGamerules();
+				this.setGamerules();
         this.setDifficulty(Difficulty.HARD);
-        
+
         // need to set this again so that state is set properly
         this.setState(DeathSwapState.LOBBY);
 	}
 
 	/**
 	 * `setState` sets the game state.
-	 * 
-     * @param {DeathSwapState} state - The state you want the game to switch to.
+	 *
+   * @param {DeathSwapState} state - The state you want the game to switch to.
 	 */
 	setState(state: DeathSwapState): void {
 		this.state = state;
@@ -65,7 +65,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `addPlayer` adds a newly joined player to Death Swap.
-	 * 
+	 *
      * @param {any} playerData - The data that defines the incoming player.
 	 */
 	addPlayer(playerData: any): void {
@@ -77,7 +77,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `removePlayer` removes the given player from Death Swap.
-	 * 
+	 *
      * @param {any} id - The ID of the player to remove from the game.
 	 */
 	removePlayer(id: any): void {
@@ -86,7 +86,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `readyPlayer` switches a player's state from LOBBY to READY.
-	 * 
+	 *
      * @param {any} id - The ID of the player to ready up.
 	 */
 	readyPlayer(id: any): void {
@@ -100,7 +100,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `setDifficulty` sets the game's difficulty.
-	 * 
+	 *
      * @param {Difficulty} difficulty - The difficulty to set the game to.
 	 */
 	setDifficulty(difficulty: Difficulty): void {
@@ -126,7 +126,7 @@ export class DeathSwapServer {
 			`/gamerule showDeathMessages true`,
 			`/gamerule tntExplodes true`,
         ];
-        
+
         for (let i=0; i<gamerules.length; i++) {
             const gamerule = gamerules[i];
             this.system.executeCommand(gamerule, (commandResultData: any) => commandCallback(this.system, commandResultData));
@@ -135,7 +135,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `displayTitle` displays a large message across every player's screen.
-	 * 
+	 *
      * @param {string} title - The message to display.
 	 */
 	displayTitle(title: string): void {
@@ -144,7 +144,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `onClientEnteredWorld` handles the 'DeathSwap:client_entered_world' event.
-	 * 
+	 *
      * @param {any} eventData - The event data.
 	 */
 	onClientEnteredWorld(eventData: any): void {
@@ -153,7 +153,7 @@ export class DeathSwapServer {
 
 	/**
 	 * `onEntityUseItem` handles the 'minecraft:entity_use_item' event.
-	 * 
+	 *
      * @param {any} eventData - The event data.
 	 */
 	onEntityUseItem(eventData: any): void {
