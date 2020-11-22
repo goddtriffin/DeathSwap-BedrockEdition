@@ -1,61 +1,61 @@
-import { Gamemode, Rotation, System } from '../minecraft-bedrock-edition/index';
+import { ComponentIdentifier, Entity, Gamemode, Rotation, System } from '../minecraft-bedrock-edition/index';
 import { commandCallback, log } from './utils';
-import { PlayerState } from './enums';
+import { DeathSwapItem, PlayerState } from './enums';
 
 export class Player {
-    data: any;
+    data: Entity;
     state: PlayerState = PlayerState.LOBBY;
 
 	/**
      * @param {System} system - Minecraft server/client system.
-	 * @param {any} playerData - An object that defines the player.
+	 * @param {Entity} playerData - An object that defines the player.
 	 */
-	constructor(public system: System, playerData: any) {
-        this.data = playerData;
-        
-        // need to set this again so that state is set properly
-        this.setState(PlayerState.LOBBY);
+	constructor(public system: System, playerData: Entity) {
+		this.data = playerData;
+
+		// need to set this again so that state is set properly
+		this.setState(PlayerState.LOBBY);
 	}
 
 	/**
 	 * `getID` returns the ID of the player.
-	 * 
-     * @return {any}
+	 *
+     * @return {number}
 	 */
-	getID(): any {
+	getID(): number {
 		return this.data.id;
 	}
 
 	/**
 	 * `getName` returns the name of the player.
-	 * 
+	 *
      * @return {string}
 	 */
 	getName(): string {
-		return this.system.getComponent(this.data, "minecraft:nameable").data.name;
+		return this.system.getComponent(this.data, ComponentIdentifier.Nameable).data.name;
 	}
 
 	/**
 	 * `getPosition` returns the position of the player.
-	 * 
+	 *
      * @return {Position}
 	 */
 	getPosition(): Position {
-		return this.system.getComponent(this.data, "minecraft:position").data;
+		return this.system.getComponent(this.data, ComponentIdentifier.Position).data;
 	}
 
 	/**
 	 * `getRotation` returns the rotation of the player.
-	 * 
+	 *
      * @return {Rotation}
 	 */
 	getRotation(): Rotation {
-		return this.system.getComponent(this.data, "minecraft:rotation").data;
+		return this.system.getComponent(this.data, ComponentIdentifier.Rotation).data;
 	}
 
 	/**
 	 * `setState` sets the state of the player.
-	 * 
+	 *
      * @param {PlayerState} state - The state you want the player to switch to.
 	 */
 	setState(state: PlayerState): void {
@@ -82,7 +82,7 @@ export class Player {
 
 	/**
 	 * `setGamemode` sets the gamemode of the player.
-	 * 
+	 *
      * @param {Gamemode} gamemode - The gamemode you want the player to switch to.
 	 */
 	setGamemode(gamemode: Gamemode): void {
@@ -102,6 +102,6 @@ export class Player {
 	resetInventory(): void {
 		this.emptyInventory();
 
-		this.system.executeCommand(`/give "${this.getName()}" deathswap:blood_chalice_full`, (commandResultData: any) => commandCallback(this.system, commandResultData));
+		this.system.executeCommand(`/give "${this.getName()}" ${DeathSwapItem.BloodChaliceFull}`, (commandResultData: any) => commandCallback(this.system, commandResultData));
 	}
 }

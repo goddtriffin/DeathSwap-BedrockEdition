@@ -1,23 +1,23 @@
-import { Difficulty, System } from '../minecraft-bedrock-edition/index';
+import { Difficulty, Entity, EntityUseItem, EventData, System } from '../minecraft-bedrock-edition/index';
 import { commandCallback, log } from './utils';
-import { DeathSwapState, PlayerState } from './enums';
+import { DeathSwapItem, DeathSwapState, PlayerState } from './enums';
 import { Player } from './player';
 
 export class DeathSwapServer {
-    players: { [id: string]: Player };
-    state: DeathSwapState = DeathSwapState.LOBBY;
+	players: { [id: number]: Player };
+	state: DeathSwapState = DeathSwapState.LOBBY;
 
 	/**
    * @param {System} system - Minecraft server/client system.
 	 */
 	constructor(public system: System) {
-        this.players = {};
+		this.players = {};
 
-				this.setGamerules();
-        this.setDifficulty(Difficulty.HARD);
+		this.setGamerules();
+		this.setDifficulty(Difficulty.HARD);
 
-        // need to set this again so that state is set properly
-        this.setState(DeathSwapState.LOBBY);
+		// need to set this again so that state is set properly
+		this.setState(DeathSwapState.LOBBY);
 	}
 
 	/**
@@ -44,14 +44,14 @@ export class DeathSwapServer {
 	 */
 	checkState(): void {
 		if (this.state === DeathSwapState.LOBBY) {
-            let ready = true;
+			let ready: boolean = true;
 
-            for (const id in this.players) {
-                const player = this.players[id];
-                if (player.state !== PlayerState.READY) {
+			for (const id in this.players) {
+				const player = this.players[id];
+				if (player.state !== PlayerState.READY) {
 					ready = false;
 				}
-            }
+			}
 
 			if (ready) {
 				this.setState(DeathSwapState.DEATHSWAP);
@@ -66,9 +66,9 @@ export class DeathSwapServer {
 	/**
 	 * `addPlayer` adds a newly joined player to Death Swap.
 	 *
-     * @param {any} playerData - The data that defines the incoming player.
+     * @param {Entity} playerData - The data that defines the incoming player.
 	 */
-	addPlayer(playerData: any): void {
+	addPlayer(playerData: Entity): void {
 		const player = new Player(this.system, playerData);
 		this.players[player.getID()] = player;
 
@@ -78,18 +78,18 @@ export class DeathSwapServer {
 	/**
 	 * `removePlayer` removes the given player from Death Swap.
 	 *
-     * @param {any} id - The ID of the player to remove from the game.
+     * @param {number} id - The ID of the player to remove from the game.
 	 */
-	removePlayer(id: any): void {
+	removePlayer(id: number): void {
 		delete this.players[id];
 	}
 
 	/**
 	 * `readyPlayer` switches a player's state from LOBBY to READY.
 	 *
-     * @param {any} id - The ID of the player to ready up.
+     * @param {number} id - The ID of the player to ready up.
 	 */
-	readyPlayer(id: any): void {
+	readyPlayer(id: number): void {
 		if (this.players[id].state != PlayerState.LOBBY) {
 			return;
 		}
@@ -119,18 +119,18 @@ export class DeathSwapServer {
 			`/gamerule doWeatherCycle true`,
 			`/gamerule keepInventory false`,
 			`/gamerule mobGriefing true`,
-            `/gamerule naturalRegeneration true`,
-            `/gamerule pvp false`,
+			`/gamerule naturalRegeneration true`,
+			`/gamerule pvp false`,
 			`/gamerule sendCommandFeedback false`,
 			`/gamerule showCoordinates false`,
 			`/gamerule showDeathMessages true`,
 			`/gamerule tntExplodes true`,
-        ];
+		];
 
-        for (let i=0; i<gamerules.length; i++) {
-            const gamerule = gamerules[i];
-            this.system.executeCommand(gamerule, (commandResultData: any) => commandCallback(this.system, commandResultData));
-        }
+		for (let i: number = 0; i < gamerules.length; i++) {
+			const gamerule = gamerules[i];
+			this.system.executeCommand(gamerule, (commandResultData: any) => commandCallback(this.system, commandResultData));
+		}
 	}
 
 	/**
@@ -145,21 +145,23 @@ export class DeathSwapServer {
 	/**
 	 * `onClientEnteredWorld` handles the 'DeathSwap:client_entered_world' event.
 	 *
-     * @param {any} eventData - The event data.
+	 * @param {EventData} eventData - The event data.
 	 */
-	onClientEnteredWorld(eventData: any): void {
-		this.addPlayer(eventData.data.player);
+	onClientEnteredWorld(eventData: EventData): void {
+		const player: Entity = eventData.data.player;
+		this.addPlayer(player);
 	}
 
 	/**
 	 * `onEntityUseItem` handles the 'minecraft:entity_use_item' event.
 	 *
-     * @param {any} eventData - The event data.
+   * @param {EventData} eventData - The event data.
 	 */
-	onEntityUseItem(eventData: any): void {
-		if (eventData.data.use_method === "eat") {
-			if (eventData.data.item_stack.item === "deathswap:blood_chalice_full") {
-				this.readyPlayer(eventData.data.entity.id);
+	onEntityUseItem(eventData: EventData): void {
+		const entityUseItem: EntityUseItem = eventData.data;
+		if (entityUseItem.use_method === "eat") {
+			if (entityUseItem.item_stack.item === DeathSwapItem.BloodChaliceFull) {
+				this.readyPlayer(entityUseItem.entity.id);
 			}
 		}
 	}

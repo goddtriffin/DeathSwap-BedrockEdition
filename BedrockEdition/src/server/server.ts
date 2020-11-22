@@ -1,6 +1,6 @@
-import { Server, System } from '../minecraft-bedrock-edition/index';
+import { EventData, EventIdentifier, Server, System } from '../minecraft-bedrock-edition/index';
 import { debug } from '../settings';
-import { DeathSwapServer } from '../death-swap/index';
+import { DeathSwapEventIdentifier, DeathSwapServer } from '../death-swap/index';
 
 // attach scripting system to the server threads
 declare var server: Server;
@@ -10,19 +10,19 @@ let deathSwapServer: DeathSwapServer;
 
 systemServer.initialize = function(): void {
     if (debug) {
-        const scriptLoggerConfig = this.createEventData("minecraft:script_logger_config");
+        const scriptLoggerConfig = this.createEventData(EventIdentifier.ScriptLoggerConfig);
         scriptLoggerConfig.data.log_errors = true;
         scriptLoggerConfig.data.log_information = true;
         scriptLoggerConfig.data.log_warnings = true;
-        this.broadcastEvent("minecraft:script_logger_config", scriptLoggerConfig);
+        this.broadcastEvent(EventIdentifier.ScriptLoggerConfig, scriptLoggerConfig);
 	}
-	
+
 	// init vars
 	deathSwapServer = new DeathSwapServer(this);
 
     // listen for events
-	this.listenForEvent("DeathSwap:client_entered_world", (eventData: any) => deathSwapServer.onClientEnteredWorld(eventData));
-	this.listenForEvent("minecraft:entity_use_item", (eventData: any) => deathSwapServer.onEntityUseItem(eventData));
+	this.listenForEvent(DeathSwapEventIdentifier.ClientEnteredWorld, (eventData: EventData) => deathSwapServer.onClientEnteredWorld(eventData));
+	this.listenForEvent(EventIdentifier.EntityUseItem, (eventData: EventData) => deathSwapServer.onEntityUseItem(eventData));
 };
 
 systemServer.update = function(): void {};
