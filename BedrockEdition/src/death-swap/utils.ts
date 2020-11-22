@@ -1,7 +1,13 @@
 import { System } from "../minecraft-bedrock-edition/index";
-import { debug } from "./base";
+import { debug } from "../settings";
 
-export function log(system: System, ...items: any[]): void {
+/**
+ * `log` sends a message to the in-game chat.
+ * 
+ * @param {System} system - The Minecraft server/client system to send from.
+ * @param {Array<any>} items - The items to send as a chat message.
+ */
+export function log(system: System, ...items: Array<any>): void {
 	const toString = (item: any) => {
 		switch(Object.prototype.toString.call(item)) {
 			case '[object Undefined]':
@@ -27,8 +33,14 @@ export function log(system: System, ...items: any[]): void {
     system.broadcastEvent("minecraft:display_chat_event", chatEvent);
 }
 
+/**
+ * `commandCallback` sends a message to the in-game chat detailing the results of a command.
+ * 
+ * @param {System} system - The Minecraft server/client system to send from.
+ * @param {any} ieventDatatems - The results from a command.
+ */
 export function commandCallback(system: System, eventData: any): void {
-    if (debug) {
-        log(system, `Callback called! Command: ${eventData.command} Data: ${JSON.stringify(eventData.data, null, "    ")}`);
-    }
+	if (debug) {
+		log(system, `Callback called! Command: ${eventData.command} Data: ${JSON.stringify(eventData.data, null, "    ")}`);
+	}
 }
