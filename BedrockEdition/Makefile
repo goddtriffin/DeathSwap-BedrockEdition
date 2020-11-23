@@ -18,6 +18,18 @@ help: # displays Makefile target info
 			printf "%s\n" $$help_info; \
 	done
 
+.PHONY: install
+install: ## installs dependencies
+	npm install
+
+.PHONY: checkupdates
+checkupdates: ## checks if any dependencies have updates
+	npx ncu
+
+.PHONY: updates
+update: ## update all dependencies to latest
+	npx ncu -u
+
 .PHONY: dev
 dev: ## hot reloads packs on file save
 	npx gulp development
