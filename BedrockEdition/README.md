@@ -19,11 +19,9 @@ Run `make` to see usage.
 
 ### Tools
 
-- [GNU Make](https://www.gnu.org/software/make/)
-  - Makefile is used to automate common developer tasks.
-- [Webpack](https://webpack.js.org/)
-  - Webpack is used to separate my code into distinct modules, and then bundle them all back together into the server.js and client.js scripts.
-- [TypeScript](https://www.typescriptlang.org/)
-  - TypeScript is a superset of JavaScript that ensures every piece of code is strictly typed ensuring safer, less buggy code and generally faster development speeds.
-- [Gulp.js](https://gulpjs.com/)
-  - Gulp.js is used to automate the more involved sub-tasks that need to get done like hot-reloading the Webpack every time a file is saved, generating the production-ready .mcaddon file, etc.
+- [GNU Make](https://www.gnu.org/software/make/) - Automates common developer tasks.
+- [Webpack](https://webpack.js.org/) - Separates my code into distinct modules, and then bundles them all back together into the server.js and client.js scripts.
+- [TypeScript](https://www.typescriptlang.org/) - Superset of JavaScript that ensures every piece of code is strictly typed ensuring safer, less buggy code and generally faster development speeds.
+- [Gulp.js](https://gulpjs.com/) - Automates the more involved sub-tasks that need to get done like hot-reloading the behavior/resource packs every time a file is saved, generating the production-ready .mcaddon file, etc.
+- [ESLint](https://eslint.org/) - Combined with the [Typescript Plugin](https://github.com/typescript-eslint/typescript-eslint), analyzes the code to find problems.
+- [Prettier](https://prettier.io/) - Auto-formats the code to look identical no matter who writes it and from where.

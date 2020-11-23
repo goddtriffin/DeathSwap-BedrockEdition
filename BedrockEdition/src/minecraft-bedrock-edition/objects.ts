@@ -9,7 +9,7 @@ import { EventIdentifiers } from "./event-identifiers";
  *
  * @type {ArmorContainer}
  */
-export type ArmorContainer = Array<any>;
+export type ArmorContainer = Array<unknown>;
 
 /**
  * `Attack` controls the Attack Damage attribute from the entity.
@@ -22,7 +22,7 @@ export type ArmorContainer = Array<any>;
  * @property {Range} damage - Range of the random amount of damage the melee attack deals. A negative value can heal the entity instead of hurting it
  */
 export interface Attack {
-    damage: Range
+  damage: Range;
 }
 
 /**
@@ -35,10 +35,10 @@ export interface Attack {
  * @property {TickingArea} ticking_area - This is the ticking area object that was used to get this block.
  */
 export interface Block {
-    readonly __identifier__: string;
-    readonly __type__: "block";
-    readonly block_position: Position;
-    readonly ticking_area: TickingArea;
+  readonly __identifier__: string;
+  readonly __type__: "block";
+  readonly block_position: Position;
+  readonly ticking_area: TickingArea;
 }
 
 /**
@@ -49,8 +49,8 @@ export interface Block {
  * @property {Entity} player - The player that started destoying the block.
  */
 export interface BlockDestructionStarted {
-    block_position: Position;
-    player: Entity;
+  block_position: Position;
+  player: Entity;
 }
 
 /**
@@ -62,9 +62,9 @@ export interface BlockDestructionStarted {
  * @property {Entity} player - The player that stopped destoying the block.
  */
 export interface BlockDestructionStopped {
-    block_position: Position;
-    destruction_progress: number;
-    player: Entity;
+  block_position: Position;
+  destruction_progress: number;
+  player: Entity;
 }
 
 /**
@@ -77,10 +77,10 @@ export interface BlockDestructionStopped {
  * @property {Entity} entity - The entity that exploded.
  */
 export interface BlockExploded {
-    block_identifier: string;
-    block_position: Position;
-    cause: string;
-    entity: Entity;
+  block_identifier: string;
+  block_position: Position;
+  cause: string;
+  entity: Entity;
 }
 
 /**
@@ -91,8 +91,8 @@ export interface BlockExploded {
  * @property {Entity} player - The player that interacted with the block.
  */
 export interface BlockInteractedWith {
-    block_position: Position;
-    player: Entity;
+  block_position: Position;
+  player: Entity;
 }
 
 /**
@@ -108,9 +108,9 @@ export interface BlockInteractedWith {
  * @property {string} portal_axis - Determines the orientation of portal blocks.
  */
 export interface BlockState {
-    age_bit?: boolean;
-    age?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 12 | 13 | 14 | 14 | 15;
-    portal_axis?: "unkown" | "x" | "z";
+  age_bit?: boolean;
+  age?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 12 | 13 | 14 | 14 | 15;
+  portal_axis?: "unkown" | "x" | "z";
 }
 
 /**
@@ -124,8 +124,20 @@ export interface BlockState {
  * @property {number} width - Width and Depth of the collision box in blocks. A negative value will be assumed to be 0. Double. Default is 1.0.
  */
 export interface CollisionBox {
-    height: number;
-    width: number;
+  height: number;
+  width: number;
+}
+
+/**
+ * `CommandResult` event data.
+ *
+ * @type {CommandResult}
+ * @property {string} command - The command that was ran.
+ * @property {unknown} data - This is the content of the component.
+ */
+export interface CommandResult {
+  command: string;
+  data: unknown;
 }
 
 /**
@@ -133,11 +145,11 @@ export interface CollisionBox {
  *
  * @type {Component}
  * @property {string} __type__ - This defines the type of object. Will be: "component".
- * @property {object} data - This is the content of the component.
+ * @property {unknown} data - This is the content of the component.
  */
 export interface Component {
-    readonly __type__: "component";
-    data: any;
+  readonly __type__: "component";
+  data: unknown;
 }
 
 /**
@@ -151,7 +163,7 @@ export interface Component {
  *
  * @type {Container}
  */
-export type Container = Array<any>;
+export type Container = Array<unknown>;
 
 /**
  * `DamageSensor` defines what events to call when this entity is damaged by specific entities or items.
@@ -164,11 +176,11 @@ export type Container = Array<any>;
  * @property {string} on_damage_sound_event - Defines what sound to play, if any, when the on_damage filters are met.
  */
 export type DamageSensor = Array<{
-    cause: string;
-    damage_multiplier: number;
-    deals_damage: boolean;
-    on_damage: string;
-    on_damage_sound_event: string;
+  cause: string;
+  damage_multiplier: number;
+  deals_damage: boolean;
+  on_damage: string;
+  on_damage_sound_event: string;
 }>;
 
 /**
@@ -178,7 +190,7 @@ export type DamageSensor = Array<{
  * @property {string} message - The chat message that will be displayed.
  */
 export interface DisplayChatEvent {
-    message: string;
+  message: string;
 }
 
 /**
@@ -191,10 +203,10 @@ export interface DisplayChatEvent {
  * @property {number} id - This is the unique identifier of the entity. Positive integer.
  */
 export interface Entity {
-    readonly __identifier__: string;
-    readonly __type__: "entity" | "item_entity";
-    readonly __unique_id__: UniqueID;
-    readonly id: number;
+  readonly __identifier__: string;
+  readonly __type__: "entity" | "item_entity";
+  readonly __unique_id__: UniqueID;
+  readonly id: number;
 }
 
 /**
@@ -208,11 +220,11 @@ export interface Entity {
  * @property {Entity} secondary_entity - If it exists, the entity that affected the item before it was acquired. Example: A player completes a trade with a villager. The `entity` property would be the player and the `secondary_entity` would be the villager.
  */
 export interface EntityAcquiredItem {
-    acquired_amount: number;
-    acquisition_method: string;
-    entity: Entity;
-    item_stack: ItemStack;
-    secondary_entity: Entity;
+  acquired_amount: number;
+  acquisition_method: string;
+  entity: Entity;
+  item_stack: ItemStack;
+  secondary_entity: Entity;
 }
 
 /**
@@ -223,8 +235,8 @@ export interface EntityAcquiredItem {
  * @property {Entity} target - The entity that was targeted in the attack.
  */
 export interface EntityAttack {
-    entity: Entity;
-    target: Entity;
+  entity: Entity;
+  target: Entity;
 }
 
 /**
@@ -237,10 +249,10 @@ export interface EntityAttack {
  * @property {ItemStack} previous_carried_item - The item that was previously in the entities hands.
  */
 export interface EntityCarriedItemChanged {
-    carried_item: ItemStack;
-    entity: Entity;
-    hand: "main" | "offhand";
-    previous_carried_item: ItemStack;
+  carried_item: ItemStack;
+  entity: Entity;
+  hand: "main" | "offhand";
+  previous_carried_item: ItemStack;
 }
 
 /**
@@ -250,7 +262,7 @@ export interface EntityCarriedItemChanged {
  * @property {Entity} entity - The entity that was just created.
  */
 export interface EntityCreated {
-    entity: Entity;
+  entity: Entity;
 }
 
 /**
@@ -261,8 +273,8 @@ export interface EntityCreated {
  * @property {string} event - The event that was triggered.
  */
 export interface EntityCreated {
-    entity: Entity;
-    event: string;
+  entity: Entity;
+  event: string;
 }
 
 /**
@@ -276,11 +288,11 @@ export interface EntityCreated {
  * @property {string} projectile_type - The type of the projectile that killed the entity.
  */
 export interface EntityDeath {
-    block_position: Position;
-    cause: string;
-    entity: Entity;
-    killer: Entity;
-    projectile_type: string;
+  block_position: Position;
+  cause: string;
+  entity: Entity;
+  killer: Entity;
+  projectile_type: string;
 }
 
 /**
@@ -291,8 +303,8 @@ export interface EntityDeath {
  * @property {ItemStack} item_stack - The item that was dropped.
  */
 export interface EntityDroppedItem {
-    entity: Entity;
-    item_stack: ItemStack;
+  entity: Entity;
+  item_stack: ItemStack;
 }
 
 /**
@@ -304,9 +316,9 @@ export interface EntityDroppedItem {
  * @property {string} slot - Defines which slot the item was equipped to.
  */
 export interface EntityEquippedArmor {
-    entity: Entity;
-    item_stack: ItemStack;
-    slot: string;
+  entity: Entity;
+  item_stack: ItemStack;
+  slot: string;
 }
 
 /**
@@ -322,13 +334,13 @@ export interface EntityEquippedArmor {
  * @property {string} projectile_type - Present only when damaged by a projectile. This is the identifier of the projectile that hit the entity.
  */
 export interface EntityHurt {
-    absorbed_damage: number;
-    attacker: Entity;
-    block_position: Vector;
-    cause: string;
-    damage: number;
-    entity: Entity;
-    projectile_type: string;
+  absorbed_damage: number;
+  attacker: Entity;
+  block_position: Vector;
+  cause: string;
+  damage: number;
+  entity: Entity;
+  projectile_type: string;
 }
 
 /**
@@ -338,7 +350,7 @@ export interface EntityHurt {
  * @property {Entity} entity - The entity that moved.
  */
 export interface EntityMove {
-    entity: Entity;
+  entity: Entity;
 }
 
 /**
@@ -349,8 +361,8 @@ export interface EntityMove {
  * @property {boolean} sneaking - If true, the entity just started sneaking. If false, the entity just stopped sneaking.
  */
 export interface EntitySneak {
-    entity: Entity;
-    sneaking: boolean;
+  entity: Entity;
+  sneaking: boolean;
 }
 
 /**
@@ -361,8 +373,8 @@ export interface EntitySneak {
  * @property {Entity} ride - The entity being ridden.
  */
 export interface EntityStartRiding {
-    entity: Entity;
-    ride: Entity;
+  entity: Entity;
+  ride: Entity;
 }
 
 /**
@@ -375,10 +387,10 @@ export interface EntityStartRiding {
  * @property {boolean} switching_rides - If true, the rider stopped riding because they are now riding a different entity.
  */
 export interface EntityStopRiding {
-    entity: Entity;
-    entity_is_being_destroyed: boolean;
-    exit_from_rider: boolean;
-    switching_rides: boolean;
+  entity: Entity;
+  entity_is_being_destroyed: boolean;
+  exit_from_rider: boolean;
+  switching_rides: boolean;
 }
 
 /**
@@ -388,7 +400,7 @@ export interface EntityStopRiding {
  * @property {Entity} entity - The entity that was ticked.
  */
 export interface EntityTick {
-    entity: Entity;
+  entity: Entity;
 }
 
 /**
@@ -399,8 +411,8 @@ export interface EntityTick {
  * @property {number} entity_ticking_area_id - This is the unique identifier of the ticking area. Positive integer.
  */
 export interface EntityTickingArea {
-    readonly __type__: "entity_ticking_area";
-    readonly entity_ticking_area_id: number;
+  readonly __type__: "entity_ticking_area";
+  readonly entity_ticking_area_id: number;
 }
 
 /**
@@ -412,9 +424,9 @@ export interface EntityTickingArea {
  * @property {string} use_method - The way the entity used the item.
  */
 export interface EntityUseItem {
-    entity: Entity;
-    item_stack: ItemStack;
-    use_method: string;
+  entity: Entity;
+  item_stack: ItemStack;
+  use_method: string;
 }
 
 /**
@@ -422,12 +434,12 @@ export interface EntityUseItem {
  * Once the changes are applied, the equipment is re-rolled and a new set of equipment is chosen for the entity.
  *
  * @type {Equipment}
- * @property {Array<any>} slot_drop_chance - A list of slots with the chance to drop an equipped item from that slot.
+ * @property {Array<unknown>} slot_drop_chance - A list of slots with the chance to drop an equipped item from that slot.
  * @property {string} table - The file path to the equipment table, relative to the behavior pack's root.
  */
 export interface Equipment {
-    slot_drop_chance: Array<any>;
-    table: string;
+  slot_drop_chance: Array<unknown>;
+  table: string;
 }
 
 /**
@@ -437,7 +449,7 @@ export interface Equipment {
  * @property {Array<Slot>} slots - List of slots and the item that can be equipped.
  */
 export interface Equippable {
-    slots: Array<Slot>;
+  slots: Array<Slot>;
 }
 
 /**
@@ -446,12 +458,12 @@ export interface Equippable {
  * @type {EventData}
  * @property {string} __type__ - "event_data"
  * @property {EventIdentifier} __identifier__ - the event identifier
- * @property {any} data - the data returned from the event
+ * @property {unknown} data - the data returned from the event
  */
 export interface EventData {
-    __type__: "event_data";
-    __identifier__: EventIdentifiers;
-    data: any;
+  __type__: "event_data";
+  __identifier__: EventIdentifiers;
+  data: unknown;
 }
 
 /**
@@ -461,7 +473,7 @@ export interface EventData {
  * @property {string} command - The command that will be run.
  */
 export interface Explode {
-    command: string;
+  command: string;
 }
 
 /**
@@ -478,14 +490,14 @@ export interface Explode {
  * @property {number} power - The radius of the explosion in blocks and the amount of damage the explosion deals. Double.
  */
 export interface Explode {
-    breaks_blocks: boolean;
-    causes_fire: boolean;
-    destroy_affected_by_griefing: boolean;
-    fire_affected_by_griefing: boolean;
-    fuse_length: Range;
-    fuse_lit: boolean;
-    max_resistance: number;
-    power: number;
+  breaks_blocks: boolean;
+  causes_fire: boolean;
+  destroy_affected_by_griefing: boolean;
+  fire_affected_by_griefing: boolean;
+  fuse_length: Range;
+  fuse_lit: boolean;
+  max_resistance: number;
+  power: number;
 }
 
 /**
@@ -499,22 +511,22 @@ export interface Explode {
  * @property {Slot} 1 - Slot 1 is off-hand.
  */
 export interface HandContainer {
-    readonly 0: Slot;
-    readonly 1: Slot;
+  readonly 0: Slot;
+  readonly 1: Slot;
 }
 
 /**
  * `Healable` defines the interactions with this entity for healing it.
  *
  * @type {Healable}
- * @property {any} filters - The filter group that defines the conditions for using this item to heal the entity.
+ * @property {unknown} filters - The filter group that defines the conditions for using this item to heal the entity.
  * @property {boolean} force_use - Determines if item can be used regardless of entity being at full health.
  * @property {Array<Item>} items - The array of items that can be used to heal this entity.
  */
 export interface Healable {
-    filters: any;
-    force_use: boolean;
-    items: Array<ItemStack>;
+  filters: unknown;
+  force_use: boolean;
+  items: Array<ItemStack>;
 }
 
 /**
@@ -527,8 +539,8 @@ export interface Healable {
  * @property {number} max - The maximum health the entity can heal.
  */
 export interface Health {
-    value: number;
-    max: number;
+  value: number;
+  max: number;
 }
 
 /**
@@ -539,8 +551,8 @@ export interface Health {
  * @property {Vector} position - The position of the entity that was hit or null if it fired when moving off an entity.
  */
 export interface HitResultChanged {
-    entity: Entity;
-    position: Vector;
+  entity: Entity;
+  position: Vector;
 }
 
 /**
@@ -551,8 +563,8 @@ export interface HitResultChanged {
  * @property {Vector} position - The position of the entity that was hit or block that was hit.
  */
 export interface HitResultContinuous {
-    entity: Entity;
-    position: Vector;
+  entity: Entity;
+  position: Vector;
 }
 
 /**
@@ -574,15 +586,15 @@ export interface HitResultContinuous {
  * @property {Slot} 8 - Slot 8.
  */
 export interface HotbarContainer {
-    readonly 0: ItemStack;
-    readonly 1: ItemStack;
-    readonly 2: ItemStack;
-    readonly 3: ItemStack;
-    readonly 4: ItemStack;
-    readonly 5: ItemStack;
-    readonly 6: ItemStack;
-    readonly 7: ItemStack;
-    readonly 8: ItemStack;
+  readonly 0: ItemStack;
+  readonly 1: ItemStack;
+  readonly 2: ItemStack;
+  readonly 3: ItemStack;
+  readonly 4: ItemStack;
+  readonly 5: ItemStack;
+  readonly 6: ItemStack;
+  readonly 7: ItemStack;
+  readonly 8: ItemStack;
 }
 
 /**
@@ -603,27 +615,27 @@ export interface HotbarContainer {
  * @property {boolean} use_item - If true, the interaction will use an item. Default: false.
  */
 export interface Interact {
-    add_items: LootTable;
-    cooldown: number;
-    hurt_item: number;
-    interact_text: string;
-    on_interact: string;
-    particle_on_start: {
-        /**
-         * @property {boolean} particle_offset_towards_interactor - Whether or not the particle will appear closer to who performed the interaction. Default: false.
-         * @property {string} particle_type - The type of particle that will be spawned
-         * @property {number} particle_y_offset - Will offset the particle this amount in the y direction. Double. Default: 0.0.
-         */
-        particle_offset_towards_interactor: boolean;
-        particle_type: string;
-        particle_y_offset: number;
-    };
-    play_sounds: Array<string>;
-    spawn_entities: Array<string>;
-    spawn_items: LootTable;
-    swing: boolean;
-    transform_to_item: string;
-    use_item: boolean;
+  add_items: LootTable;
+  cooldown: number;
+  hurt_item: number;
+  interact_text: string;
+  on_interact: string;
+  particle_on_start: {
+    /**
+     * @property {boolean} particle_offset_towards_interactor - Whether or not the particle will appear closer to who performed the interaction. Default: false.
+     * @property {string} particle_type - The type of particle that will be spawned
+     * @property {number} particle_y_offset - Will offset the particle this amount in the y direction. Double. Default: 0.0.
+     */
+    particle_offset_towards_interactor: boolean;
+    particle_type: string;
+    particle_y_offset: number;
+  };
+  play_sounds: Array<string>;
+  spawn_entities: Array<string>;
+  spawn_items: LootTable;
+  swing: boolean;
+  transform_to_item: string;
+  use_item: boolean;
 }
 
 /**
@@ -639,12 +651,18 @@ export interface Interact {
  * @property {boolean} restrict_to_owner - If true, the entity's inventory can only be accessed by its owner or itself. Default: false.
  */
 export interface Inventory {
-    additional_slots_per_strength: number;
-    can_be_siphoned_from: boolean;
-    container_type: "horse" | "minecart_chest" | "minecart_hopper" | "inventory" | "container" | "hopper";
-    inventory_size: number;
-    private: boolean;
-    restrict_to_owner: boolean;
+  additional_slots_per_strength: number;
+  can_be_siphoned_from: boolean;
+  container_type:
+    | "horse"
+    | "minecart_chest"
+    | "minecart_hopper"
+    | "inventory"
+    | "container"
+    | "hopper";
+  inventory_size: number;
+  private: boolean;
+  restrict_to_owner: boolean;
 }
 
 /**
@@ -669,11 +687,11 @@ export type InventoryContainer = Array<ItemStack>;
  * @property {number} heal_amount - The amount of health this entity gains when fed this item. Integer.
  */
 export interface ItemStack {
-    readonly __identifier__: string;
-    readonly __type__: "item_stack";
-    readonly count: string;
-    readonly item: string;
-    heal_amount?: number;
+  readonly __identifier__: string;
+  readonly __type__: "item_stack";
+  readonly count: string;
+  readonly item: string;
+  heal_amount?: number;
 }
 
 /**
@@ -684,8 +702,8 @@ export interface ItemStack {
  * @property {number} level_id - This is the unique identifier of the level. Positive integer.
  */
 export interface Level {
-    readonly __type__: "level";
-    readonly level_id: number;
+  readonly __type__: "level";
+  readonly level_id: number;
 }
 
 /**
@@ -696,8 +714,8 @@ export interface Level {
  * @property {string} level_ticking_area_id - This is the unique identifier of the ticking area.
  */
 export interface LevelTickingArea {
-    readonly __type__: "level_ticking_area";
-    readonly level_ticking_area_id: string;
+  readonly __type__: "level_ticking_area";
+  readonly level_ticking_area_id: string;
 }
 
 /**
@@ -708,8 +726,8 @@ export interface LevelTickingArea {
  * @property {string} path - The file path to the screen's HTML file.
  */
 export interface LoadUI {
-    options: LoadUIOptions;
-    path: string;
+  options: LoadUIOptions;
+  path: string;
 }
 
 /**
@@ -725,13 +743,13 @@ export interface LoadUI {
  * @property {boolean} should_steal_mouse - If true, the screen will capture the mouse pointer and limit its movement to the UI screen.
  */
 export interface LoadUIOptions {
-    absorbs_input: boolean;
-    always_accepts_input: boolean;
-    force_render_below: boolean;
-    is_showing_menu: boolean;
-    render_game_behind: boolean;
-    render_only_when_topmost: boolean;
-    should_steal_mouse: boolean;
+  absorbs_input: boolean;
+  always_accepts_input: boolean;
+  force_render_below: boolean;
+  is_showing_menu: boolean;
+  render_game_behind: boolean;
+  render_only_when_topmost: boolean;
+  should_steal_mouse: boolean;
 }
 
 /**
@@ -739,19 +757,19 @@ export interface LoadUIOptions {
  *
  * @type {LookAt}
  * @property {boolean} allow_invulnerable - If true, invulnerable entities (e.g. Players in creative mode) are considered valid targets. Default: false.
- * @property {any} filters - Defines the entities that can trigger this component.
+ * @property {unknown} filters - Defines the entities that can trigger this component.
  * @property {Range} look_cooldown - The range for the random amount of time during which the entity is 'cooling down' and won't get angered or look for a target. Default: [0, 0].
  * @property {string} look_event - The event identifier to run when the entities specified in filters look at this entity.
  * @property {number} search_radius - Maximum distance this entity will look for another entity looking at it. Double. Default: 10.
  * @property {boolean} set_target - If true, this entity will set the attack target as the entity that looked at it. Default: true.
  */
 export interface LookAt {
-    allow_invulnerable: boolean;
-    filters: any;
-    look_cooldown: Range;
-    look_event: string;
-    search_radius: number;
-    set_target: boolean;
+  allow_invulnerable: boolean;
+  filters: unknown;
+  look_cooldown: Range;
+  look_event: string;
+  search_radius: number;
+  set_target: boolean;
 }
 
 /**
@@ -761,7 +779,7 @@ export interface LookAt {
  * @property {string} table - File path, relative to the behavior pack's path, to the loot table file.
  */
 export interface LootTable {
-    table: string;
+  table: string;
 }
 
 /**
@@ -769,7 +787,7 @@ export interface LootTable {
  *
  * @type {MoLang}
  */
-export type MoLang = any;
+export type MoLang = unknown;
 
 /**
  * `Nameable` describes an entity's ability to be named using a nametag and whether the name shows up or not once applied.
@@ -783,14 +801,14 @@ export type MoLang = any;
  * @property {boolean} name_actions - Describes the special names for this entity and the events to call when the entity acquires those names.
  */
 export interface Nameable {
-    allow_name_tag_renaming: boolean;
-    always_show: boolean;
-    default_trigger: boolean;
-    name: string;
-    name_actions: {
-        name_filter: any;
-        on_named: string;
-    };
+  allow_name_tag_renaming: boolean;
+  always_show: boolean;
+  default_trigger: boolean;
+  name: string;
+  name_actions: {
+    name_filter: unknown;
+    on_named: string;
+  };
 }
 
 /**
@@ -801,8 +819,8 @@ export interface Nameable {
  * @property {Vector} position - The position of the entity that was hit or null if it fired when moving off an entity.
  */
 export interface HitResultChanged {
-    entity: Entity;
-    position: Vector;
+  entity: Entity;
+  position: Vector;
 }
 
 /**
@@ -813,8 +831,8 @@ export interface HitResultChanged {
  * @property {Vector} position - The position of the entity that was hit or block that was hit.
  */
 export interface HitResultContinuous {
-    entity: Entity;
-    position: Vector;
+  entity: Entity;
+  position: Vector;
 }
 
 /**
@@ -825,8 +843,8 @@ export interface HitResultContinuous {
  * @property {Entity} player - The player that attacked an entity.
  */
 export interface PlayerAttackedEntity {
-    attacked_entity: Entity;
-    player: Entity;
+  attacked_entity: Entity;
+  player: Entity;
 }
 
 /**
@@ -838,9 +856,9 @@ export interface PlayerAttackedEntity {
  * @property {Entity} player - The player that destroyed the block.
  */
 export interface PlayerDestroyedBlock {
-    block_identifier: string;
-    block_position: Position;
-    player: Entity;
+  block_identifier: string;
+  block_position: Position;
+  player: Entity;
 }
 
 /**
@@ -851,8 +869,8 @@ export interface PlayerDestroyedBlock {
  * @property {Entity} player - The player that placed the block.
  */
 export interface PlayerPlacedBlock {
-    block_position: Position;
-    player: Entity;
+  block_position: Position;
+  player: Entity;
 }
 
 /**
@@ -865,10 +883,10 @@ export interface PlayerPlacedBlock {
  * @property {number} volume - The volume of the sound effect. A value of 1.0 will play the sound effect at the volume it was recorded at. Decimal. Default: 1.0.
  */
 export interface PlaySound {
-    pitch: number;
-    position: Vector;
-    sound: string;
-    volume: number;
+  pitch: number;
+  position: Vector;
+  sound: string;
+  volume: number;
 }
 
 /**
@@ -880,9 +898,9 @@ export interface PlaySound {
  * @property {Position} piston_position - The position of the piston that moved the block.
  */
 export interface PistonMovedBlock {
-    block_position: Position;
-    piston_action: "extended" | "retracted";
-    piston_position: Position;
+  block_position: Position;
+  piston_action: "extended" | "retracted";
+  piston_position: Position;
 }
 
 /**
@@ -894,9 +912,9 @@ export interface PistonMovedBlock {
  * @property {number} z - Position along the Z-Axis (north-south) of the entity. Decimal.
  */
 export interface Position {
-    x: number;
-    y: number;
-    z: number;
+  x: number;
+  y: number;
+  z: number;
 }
 
 /**
@@ -909,10 +927,10 @@ export interface Position {
  * @property {Entity} projectile - The projectile in question.
  */
 export interface ProjectileHit {
-    entity: Entity;
-    owner: Entity;
-    position: Vector;
-    projectile: Entity;
+  entity: Entity;
+  owner: Entity;
+  position: Vector;
+  projectile: Entity;
 }
 
 /**
@@ -923,8 +941,8 @@ export interface ProjectileHit {
  * @property {number} query_id - This is the unique identifier of the query. Positive integer.
  */
 export interface Query {
-    readonly __type__: "query";
-    readonly query_id: number;
+  readonly __type__: "query";
+  readonly query_id: number;
 }
 
 /**
@@ -935,8 +953,8 @@ export interface Query {
  * @property {number} 1 - The maximum. Double.
  */
 export interface Range {
-    0: number;
-    1: number;
+  0: number;
+  1: number;
 }
 
 /**
@@ -948,8 +966,8 @@ export interface Range {
  * @property {number} y - Controls the body rotation parallel to the floor. Decimal.
  */
 export interface Rotation {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
 /**
@@ -961,9 +979,9 @@ export interface Rotation {
  * @property {boolean} log_warnings - Set to true to log any scripting warnings that occur on the client. Default: false.
  */
 export interface ScriptLoggerConfig {
-    log_errors: boolean;
-    log_information: boolean;
-    log_warnings: boolean;
+  log_errors: boolean;
+  log_information: boolean;
+  log_warnings: boolean;
 }
 
 /**
@@ -974,8 +992,8 @@ export interface ScriptLoggerConfig {
  * @property {string} eventIdentifier - The identifier of the UI event.
  */
 export interface SendUIEvent {
-    data: string;
-    eventIdentifier: string;
+  data: string;
+  eventIdentifier: string;
 }
 
 /**
@@ -986,15 +1004,15 @@ export interface SendUIEvent {
  * @property {string} def - Entity identifier to use as projectile for the ranged attack. The entity must have the projectile component to be able to be shot as a projectile.
  */
 export interface Shooter {
-    auxVal: number;
-    def: string;
+  auxVal: number;
+  def: string;
 }
 
 /**
  * `Slot` is an item slot.
  *
  * @type {Slot}
- * @property {Array<any>} accepted_items - The list of items that can go in this slot.
+ * @property {Array<unknown>} accepted_items - The list of items that can go in this slot.
  * @property {string} interact_text - Text to be displayed when the entity can be equipped with this item when playing with Touch-screen controls.
  * @property {string} item - Identifier of the item that can be equipped for this slot.
  * @property {string} on_equip - Event to trigger when this entity is equipped with this item.
@@ -1002,19 +1020,19 @@ export interface Shooter {
  * @property {number} slot - The slot number of this slot. Integer.
  */
 export interface Slot {
-    accepted_items: Array<any>;
-    interact_text: string;
-    item: string;
-    on_equip: string;
-    on_unequip: string;
-    slot: number;
+  accepted_items: Array<unknown>;
+  interact_text: string;
+  item: string;
+  on_equip: string;
+  on_unequip: string;
+  slot: number;
 }
 
 /**
  * `SpawnEntity` adds a timer after which this entity will spawn another entity or item (similar to vanilla's chicken's egg-laying behavior).
  *
  * @type {SpawnEntity}
- * @property {any} filters - If present, the specified entity will only spawn if the filter evaluates to true.
+ * @property {unknown} filters - If present, the specified entity will only spawn if the filter evaluates to true.
  * @property {number} max_wait_time - Maximum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 600.
  * @property {number} min_wait_time - Minimum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 300.
  * @property {number} num_to_spawn - The number of entities of this type to spawn each time that this triggers. Integer. Default: 1.
@@ -1027,17 +1045,17 @@ export interface Slot {
  * @property {string} spawn_sound - Identifier of the sound effect to play when the entity is spawned. Default: plop.
  */
 export interface SpawnEntity {
-    filters: any;
-    max_wait_time: number;
-    min_wait_time: number;
-    num_to_spawn: number;
-    should_leash: boolean;
-    single_use: boolean;
-    spawn_entity: string;
-    spawn_event: string;
-    spawn_item: string;
-    spawn_method: string;
-    spawn_sound: string;
+  filters: unknown;
+  max_wait_time: number;
+  min_wait_time: number;
+  num_to_spawn: number;
+  should_leash: boolean;
+  single_use: boolean;
+  spawn_entity: string;
+  spawn_event: string;
+  spawn_item: string;
+  spawn_method: string;
+  spawn_sound: string;
 }
 
 /**
@@ -1049,9 +1067,9 @@ export interface SpawnEntity {
  * @property {Vector} offset - The offset from the entity's "center" where you want to spawn the effect. Default: [0, 0, 0].
  */
 export interface SpawnParticleAttachedEntity {
-    effect: string;
-    entity: Entity;
-    offset: Vector;
+  effect: string;
+  entity: Entity;
+  offset: Vector;
 }
 
 /**
@@ -1062,8 +1080,8 @@ export interface SpawnParticleAttachedEntity {
  * @property {Vector} position - The position in the world where you want to spawn the effect. Default: [0, 0, 0].
  */
 export interface SpawnParticleInWorld {
-    effect: string;
-    position: Vector;
+  effect: string;
+  position: Vector;
 }
 
 /**
@@ -1080,14 +1098,14 @@ export interface SpawnParticleInWorld {
  * @property {number} target_teleport_chance - The chance that the entity will teleport between 0.0 and 1.0. 1.0 means 100%. Decimal. Default: 1.
  */
 export interface Teleport {
-    dark_teleport_chance: number;
-    light_teleport_chance: number;
-    max_random_teleport_time: number;
-    min_random_teleport_time: number;
-    random_teleport_cube: Vector;
-    random_teleports: boolean;
-    target_distance: number;
-    target_teleport_chance: number;
+  dark_teleport_chance: number;
+  light_teleport_chance: number;
+  max_random_teleport_time: number;
+  min_random_teleport_time: number;
+  random_teleport_cube: Vector;
+  random_teleports: boolean;
+  target_distance: number;
+  target_teleport_chance: number;
 }
 
 /**
@@ -1095,9 +1113,7 @@ export interface Teleport {
  * There are two types of ticking area objects: Entity and Level.
  * When a function calls for a ticking area it can take either type as an argument.
  */
-export type TickingArea =
-    | LevelTickingArea
-    | EntityTickingArea;
+export type TickingArea = LevelTickingArea | EntityTickingArea;
 
 /**
  * TickingAreas
@@ -1117,11 +1133,11 @@ export type TickingAreas = Array<TickingArea>;
  * @property {Vector} radius - (if area is a circle) The radius of the area.
  */
 export interface TickingAreaDescription {
-    is_circle: boolean;
-    max: Vector;
-    name: string;
-    origin: Vector;
-    radius: Vector;
+  is_circle: boolean;
+  max: Vector;
+  name: string;
+  origin: Vector;
+  radius: Vector;
 }
 
 /**
@@ -1134,10 +1150,10 @@ export interface TickingAreaDescription {
  * @property {TickingArea} ticking_area - The ticking area entity that is attached to this entity.
  */
 export interface TickWorld {
-    distance_to_players: number;
-    never_despawn: boolean;
-    radius: number;
-    ticking_area: TickingArea;
+  distance_to_players: number;
+  never_despawn: boolean;
+  radius: number;
+  ticking_area: TickingArea;
 }
 
 /**
@@ -1152,12 +1168,12 @@ export interface TickWorld {
  * @property {string} transformation_sound - Sound to play when the entity is done transforming.
  */
 export interface Transformation {
-    add: TransformationComponents;
-    begin_transform_sound: string;
-    delay: TransformationDelay;
-    drop_equipment: boolean;
-    into: string;
-    transformation_sound: string;
+  add: TransformationComponents;
+  begin_transform_sound: string;
+  delay: TransformationDelay;
+  drop_equipment: boolean;
+  into: string;
+  transformation_sound: string;
 }
 
 /**
@@ -1167,7 +1183,7 @@ export interface Transformation {
  * @property {Array<string>} component_groups - Names of component groups to add.
  */
 export interface TransformationComponents {
-    component_groups: Array<string>;
+  component_groups: Array<string>;
 }
 
 /**
@@ -1183,13 +1199,13 @@ export interface TransformationComponents {
  * @property {number} value - Time in seconds before the entity transforms. Decimal. Default: 0.0.
  */
 export interface TransformationDelay {
-    block_assist_chance: number;
-    block_chance: number;
-    block_max: number;
-    block_radius: number;
-    block_types: Array<string>;
-    keep_owner: boolean;
-    value: number;
+  block_assist_chance: number;
+  block_chance: number;
+  block_max: number;
+  block_radius: number;
+  block_types: Array<string>;
+  keep_owner: boolean;
+  value: number;
 }
 
 /**
@@ -1200,8 +1216,8 @@ export interface TransformationDelay {
  * @property {number} 64bit_low
  */
 export interface UniqueID {
-    "64bit_high": number;
-    "64bit_low": number;
+  "64bit_high": number;
+  "64bit_low": number;
 }
 
 /**
@@ -1209,7 +1225,7 @@ export interface UniqueID {
  *
  * @type {UnloadUI}
  */
-export type UnloadUI = any;
+export type UnloadUI = unknown;
 
 /**
  * `Vector`
@@ -1220,9 +1236,9 @@ export type UnloadUI = any;
  * @property {number} c
  */
 export interface Vector {
-    a: number;
-    b: number;
-    c: number;
+  a: number;
+  b: number;
+  c: number;
 }
 
 /**
@@ -1237,11 +1253,11 @@ export interface Vector {
  * @property {number} rain_time - How long, in ticks, it will rain for.
  */
 export interface Weather {
-    do_weather_cycle: boolean;
-    lightning_level: number;
-    lightning_time: number;
-    rain_level: number;
-    rain_time: number;
+  do_weather_cycle: boolean;
+  lightning_level: number;
+  lightning_time: number;
+  rain_level: number;
+  rain_time: number;
 }
 
 /**
@@ -1253,7 +1269,7 @@ export interface Weather {
  * @property {boolean} raining - Tells if the new weather has rain.
  */
 export interface WeatherChanged {
-    dimension: string;
-    lightning: boolean;
-    raining: boolean;
+  dimension: string;
+  lightning: boolean;
+  raining: boolean;
 }
