@@ -7,15 +7,15 @@ export interface Engine {
    * @param {string} eventIdentifier - Specifies the event that function will react to.
    * @param {{(eventData: object): void;}} callback - The callback that will be called when the event happens.
    */
-  on(eventIdentifier: string, callback: { (eventData: any): void }): void;
+  on(eventIdentifier: string, callback: { (eventData: unknown): void }): void;
 
   /**
    * `trigger` is used to send events to the UI Engine.
    *
    * @param {string} eventIdentifier - Specifies the event that function will react to.
-   * @param {any} args - The arguments passed to the callback.
+   * @param {unknown} args - The arguments passed to the callback.
    */
-  trigger(eventIdentifier: string, args: any): void;
+  trigger(eventIdentifier: string, args: unknown): void;
 
   /**
    * `triggerEvent` triggers the minecraft:ui_event on client scripts with the provided data.

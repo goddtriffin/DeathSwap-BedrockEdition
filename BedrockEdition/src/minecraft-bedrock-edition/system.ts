@@ -186,12 +186,12 @@ export interface System {
    * These custom components only exist while the Script Engine is running.
    *
    * @param {ComponentIdentifier} componentIdentifier - The identifier of the custom component. It is required to use a namespace so you can uniquely refer to it later without overlapping a name with a built-in component: for example 'myPack:myCustomComponent'.
-   * @param {object} componentData - A JavaScript Object that defines the name of the fields and the data each field holds inside the component.
+   * @param {unknown} componentData - A JavaScript Object that defines the name of the fields and the data each field holds inside the component.
    * @return {boolean} - The component was successfully registered.
    */
   registerComponent(
     componentIdentifier: ComponentIdentifier,
-    componentData: any
+    componentData: unknown
   ): boolean;
 
   /**
@@ -338,19 +338,19 @@ export interface System {
    * Anything that signed up to listen for the event will be notified and the given data delivered to them.
    *
    * @param {string} eventIdentifier - This is the identifier of the event we want to react to. Can be the identifier of a built-in event or a custom one from script.
-   * @param {object} eventData - The data for the event. You can create a new JavaScript Object with the parameters you want to pass in to the listener and the engine will take care of delivering the data to them.
+   * @param {unknown} eventData - The data for the event. You can create a new JavaScript Object with the parameters you want to pass in to the listener and the engine will take care of delivering the data to them.
    * @return {boolean} - Successfully broadcasted the event.
    */
-  broadcastEvent(eventIdentifier: string, eventData: any): boolean;
+  broadcastEvent(eventIdentifier: string, eventData: unknown): boolean;
 
   /**
    * `createEventData` creates an object with all the required fields and default data for the specified event.
    * If the event is a custom event, it needs to have been previously registered.
    *
    * @param {string} eventIdentifier - This is the identifier of the custom event we are registering. The namespace is required and can't be set to minecraft.
-   * @return {any} - The object containing the event data.
+   * @return {unknown} - The object containing the event data.
    */
-  createEventData(eventIdentifier: string): any;
+  createEventData(eventIdentifier: string): unknown;
 
   /**
    * `listenForEvent` allows you to register a JavaScript object that gets called whenever the specified event is broadcast.
@@ -371,10 +371,10 @@ export interface System {
    * Only custom events need to be registered.
    *
    * @param {string} eventIdentifier - This is the identifier of the custom event we are registering. The namespace is required and can't be set to minecraft.
-   * @param {any} eventData - The JavaScript object with the correct fields and default values for the event.
+   * @param {unknown} eventData - The JavaScript object with the correct fields and default values for the event.
    * @return {boolean} - Successfully registered the event data.
    */
-  registerEventData(eventIdentifier: string, eventData: any): boolean;
+  registerEventData(eventIdentifier: string, eventData: unknown): boolean;
 
   /**
    * SLASH COMMANDS

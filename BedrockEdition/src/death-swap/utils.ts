@@ -11,10 +11,10 @@ import { debug } from "../settings";
  * `log` sends a message to the in-game chat.
  *
  * @param {System} system - The Minecraft server/client system to send from.
- * @param {Array<any>} items - The items to send as a chat message.
+ * @param {Array<unknown>} items - The items to send as a chat message.
  */
-export function log(system: System, ...items: Array<any>): void {
-  const toString = (item: any): string => {
+export function log(system: System, ...items: Array<unknown>): void {
+  const toString = (item: unknown): string => {
     switch (Object.prototype.toString.call(item)) {
       case "[object Undefined]": {
         return "undefined";

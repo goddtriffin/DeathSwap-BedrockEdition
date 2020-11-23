@@ -9,7 +9,7 @@ import { EventIdentifiers } from "./event-identifiers";
  *
  * @type {ArmorContainer}
  */
-export type ArmorContainer = Array<any>;
+export type ArmorContainer = Array<unknown>;
 
 /**
  * `Attack` controls the Attack Damage attribute from the entity.
@@ -133,11 +133,11 @@ export interface CollisionBox {
  *
  * @type {CommandResult}
  * @property {string} command - The command that was ran.
- * @property {any} data - This is the content of the component.
+ * @property {unknown} data - This is the content of the component.
  */
 export interface CommandResult {
   command: string;
-  data: any;
+  data: unknown;
 }
 
 /**
@@ -145,11 +145,11 @@ export interface CommandResult {
  *
  * @type {Component}
  * @property {string} __type__ - This defines the type of object. Will be: "component".
- * @property {any} data - This is the content of the component.
+ * @property {unknown} data - This is the content of the component.
  */
 export interface Component {
   readonly __type__: "component";
-  data: any;
+  data: unknown;
 }
 
 /**
@@ -163,7 +163,7 @@ export interface Component {
  *
  * @type {Container}
  */
-export type Container = Array<any>;
+export type Container = Array<unknown>;
 
 /**
  * `DamageSensor` defines what events to call when this entity is damaged by specific entities or items.
@@ -434,11 +434,11 @@ export interface EntityUseItem {
  * Once the changes are applied, the equipment is re-rolled and a new set of equipment is chosen for the entity.
  *
  * @type {Equipment}
- * @property {Array<any>} slot_drop_chance - A list of slots with the chance to drop an equipped item from that slot.
+ * @property {Array<unknown>} slot_drop_chance - A list of slots with the chance to drop an equipped item from that slot.
  * @property {string} table - The file path to the equipment table, relative to the behavior pack's root.
  */
 export interface Equipment {
-  slot_drop_chance: Array<any>;
+  slot_drop_chance: Array<unknown>;
   table: string;
 }
 
@@ -458,12 +458,12 @@ export interface Equippable {
  * @type {EventData}
  * @property {string} __type__ - "event_data"
  * @property {EventIdentifier} __identifier__ - the event identifier
- * @property {any} data - the data returned from the event
+ * @property {unknown} data - the data returned from the event
  */
 export interface EventData {
   __type__: "event_data";
   __identifier__: EventIdentifiers;
-  data: any;
+  data: unknown;
 }
 
 /**
@@ -519,12 +519,12 @@ export interface HandContainer {
  * `Healable` defines the interactions with this entity for healing it.
  *
  * @type {Healable}
- * @property {any} filters - The filter group that defines the conditions for using this item to heal the entity.
+ * @property {unknown} filters - The filter group that defines the conditions for using this item to heal the entity.
  * @property {boolean} force_use - Determines if item can be used regardless of entity being at full health.
  * @property {Array<Item>} items - The array of items that can be used to heal this entity.
  */
 export interface Healable {
-  filters: any;
+  filters: unknown;
   force_use: boolean;
   items: Array<ItemStack>;
 }
@@ -757,7 +757,7 @@ export interface LoadUIOptions {
  *
  * @type {LookAt}
  * @property {boolean} allow_invulnerable - If true, invulnerable entities (e.g. Players in creative mode) are considered valid targets. Default: false.
- * @property {any} filters - Defines the entities that can trigger this component.
+ * @property {unknown} filters - Defines the entities that can trigger this component.
  * @property {Range} look_cooldown - The range for the random amount of time during which the entity is 'cooling down' and won't get angered or look for a target. Default: [0, 0].
  * @property {string} look_event - The event identifier to run when the entities specified in filters look at this entity.
  * @property {number} search_radius - Maximum distance this entity will look for another entity looking at it. Double. Default: 10.
@@ -765,7 +765,7 @@ export interface LoadUIOptions {
  */
 export interface LookAt {
   allow_invulnerable: boolean;
-  filters: any;
+  filters: unknown;
   look_cooldown: Range;
   look_event: string;
   search_radius: number;
@@ -787,7 +787,7 @@ export interface LootTable {
  *
  * @type {MoLang}
  */
-export type MoLang = any;
+export type MoLang = unknown;
 
 /**
  * `Nameable` describes an entity's ability to be named using a nametag and whether the name shows up or not once applied.
@@ -806,7 +806,7 @@ export interface Nameable {
   default_trigger: boolean;
   name: string;
   name_actions: {
-    name_filter: any;
+    name_filter: unknown;
     on_named: string;
   };
 }
@@ -1012,7 +1012,7 @@ export interface Shooter {
  * `Slot` is an item slot.
  *
  * @type {Slot}
- * @property {Array<any>} accepted_items - The list of items that can go in this slot.
+ * @property {Array<unknown>} accepted_items - The list of items that can go in this slot.
  * @property {string} interact_text - Text to be displayed when the entity can be equipped with this item when playing with Touch-screen controls.
  * @property {string} item - Identifier of the item that can be equipped for this slot.
  * @property {string} on_equip - Event to trigger when this entity is equipped with this item.
@@ -1020,7 +1020,7 @@ export interface Shooter {
  * @property {number} slot - The slot number of this slot. Integer.
  */
 export interface Slot {
-  accepted_items: Array<any>;
+  accepted_items: Array<unknown>;
   interact_text: string;
   item: string;
   on_equip: string;
@@ -1032,7 +1032,7 @@ export interface Slot {
  * `SpawnEntity` adds a timer after which this entity will spawn another entity or item (similar to vanilla's chicken's egg-laying behavior).
  *
  * @type {SpawnEntity}
- * @property {any} filters - If present, the specified entity will only spawn if the filter evaluates to true.
+ * @property {unknown} filters - If present, the specified entity will only spawn if the filter evaluates to true.
  * @property {number} max_wait_time - Maximum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 600.
  * @property {number} min_wait_time - Minimum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 300.
  * @property {number} num_to_spawn - The number of entities of this type to spawn each time that this triggers. Integer. Default: 1.
@@ -1045,7 +1045,7 @@ export interface Slot {
  * @property {string} spawn_sound - Identifier of the sound effect to play when the entity is spawned. Default: plop.
  */
 export interface SpawnEntity {
-  filters: any;
+  filters: unknown;
   max_wait_time: number;
   min_wait_time: number;
   num_to_spawn: number;
@@ -1225,7 +1225,7 @@ export interface UniqueID {
  *
  * @type {UnloadUI}
  */
-export type UnloadUI = any;
+export type UnloadUI = unknown;
 
 /**
  * `Vector`
