@@ -2,19 +2,19 @@
  * `DeathSwapState` defines the possible game states.
  */
 export enum DeathSwapState {
-  LOBBY,
-  DEATHSWAP,
-  GAMEOVER,
+  Lobby = "lobby",
+  DeathSwap = "deathswap",
+  GameOver = "gameover",
 }
 
 /**
  * `PlayerState` defines the possible players states.
  */
 export enum PlayerState {
-  LOBBY,
-  READY,
-  DEATHSWAP,
-  SPECTATING,
+  Lobby = "lobby",
+  Ready = "ready",
+  DeathSwap = "deathswap",
+  Spectating = "spectating",
 }
 
 /**
