@@ -1,7 +1,7 @@
 /**
  * `debug` toggles the the logging of debug data.
  */
-export const debug = true;
+export const debug = false;
 
 /**
  * `secondsBetweenSwap` defines the number of seconds between swaps.
