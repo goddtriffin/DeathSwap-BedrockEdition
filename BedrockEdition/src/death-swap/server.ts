@@ -4,12 +4,14 @@ import {
   Entity,
   EntityUseItem,
   EventData,
+  GameRule,
   System,
   UseMethod,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
+import { GameRuleSetting } from "../settings";
 
 export class DeathSwapServer {
   players: { [id: number]: Player };
@@ -124,19 +126,32 @@ export class DeathSwapServer {
    */
   setGamerules(): void {
     const gamerules = [
-      `/gamerule commandBlocksEnabled false`,
-      `/gamerule doDaylightCycle true`,
-      `/gamerule doInsomnia false`,
-      `/gamerule doImmediateRespawn false`,
-      `/gamerule doWeatherCycle true`,
-      `/gamerule keepInventory false`,
-      `/gamerule mobGriefing true`,
-      `/gamerule naturalRegeneration true`,
-      `/gamerule pvp false`,
-      `/gamerule sendCommandFeedback false`,
-      `/gamerule showCoordinates false`,
-      `/gamerule showDeathMessages true`,
-      `/gamerule tntExplodes true`,
+      `/gamerule ${GameRule.CommandBlocksEnabled} ${GameRuleSetting.commandBlocksEnabled}`,
+      `/gamerule ${GameRule.CommandBlockOutput} ${GameRuleSetting.commandBlockOutput}`,
+      `/gamerule ${GameRule.DoDaylightCycle} ${GameRuleSetting.doDaylightCycle}`,
+      `/gamerule ${GameRule.DoEntityDrops} ${GameRuleSetting.doEntityDrops}`,
+      `/gamerule ${GameRule.DoFireTick} ${GameRuleSetting.doFireTick}`,
+      `/gamerule ${GameRule.DoInsomnia} ${GameRuleSetting.doInsomnia}`,
+      `/gamerule ${GameRule.DoImmediateRespawn} ${GameRuleSetting.doImmediateRespawn}`,
+      `/gamerule ${GameRule.DoMobLoot} ${GameRuleSetting.doMobLoot}`,
+      `/gamerule ${GameRule.DoMobSpawning} ${GameRuleSetting.doMobSpawning}`,
+      `/gamerule ${GameRule.DoTileDrops} ${GameRuleSetting.doTileDrops}`,
+      `/gamerule ${GameRule.DoWeatherCycle} ${GameRuleSetting.doWeatherCycle}`,
+      `/gamerule ${GameRule.DrowningDamage} ${GameRuleSetting.drowningDamage}`,
+      `/gamerule ${GameRule.FallDamage} ${GameRuleSetting.fallDamage}`,
+      `/gamerule ${GameRule.FireDamage} ${GameRuleSetting.fireDamage}`,
+      `/gamerule ${GameRule.KeepInventory} ${GameRuleSetting.keepInventory}`,
+      `/gamerule ${GameRule.MaxCommandChainLength} ${GameRuleSetting.maxCommandChainLength}`,
+      `/gamerule ${GameRule.MobGriefing} ${GameRuleSetting.mobGriefing}`,
+      `/gamerule ${GameRule.NaturalRegeneration} ${GameRuleSetting.naturalRegeneration}`,
+      `/gamerule ${GameRule.Pvp} ${GameRuleSetting.pvp}`,
+      `/gamerule ${GameRule.RandomTickSpeed} ${GameRuleSetting.randomTickSpeed}`,
+      `/gamerule ${GameRule.SendCommandFeedback} ${GameRuleSetting.sendCommandFeedback}`,
+      `/gamerule ${GameRule.ShowCoordinates} ${GameRuleSetting.showCoordinates}`,
+      `/gamerule ${GameRule.ShowDeathMessages} ${GameRuleSetting.showDeathMessages}`,
+      `/gamerule ${GameRule.SpawnRadius} ${GameRuleSetting.spawnRadius}`,
+      `/gamerule ${GameRule.TntExplodes} ${GameRuleSetting.tntExplodes}`,
+      `/gamerule ${GameRule.ShowTags} ${GameRuleSetting.showTags}`,
     ];
 
     for (let i = 0; i < gamerules.length; i++) {

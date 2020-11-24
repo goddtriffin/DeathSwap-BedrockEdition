@@ -23,3 +23,35 @@ export enum Gamemode {
 export enum UseMethod {
   EAT = "eat",
 }
+
+/**
+ * `GameRule` defines the possible game rules.
+ */
+export enum GameRule {
+  CommandBlocksEnabled = "commandBlocksEnabled",
+  CommandBlockOutput = "commandBlockOutput",
+  DoDaylightCycle = "doDaylightCycle",
+  DoEntityDrops = "doEntityDrops",
+  DoFireTick = "doFireTick",
+  DoInsomnia = "doInsomnia",
+  DoImmediateRespawn = "doImmediateRespawn",
+  DoMobLoot = "doMobLoot",
+  DoMobSpawning = "doMobSpawning",
+  DoTileDrops = "doTileDrops",
+  DoWeatherCycle = "doWeatherCycle",
+  DrowningDamage = "drowningDamage",
+  FallDamage = "fallDamage",
+  FireDamage = "fireDamage",
+  KeepInventory = "keepInventory",
+  MaxCommandChainLength = "maxCommandChainLength",
+  MobGriefing = "mobGriefing",
+  NaturalRegeneration = "naturalRegeneration",
+  Pvp = "pvp",
+  RandomTickSpeed = "randomTickSpeed",
+  SendCommandFeedback = "sendCommandFeedback",
+  ShowCoordinates = "showCoordinates",
+  ShowDeathMessages = "showDeathMessages",
+  SpawnRadius = "spawnRadius",
+  TntExplodes = "tntExplodes",
+  ShowTags = "showTags",
+}
