@@ -6,7 +6,7 @@ Custom Minecraft gamemode where every 5 minutes you swap positions with your opp
 
 Choose which version of Minecraft you want to play Death Swap in:
 
-- [Minecraft: Bedrock Edition](/BedrockEdition/README.md)
+- [Minecraft: Bedrock Edition](/BedrockEdition)
 - Minecraft: Java Edition
   - _Coming Soon..._
 
