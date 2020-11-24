@@ -7,13 +7,15 @@ import {
   Nameable,
   Position,
   CommandResult,
+  PlayerAbility,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, PlayerState } from "./enums";
+import { debug } from "../settings";
 
 export class Player {
   data: Entity;
-  state: PlayerState = PlayerState.LOBBY;
+  state: PlayerState = PlayerState.Lobby;
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -23,7 +25,7 @@ export class Player {
     this.data = playerData;
 
     // need to set this again so that state is set properly
-    this.setState(PlayerState.LOBBY);
+    this.setState(PlayerState.Lobby);
   }
 
   /**
@@ -80,25 +82,22 @@ export class Player {
    * @param {PlayerState} state - The state you want the player to switch to.
    */
   setState(state: PlayerState): void {
-    this.state = state;
-
     switch (state) {
-      case PlayerState.LOBBY:
-        this.setGamemode(Gamemode.ADVENTURE);
-        this.resetInventory();
+      case PlayerState.Lobby:
+        this.toggleLobbyState();
         break;
-      case PlayerState.READY:
-        log(this.system, `${this.getName()} readied up!`);
+      case PlayerState.Ready:
+        this.toggleReadyState();
         break;
-      case PlayerState.DEATHSWAP:
-        this.setGamemode(Gamemode.SURVIVAL);
-        this.emptyInventory();
+      case PlayerState.DeathSwap:
+        this.toggleDeathSwapState();
         break;
-      case PlayerState.SPECTATING:
-        this.setGamemode(Gamemode.CREATIVE);
-        this.emptyInventory();
+      case PlayerState.Spectating:
+        this.toggleSpectatorState();
         break;
     }
+
+    this.state = state;
   }
 
   /**
@@ -136,5 +135,90 @@ export class Player {
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
+  }
+
+  /**
+   * `toggleAbility` toggles player ability.
+   * This is only available if Education Edition is enabled.
+   */
+  toggleAbility(ability: PlayerAbility, toggle: boolean): void {
+    this.system.executeCommand(
+      `/ability "${this.getName()}" ${ability} ${toggle.toString()}`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
+   * `toggleLobbyState` handles prepping the player for the Lobby state.
+   */
+  toggleLobbyState(): void {
+    // check that we came from the previous state
+    if (
+      !this.isState(PlayerState.DeathSwap) &&
+      !this.isState(PlayerState.Lobby) // this is needed because the default player state when first spawned is Lobby
+    ) {
+      return;
+    }
+
+    this.setGamemode(Gamemode.Adventure);
+    this.resetInventory();
+  }
+
+  /**
+   * `toggleReadyState` handles prepping the player for the Ready state.
+   */
+  toggleReadyState(): void {
+    // check that we came from the previous state
+    if (!this.isState(PlayerState.Lobby)) {
+      return;
+    }
+
+    log(this.system, `${this.getName()} readied up!`);
+  }
+
+  /**
+   * `toggleDeathSwapState` handles prepping the player for the Death Swap state.
+   */
+  toggleDeathSwapState(): void {
+    // check that we came from the previous state
+    if (!this.isState(PlayerState.Ready)) {
+      return;
+    }
+
+    this.setGamemode(Gamemode.Survival);
+    this.emptyInventory();
+  }
+
+  /**
+   * `toggleSpectatorState` handles prepping the player for the Spectator state.
+   */
+  toggleSpectatorState(): void {
+    // check that we came from the previous state
+    if (!this.isState(PlayerState.DeathSwap)) {
+      return;
+    }
+
+    this.setGamemode(Gamemode.Adventure);
+    this.emptyInventory();
+  }
+
+  /**
+   * `isState` returns true if the player's state matches the given state; false otherwise.
+   */
+  isState(state: PlayerState): boolean {
+    if (this.state === state) {
+      return true;
+    }
+
+    if (debug) {
+      log(
+        this.system,
+        `Incorrect Player State (${this.getName()}) - Expected: ${state} - Got: ${
+          this.state
+        }`
+      );
+    }
+    return false;
   }
 }

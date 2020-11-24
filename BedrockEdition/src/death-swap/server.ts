@@ -12,11 +12,11 @@ import {
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
-import { GameRuleSetting } from "../settings";
+import { debug, GameRuleSetting } from "../settings";
 
 export class DeathSwapServer {
   players: { [id: number]: Player };
-  state: DeathSwapState = DeathSwapState.LOBBY;
+  state: DeathSwapState = DeathSwapState.Lobby;
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -25,10 +25,10 @@ export class DeathSwapServer {
     this.players = {};
 
     this.setGamerules();
-    this.setDifficulty(Difficulty.HARD);
+    this.setDifficulty(Difficulty.Hard);
 
     // need to set this again so that state is set properly
-    this.setState(DeathSwapState.LOBBY);
+    this.setState(DeathSwapState.Lobby);
   }
 
   /**
@@ -37,41 +37,96 @@ export class DeathSwapServer {
    * @param {DeathSwapState} state - The state you want the game to switch to.
    */
   setState(state: DeathSwapState): void {
-    this.state = state;
-
     switch (state) {
-      case DeathSwapState.LOBBY:
+      case DeathSwapState.Lobby:
+        this.toggleLobbyState();
         break;
-      case DeathSwapState.DEATHSWAP:
-        this.displayTitle("Death Swap... BEGINS!!");
+      case DeathSwapState.DeathSwap:
+        this.toggleDeathSwapState();
         break;
-      case DeathSwapState.GAMEOVER:
+      case DeathSwapState.GameOver:
+        this.toggleGameOverState();
         break;
     }
+
+    this.state = state;
   }
 
   /**
    * `checkState` handles switching between states depending on current game state and related data.
    */
   checkState(): void {
-    if (this.state === DeathSwapState.LOBBY) {
+    if (this.state === DeathSwapState.Lobby) {
       let ready = true;
 
       for (const id in this.players) {
         const player = this.players[id];
-        if (player.state !== PlayerState.READY) {
+        if (player.state !== PlayerState.Ready) {
           ready = false;
         }
       }
 
       if (ready) {
-        this.setState(DeathSwapState.DEATHSWAP);
+        this.setState(DeathSwapState.DeathSwap);
       }
-    } else if (this.state === DeathSwapState.DEATHSWAP) {
+    } else if (this.state === DeathSwapState.DeathSwap) {
       // TODO
-    } else if (this.state === DeathSwapState.GAMEOVER) {
+    } else if (this.state === DeathSwapState.GameOver) {
       // TODO
     }
+  }
+
+  /**
+   * `toggleLobbyState` handles prepping the player for the Lobby state.
+   */
+  toggleLobbyState(): void {
+    // check that we came from the previous state
+    if (
+      !this.isState(DeathSwapState.GameOver) &&
+      !this.isState(DeathSwapState.Lobby) // this is needed because the default Death Swap state when first spawned is Lobby
+    ) {
+      return;
+    }
+  }
+
+  /**
+   * `toggleDeathSwapState` handles prepping the player for the Death Swap state.
+   */
+  toggleDeathSwapState(): void {
+    // check that we came from the previous state
+    if (!this.isState(DeathSwapState.Lobby)) {
+      return;
+    }
+
+    this.setAllPlayersState(PlayerState.DeathSwap);
+    this.displayTitle("Death Swap... BEGINS!!");
+  }
+
+  /**
+   * `toggleGameOverState` handles prepping the player for the Game Over state.
+   */
+  toggleGameOverState(): void {
+    // check that we came from the previous state
+    if (!this.isState(DeathSwapState.DeathSwap)) {
+      return;
+    }
+  }
+
+  /**
+   * `isState` returns true if the player's state matches the given state; false otherwise.
+   */
+  isState(state: DeathSwapState): boolean {
+    if (this.state === state) {
+      return true;
+    }
+
+    if (debug) {
+      log(
+        this.system,
+        `Incorrect Death Swap State - Expected: ${state} - Got: ${this.state}`
+      );
+    }
+    return false;
   }
 
   /**
@@ -96,16 +151,22 @@ export class DeathSwapServer {
   }
 
   /**
-   * `readyPlayer` switches a player's state from LOBBY to READY.
+   * `setPlayerState` sets a player state by ID.
    *
-   * @param {number} id - The ID of the player to ready up.
+   * @param {number} id - The ID of the player to set the state of.
    */
-  readyPlayer(id: number): void {
-    if (this.players[id].state != PlayerState.LOBBY) {
-      return;
-    }
+  setPlayerState(id: number, state: PlayerState): void {
+    this.players[id].setState(state);
+    this.checkState();
+  }
 
-    this.players[id].setState(PlayerState.READY);
+  /**
+   * `setAllPlayersState` sets all players to a given state.
+   */
+  setAllPlayersState(state: PlayerState): void {
+    for (const id in this.players) {
+      this.players[id].setState(state);
+    }
     this.checkState();
   }
 
@@ -127,40 +188,126 @@ export class DeathSwapServer {
    */
   setGamerules(): void {
     const gamerules = [
-      `/gamerule ${GameRule.CommandBlocksEnabled} ${GameRuleSetting.commandBlocksEnabled}`,
-      `/gamerule ${GameRule.CommandBlockOutput} ${GameRuleSetting.commandBlockOutput}`,
-      `/gamerule ${GameRule.DoDaylightCycle} ${GameRuleSetting.doDaylightCycle}`,
-      `/gamerule ${GameRule.DoEntityDrops} ${GameRuleSetting.doEntityDrops}`,
-      `/gamerule ${GameRule.DoFireTick} ${GameRuleSetting.doFireTick}`,
-      `/gamerule ${GameRule.DoInsomnia} ${GameRuleSetting.doInsomnia}`,
-      `/gamerule ${GameRule.DoImmediateRespawn} ${GameRuleSetting.doImmediateRespawn}`,
-      `/gamerule ${GameRule.DoMobLoot} ${GameRuleSetting.doMobLoot}`,
-      `/gamerule ${GameRule.DoMobSpawning} ${GameRuleSetting.doMobSpawning}`,
-      `/gamerule ${GameRule.DoTileDrops} ${GameRuleSetting.doTileDrops}`,
-      `/gamerule ${GameRule.DoWeatherCycle} ${GameRuleSetting.doWeatherCycle}`,
-      `/gamerule ${GameRule.DrowningDamage} ${GameRuleSetting.drowningDamage}`,
-      `/gamerule ${GameRule.FallDamage} ${GameRuleSetting.fallDamage}`,
-      `/gamerule ${GameRule.FireDamage} ${GameRuleSetting.fireDamage}`,
-      `/gamerule ${GameRule.KeepInventory} ${GameRuleSetting.keepInventory}`,
-      `/gamerule ${GameRule.MaxCommandChainLength} ${GameRuleSetting.maxCommandChainLength}`,
-      `/gamerule ${GameRule.MobGriefing} ${GameRuleSetting.mobGriefing}`,
-      `/gamerule ${GameRule.NaturalRegeneration} ${GameRuleSetting.naturalRegeneration}`,
-      `/gamerule ${GameRule.Pvp} ${GameRuleSetting.pvp}`,
-      `/gamerule ${GameRule.RandomTickSpeed} ${GameRuleSetting.randomTickSpeed}`,
-      `/gamerule ${GameRule.SendCommandFeedback} ${GameRuleSetting.sendCommandFeedback}`,
-      `/gamerule ${GameRule.ShowCoordinates} ${GameRuleSetting.showCoordinates}`,
-      `/gamerule ${GameRule.ShowDeathMessages} ${GameRuleSetting.showDeathMessages}`,
-      `/gamerule ${GameRule.SpawnRadius} ${GameRuleSetting.spawnRadius}`,
-      `/gamerule ${GameRule.TntExplodes} ${GameRuleSetting.tntExplodes}`,
-      `/gamerule ${GameRule.ShowTags} ${GameRuleSetting.showTags}`,
+      {
+        rule: GameRule.CommandBlocksEnabled,
+        value: GameRuleSetting.CommandBlocksEnabled,
+      },
+      {
+        rule: GameRule.CommandBlockOutput,
+        value: GameRuleSetting.CommandBlockOutput,
+      },
+      {
+        rule: GameRule.DoDaylightCycle,
+        value: GameRuleSetting.DoDaylightCycle,
+      },
+      {
+        rule: GameRule.DoEntityDrops,
+        value: GameRuleSetting.DoEntityDrops,
+      },
+      {
+        rule: GameRule.DoFireTick,
+        value: GameRuleSetting.DoFireTick,
+      },
+      {
+        rule: GameRule.DoInsomnia,
+        value: GameRuleSetting.DoInsomnia,
+      },
+      {
+        rule: GameRule.DoImmediateRespawn,
+        value: GameRuleSetting.DoImmediateRespawn,
+      },
+      {
+        rule: GameRule.DoMobLoot,
+        value: GameRuleSetting.DoMobLoot,
+      },
+      {
+        rule: GameRule.DoMobSpawning,
+        value: GameRuleSetting.DoMobSpawning,
+      },
+      {
+        rule: GameRule.DoTileDrops,
+        value: GameRuleSetting.DoTileDrops,
+      },
+      {
+        rule: GameRule.DoWeatherCycle,
+        value: GameRuleSetting.DoWeatherCycle,
+      },
+      {
+        rule: GameRule.DrowningDamage,
+        value: GameRuleSetting.DrowningDamage,
+      },
+      {
+        rule: GameRule.FallDamage,
+        value: GameRuleSetting.FallDamage,
+      },
+      {
+        rule: GameRule.FireDamage,
+        value: GameRuleSetting.FireDamage,
+      },
+      {
+        rule: GameRule.KeepInventory,
+        value: GameRuleSetting.KeepInventory,
+      },
+      {
+        rule: GameRule.MaxCommandChainLength,
+        value: GameRuleSetting.MaxCommandChainLength,
+      },
+      {
+        rule: GameRule.MobGriefing,
+        value: GameRuleSetting.MobGriefing,
+      },
+      {
+        rule: GameRule.NaturalRegeneration,
+        value: GameRuleSetting.NaturalRegeneration,
+      },
+      {
+        rule: GameRule.Pvp,
+        value: GameRuleSetting.Pvp,
+      },
+      {
+        rule: GameRule.RandomTickSpeed,
+        value: GameRuleSetting.RandomTickSpeed,
+      },
+      {
+        rule: GameRule.SendCommandFeedback,
+        value: GameRuleSetting.SendCommandFeedback,
+      },
+      {
+        rule: GameRule.ShowCoordinates,
+        value: GameRuleSetting.ShowCoordinates,
+      },
+      {
+        rule: GameRule.ShowDeathMessages,
+        value: GameRuleSetting.ShowDeathMessages,
+      },
+      {
+        rule: GameRule.SpawnRadius,
+        value: GameRuleSetting.SpawnRadius,
+      },
+      {
+        rule: GameRule.TntExplodes,
+        value: GameRuleSetting.TntExplodes,
+      },
+      {
+        rule: GameRule.ShowTags,
+        value: GameRuleSetting.ShowTags,
+      },
     ];
 
     for (let i = 0; i < gamerules.length; i++) {
-      const gamerule = gamerules[i];
-      this.system.executeCommand(gamerule, (commandResult: CommandResult) =>
-        commandCallback(this.system, commandResult)
-      );
+      this.setGamerule(gamerules[i].rule, gamerules[i].value);
     }
+  }
+
+  /**
+   * `setGamerule` sets a gamerule.
+   */
+  setGamerule(rule: GameRule, value: GameRuleSetting): void {
+    this.system.executeCommand(
+      `/gamerule ${rule} ${value}`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
   }
 
   /**
@@ -194,9 +341,9 @@ export class DeathSwapServer {
    */
   onEntityUseItem(eventData: EventData): void {
     const entityUseItem: EntityUseItem = eventData.data as EntityUseItem;
-    if (entityUseItem.use_method === UseMethod.EAT) {
+    if (entityUseItem.use_method === UseMethod.Eat) {
       if (entityUseItem.item_stack.item === DeathSwapItem.BloodChaliceFull) {
-        this.readyPlayer(entityUseItem.entity.id);
+        this.setPlayerState(entityUseItem.entity.id, PlayerState.Ready);
       }
     }
   }
