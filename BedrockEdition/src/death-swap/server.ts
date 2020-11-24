@@ -7,6 +7,7 @@ import {
   GameRule,
   System,
   UseMethod,
+  TargetSelector,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
@@ -169,7 +170,7 @@ export class DeathSwapServer {
    */
   displayTitle(title: string): void {
     this.system.executeCommand(
-      `/title @a title ${title}`,
+      `/title ${TargetSelector.EveryPlayer} title ${title}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );

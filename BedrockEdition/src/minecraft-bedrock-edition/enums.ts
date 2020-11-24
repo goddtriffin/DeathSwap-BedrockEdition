@@ -55,3 +55,14 @@ export enum GameRule {
   TntExplodes = "tntExplodes",
   ShowTags = "showTags",
 }
+
+/**
+ * `TargetSelector` defines the possible target selectors.
+ */
+export enum TargetSelector {
+  NearestPlayer = "@p",
+  RandomPlayer = "@r",
+  EveryPlayer = "@a",
+  AllAliveEntities = "@e",
+  Self = "@s",
+}
