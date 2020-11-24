@@ -6,7 +6,7 @@ Custom Minecraft gamemode where every 5 minutes you swap positions with your opp
 
 ### Installation
 
-1. Download the latest version of the pack
+1. Download the [latest version of the pack](https://github.com/goddtriffin/DeathSwap/releases)
 2. Open Minecraft: Bedrock Edition
 3. Double click the pack to install it
 
@@ -32,7 +32,7 @@ Custom Minecraft gamemode where every 5 minutes you swap positions with your opp
 ## F.A.Q.
 
 - What devices/consoles can play Death Swap?
-  - Death Swap only works on Minecraft: Bedrock Edition for Windows 10. You will NOT be able to play this custom gamemode on your Android, iPhone, XBox, Playstation, Nintendo Switch, Amazon Tablet, or Amazon TV. This is not a limitation of the mod nor a limitation of me, the sole developer, but a limitation of all mods that utilize JavaScript scripts. JavaScript is necessary to make this custom gamemode possible, so until Microsoft decides to allow it on every device/console there is nothing that I can do. Sorry!
+  - Death Swap only works on `Minecraft: Bedrock Edition for Windows 10`. You will **NOT** be able to play this custom gamemode on your `Android`, `iPhone/iPad`, `XBox`, `Playstation`, `Nintendo Switch`, `Amazon Fire/Fire Phone`, or `Amazon Fire TV`. This is not a limitation of the mod nor a limitation of me, the sole developer, but a limitation of all mods that utilize JavaScript scripts. JavaScript is necessary to make this custom gamemode possible, so until `Microsoft` decides to allow it on every device/console there is nothing that I can do. Sorry!
 
 ## Development
 
