@@ -6,6 +6,7 @@ export * from "./difficulty";
 export * from "./engine";
 export * from "./enums";
 export * from "./event-identifiers";
+export * from "./gamemode";
 export * from "./gamerules";
 export * from "./objects";
 export * from "./server";
