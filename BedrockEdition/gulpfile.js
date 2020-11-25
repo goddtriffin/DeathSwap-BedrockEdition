@@ -141,6 +141,8 @@ const creatProdAddon = series(
   zipAddon
 );
 
+exports.test = handleJavascriptTypescriptChanges;
+
 // hot reload dev packs on save
 exports.development = function () {
   // watch behaviour pack changes

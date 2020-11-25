@@ -30,6 +30,10 @@ checkupdates: ## checks if any dependencies have updates
 update: ## update all dependencies to latest
 	npx ncu -u
 
+.PHONY: test
+test: ## checks if codebase successfully lints and compiles
+	npx gulp test
+
 .PHONY: dev
 dev: ## hot reloads packs on file save
 	npx gulp development
