@@ -6,8 +6,7 @@ export const debug = false;
 /**
  * `secondsBetweenSwap` defines the number of seconds between swaps.
  */
-// export const secondsBetweenSwap = 600;
-export const secondsBetweenSwap = 5;
+export const secondsBetweenSwap = 60;
 
 /**
  * `countdownTime` defines how much time, in seconds, players are alerted to the next swap taking place.

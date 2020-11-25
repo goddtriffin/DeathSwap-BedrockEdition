@@ -9,7 +9,7 @@
     "name": "Death Swap",
     "description": "Every 5 minutes everyone swaps position. Goal is to kill everyone without attacking them. Last person standing wins!",
     "uuid": "db23a5fe-dbed-4ae1-a515-5aae7a41eb13",
-    "version": [0, 0, 7],
+    "version": [0, 0, 8],
     "min_engine_version": [1, 14, 0]
   },
   "modules": [
@@ -17,19 +17,19 @@
       "description": "Death Swap behavior pack module",
       "type": "data",
       "uuid": "281f121f-56ff-426c-a197-77c7628972e1",
-      "version": [0, 0, 7]
+      "version": [0, 0, 8]
     },
     {
       "description": "Death Swap client scripts module",
       "type": "client_data",
       "uuid": "b230642c-ca36-4e65-a13c-2561031eb2b4",
-      "version": [0, 0, 7]
+      "version": [0, 0, 8]
     }
   ],
   "dependencies": [
     {
       "uuid": "85a3835e-665c-4e0f-bcda-a147d288b719",
-      "version": [0, 0, 7]
+      "version": [0, 0, 8]
     }
   ]
 }
