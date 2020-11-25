@@ -1,6 +1,7 @@
 export * from "./client";
 export * from "./commands";
 export * from "./component-identifiers";
+export * from "./components-level";
 export * from "./damage-sources";
 export * from "./difficulty";
 export * from "./engine";
