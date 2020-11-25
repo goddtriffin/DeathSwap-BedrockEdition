@@ -11,4 +11,5 @@ export * from "./gamerules";
 export * from "./objects";
 export * from "./server";
 export * from "./system";
+export * from "./target-selector";
 export * from "./use-method";
