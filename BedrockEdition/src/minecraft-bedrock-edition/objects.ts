@@ -164,13 +164,6 @@ export interface LootTable {
 }
 
 /**
- * `MoLang` component data.
- *
- * @type {MoLang}
- */
-export type MoLang = unknown;
-
-/**
  * `Quary` is a query.
  *
  * @type {Query}
