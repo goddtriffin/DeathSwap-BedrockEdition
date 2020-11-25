@@ -1,4 +1,5 @@
-import { Entity, ItemStack, Vector, Position } from "./objects";
+import { Position } from "./components-server";
+import { Entity, ItemStack, Vector } from "./objects";
 
 /**
  * `BlockDestructionStarted` is the event data returned by the `minecraft:block_destruction_started` event identifier.

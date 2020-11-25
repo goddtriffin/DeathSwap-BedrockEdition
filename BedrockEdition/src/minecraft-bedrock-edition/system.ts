@@ -1,4 +1,5 @@
 import { ComponentIdentifier } from "./component-identifiers";
+import { Position } from "./components-server";
 import {
   Block,
   CommandResult,
@@ -7,7 +8,6 @@ import {
   EventData,
   Query,
   TickingArea,
-  Position,
 } from "./objects";
 
 export interface System {
