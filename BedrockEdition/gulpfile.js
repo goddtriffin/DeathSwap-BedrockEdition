@@ -83,6 +83,11 @@ function cleanMinecraftDevResourcePack() {
   return del(minecraftDevResourcePackPath + "/**", { force: true });
 }
 
+// removes the compiled .mcpacks and .mcaddons from bin/
+function cleanBin() {
+  return del("./bin/**", { force: true });
+}
+
 // zips behaviour pack dev folder into a .mcpack
 function zipBehaviourPack() {
   return gulp
@@ -134,6 +139,7 @@ exports.development = function () {
 
 // create zipped .mcpack for distribution
 exports.production = series(
+  cleanBin,
   parallel(
     series(
       lintWithEslint,
