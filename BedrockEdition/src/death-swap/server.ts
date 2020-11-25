@@ -12,7 +12,12 @@ import {
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
-import { debug, GameRuleSetting, secondsBetweenSwap } from "../settings";
+import {
+  countdownTime,
+  debug,
+  GameRuleSetting,
+  secondsBetweenSwap,
+} from "../settings";
 
 export class DeathSwapServer {
   private players: { [id: number]: Player };
@@ -206,11 +211,6 @@ export class DeathSwapServer {
   private swapTwoPlayerPositions(id1: number, id2: number): void {
     const playerToSwap = this.players[id1];
     const destinationPlayer = this.players[id2];
-
-    log(
-      this.system,
-      `teleporting ${playerToSwap.getName()} to ${destinationPlayer.getName()}`
-    );
 
     playerToSwap.teleport(
       destinationPlayer.getCachedPosition(),
@@ -451,11 +451,24 @@ export class DeathSwapServer {
     if (this.isSwapTimerOn) {
       this.secondsCounter++;
 
-      // should only trigger every so often
-      if (this.secondsCounter === secondsBetweenSwap) {
+      /**
+       * `secondsLeftBeforeSwap` defines how much time, in seconds, is left before the next swap occurs.
+       */
+      const secondsLeftBeforeSwap = secondsBetweenSwap - this.secondsCounter;
+
+      // if no time left, trigger the swap
+      if (secondsLeftBeforeSwap === 0) {
         this.secondsCounter = 0;
 
         this.swap();
+      }
+
+      // when there's a little time left before the next swap, display a countdown timer
+      if (
+        secondsLeftBeforeSwap <= countdownTime &&
+        secondsLeftBeforeSwap !== 0
+      ) {
+        log(this.system, `Swapping in ${secondsLeftBeforeSwap} seconds!`);
       }
     }
   }
