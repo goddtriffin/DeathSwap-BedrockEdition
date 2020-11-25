@@ -1,13 +1,13 @@
 /**
  * `debug` toggles the the logging of debug data.
  */
-export const debug = true;
+export const debug = false;
 
 /**
  * `secondsBetweenSwap` defines the number of seconds between swaps.
  */
 // export const secondsBetweenSwap = 600;
-export const secondsBetweenSwap = 10;
+export const secondsBetweenSwap = 5;
 
 /**
  * `countdownTime` defines how much time, in seconds, players are alerted to the next swap taking place.

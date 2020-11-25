@@ -14,8 +14,25 @@ import { DeathSwapItem, PlayerState } from "./enums";
 import { debug } from "../settings";
 
 export class Player {
+  /**
+   * `data` is the raw value returned by Bedrock of a player when they first join the game.
+   */
   private data: Entity;
+
+  /**
+   * `state` is the player's state.
+   */
   private state: PlayerState = PlayerState.Lobby;
+
+  /**
+   * `positionCache` is used to store the player's location pre-swap, so that the player that will eventually swap with them will know where to go.
+   */
+  private positionCache: Position = { x: 0, y: 0, z: 0 };
+
+  /**
+   * `rotationCache` is used to store the player's rotation pre-swap, so that the player that will eventually swap with them will know how to rotate.
+   */
+  private rotationCache: Rotation = { x: 0, y: 0 };
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -60,7 +77,7 @@ export class Player {
   }
 
   /**
-   * `getPosition` returns the position of the player.
+   * `getPosition` returns the player's position.
    *
    * @return {Position}
    */
@@ -73,7 +90,23 @@ export class Player {
   }
 
   /**
-   * `getRotation` returns the rotation of the player.
+   * `getCachedPosition` returns the player's cached position.
+   *
+   * @return {Position}
+   */
+  public getCachedPosition(): Position {
+    return this.positionCache;
+  }
+
+  /**
+   * `savePositionToCache` saves the player's position to cache.
+   */
+  public savePositionToCache(): void {
+    this.positionCache = this.getPosition();
+  }
+
+  /**
+   * `getRotation` returns the player's rotation.
    *
    * @return {Rotation}
    */
@@ -83,6 +116,22 @@ export class Player {
       ComponentIdentifier.Rotation
     ).data as Rotation;
     return rotation;
+  }
+
+  /**
+   * `getCachedRotation` returns the player's cached rotation.
+   *
+   * @return {Rotation}
+   */
+  public getCachedRotation(): Rotation {
+    return this.rotationCache;
+  }
+
+  /**
+   * `saveRotationToCache` saves the player's rotation to cache.
+   */
+  public saveRotationToCache(): void {
+    this.rotationCache = this.getRotation();
   }
 
   /**
@@ -149,10 +198,35 @@ export class Player {
   /**
    * `toggleAbility` toggles player ability.
    * This is only available if Education Edition is enabled.
+   *
+   * @param {PlayerAbility} ability - The ability to toggle.
+   * @param {boolean} toggle - Wether to toggle the ability on (true) or off (false).
    */
   private toggleAbility(ability: PlayerAbility, toggle: boolean): void {
     this.system.executeCommand(
       `/ability "${this.getName()}" ${ability} ${toggle.toString()}`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
+   * `teleport` teleports the player to the given position.
+   *
+   * @param {Position} position - The position to teleport the player to.
+   * @param {Rotation} rotation - The rotation to rotate the player to.
+   */
+  public teleport(position: Position, rotation: Rotation): void {
+    /**
+     * `checkForBlocks` if set to true, teleports the target(s) only if the target(s) would not collide with a block it cannot be inside (Note: this allows teleporting into flowers as well as midair).
+     * If false or not specified, the default behavior applies (do no check; just teleport the target(s)).
+     */
+    const checkForBlocks = false;
+
+    this.system.executeCommand(
+      `/teleport "${this.getName()}" ${position.x} ${position.y} ${
+        position.z
+      } ${rotation.y} ${rotation.x} ${checkForBlocks.toString()}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );

@@ -9,7 +9,7 @@ import {
   UseMethod,
   TargetSelector,
 } from "../minecraft-bedrock-edition/index";
-import { commandCallback, log } from "./utils";
+import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
 import { debug, GameRuleSetting, secondsBetweenSwap } from "../settings";
@@ -201,6 +201,24 @@ export class DeathSwapServer {
   }
 
   /**
+   * `swapTwoPlayerPositions` swaps the positions of two players.
+   */
+  private swapTwoPlayerPositions(id1: number, id2: number): void {
+    const playerToSwap = this.players[id1];
+    const destinationPlayer = this.players[id2];
+
+    log(
+      this.system,
+      `teleporting ${playerToSwap.getName()} to ${destinationPlayer.getName()}`
+    );
+
+    playerToSwap.teleport(
+      destinationPlayer.getCachedPosition(),
+      destinationPlayer.getCachedRotation()
+    );
+  }
+
+  /**
    * `setDifficulty` sets the game's difficulty.
    *
    * @param {Difficulty} difficulty - The difficulty to set the game to.
@@ -373,7 +391,42 @@ export class DeathSwapServer {
    * `swap` handles swapping all players still in the game.
    */
   private swap(): void {
-    log(this.system, "swap");
+    log(this.system, "Swapping!");
+
+    // contains all players who have survived all death swaps
+    const survivingPlayersById: Array<number> = [];
+
+    for (const id in this.players) {
+      const player = this.players[id];
+      if (player.getState() === PlayerState.DeathSwap) {
+        // store all IDs from players who have survived all death swaps
+        survivingPlayersById.push(player.getID());
+
+        // cache the player's position/rotation for later, so their swap buddy knows where to teleport to and where to look
+        player.savePositionToCache();
+        player.saveRotationToCache();
+      }
+    }
+
+    // randomize order
+    shuffleArray(survivingPlayersById);
+
+    // teleport the players
+    for (let i = 0; i < survivingPlayersById.length; i++) {
+      // the index of the first ID we want to pull
+      const index1 = i;
+
+      // the index of the second ID we want to pull, but make sure it isn't outside the bounds of the array
+      // if it is, make the last player in the array swap with the first player, completing the loop
+      const index2 =
+        index1 + 1 > survivingPlayersById.length - 1 ? 0 : index1 + 1;
+
+      // swap them
+      this.swapTwoPlayerPositions(
+        survivingPlayersById[index1],
+        survivingPlayersById[index2]
+      );
+    }
   }
 
   /**
@@ -391,7 +444,7 @@ export class DeathSwapServer {
   }
 
   /**
-   * `updateOncePerSecond` ticks once per second.
+   * `updateOncePerSecond` ticks once per second
    */
   public updateOncePerSecond(): void {
     // handles the death swap
