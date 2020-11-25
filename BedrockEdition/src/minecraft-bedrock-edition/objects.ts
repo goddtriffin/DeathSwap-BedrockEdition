@@ -1,5 +1,6 @@
 import { Position } from "./components-server";
 import { EventIdentifiers } from "./event-identifiers";
+import { FixedLengthArray } from "./utils/index";
 
 /**
  * `Block` is a block.
@@ -263,15 +264,8 @@ export interface UniqueID {
 }
 
 /**
- * `Vector`
+ * `Vector` is a tuple. e.g. [0, 1, 2]
  *
  * @type {Vector}
- * @property {number} a
- * @property {number} b
- * @property {number} c
  */
-export interface Vector {
-  a: number;
-  b: number;
-  c: number;
-}
+export type Vector = FixedLengthArray<[number, number, number]>;
