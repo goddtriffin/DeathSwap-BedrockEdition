@@ -1,6 +1,7 @@
 export * from "./client";
 export * from "./commands";
 export * from "./component-identifiers";
+export * from "./components-block";
 export * from "./components-client";
 export * from "./components-level";
 export * from "./components-server";
