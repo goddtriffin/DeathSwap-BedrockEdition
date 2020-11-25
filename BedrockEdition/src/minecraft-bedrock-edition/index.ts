@@ -2,6 +2,7 @@ export * from "./client";
 export * from "./commands";
 export * from "./component-identifiers";
 export * from "./damage-sources";
+export * from "./difficulty";
 export * from "./engine";
 export * from "./enums";
 export * from "./event-identifiers";
