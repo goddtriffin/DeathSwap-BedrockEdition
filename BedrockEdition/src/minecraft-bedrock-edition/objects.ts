@@ -42,60 +42,6 @@ export interface Block {
 }
 
 /**
- * `BlockDestructionStarted` event data.
- *
- * @type {BlockDestructionStarted}
- * @property {Position} block_position - The position of the block that is being destroyed.
- * @property {Entity} player - The player that started destoying the block.
- */
-export interface BlockDestructionStarted {
-  block_position: Position;
-  player: Entity;
-}
-
-/**
- * `BlockDestructionStopped` event data.
- *
- * @type {BlockDestructionStopped}
- * @property {Position} block_position - The position of the block that was being destroyed.
- * @property {number} destruction_progress - How far along the destruction was before it was stopped (0 - 1 range). Double.
- * @property {Entity} player - The player that stopped destoying the block.
- */
-export interface BlockDestructionStopped {
-  block_position: Position;
-  destruction_progress: number;
-  player: Entity;
-}
-
-/**
- * `BlockExploded` event data.
- *
- * @type {BlockExploded}
- * @property {string} block_identifier - The identifier of the block that was destroyed.
- * @property {Position} block_position - The position of the block that was destroyed by the explosion.
- * @property {string} cause - The cause of the block's destruction.
- * @property {Entity} entity - The entity that exploded.
- */
-export interface BlockExploded {
-  block_identifier: string;
-  block_position: Position;
-  cause: string;
-  entity: Entity;
-}
-
-/**
- * `BlockInteractedWith` event data.
- *
- * @type {BlockInteractedWith}
- * @property {Position} block_position - The position of the block that is being interacted with.
- * @property {Entity} player - The player that interacted with the block.
- */
-export interface BlockInteractedWith {
-  block_position: Position;
-  player: Entity;
-}
-
-/**
  * `BlockState` contains all the blockstates on a block object.
  * Blockstates control all different aspects of blocks from their orientation to the type of wood they are.
  * Blockstates are represented by numbers, bools, or strings.
@@ -129,7 +75,7 @@ export interface CollisionBox {
 }
 
 /**
- * `CommandResult` event data.
+ * `CommandResult` is the data given to the callback of `system.executeCommand`.
  *
  * @type {CommandResult}
  * @property {string} command - The command that was ran.
@@ -184,16 +130,6 @@ export type DamageSensor = Array<{
 }>;
 
 /**
- * `DisplayChatEvent`
- *
- * @type {DisplayChatEvent}
- * @property {string} message - The chat message that will be displayed.
- */
-export interface DisplayChatEvent {
-  message: string;
-}
-
-/**
  * `Entity` is an entity.
  *
  * @type {Entity}
@@ -210,200 +146,6 @@ export interface Entity {
 }
 
 /**
- * `EntityAcquiredItem` event data.
- *
- * @type {EntityAcquiredItem}
- * @property {number} acquired_amount - The total number of items acquired by the entity during this event. Integer.
- * @property {string} acquisition_method - The way the entity acquired the item.
- * @property {Entity} entity - The entity who acquired the item.
- * @property {ItemStack} item_stack - The item that was acquired.
- * @property {Entity} secondary_entity - If it exists, the entity that affected the item before it was acquired. Example: A player completes a trade with a villager. The `entity` property would be the player and the `secondary_entity` would be the villager.
- */
-export interface EntityAcquiredItem {
-  acquired_amount: number;
-  acquisition_method: string;
-  entity: Entity;
-  item_stack: ItemStack;
-  secondary_entity: Entity;
-}
-
-/**
- * `EntityAttack` event data.
- *
- * @type {EntityAttack}
- * @property {Entity} entity - The entity that attacked.
- * @property {Entity} target - The entity that was targeted in the attack.
- */
-export interface EntityAttack {
-  entity: Entity;
-  target: Entity;
-}
-
-/**
- * `EntityCarriedItemChanged` event data.
- *
- * @type {EntityCarriedItemChanged}
- * @property {ItemStack} carried_item - The item that is now in the entities hands.
- * @property {Entity} entity - The entity that changed what they were carrying.
- * @property {string} hand - Defines which hand the item was equipped to. Either main or offhand.
- * @property {ItemStack} previous_carried_item - The item that was previously in the entities hands.
- */
-export interface EntityCarriedItemChanged {
-  carried_item: ItemStack;
-  entity: Entity;
-  hand: "main" | "offhand";
-  previous_carried_item: ItemStack;
-}
-
-/**
- * `EntityCreated` event data.
- *
- * @type {EntityCreated}
- * @property {Entity} entity - The entity that was just created.
- */
-export interface EntityCreated {
-  entity: Entity;
-}
-
-/**
- * `EntityDefinitionEvent` event data.
- *
- * @type {EntityCreated}
- * @property {Entity} entity - The entity that was affected.
- * @property {string} event - The event that was triggered.
- */
-export interface EntityCreated {
-  entity: Entity;
-  event: string;
-}
-
-/**
- * `EntityDeath` event data.
- *
- * @type {EntityDeath}
- * @property {Position} block_position - The position of the block that killed the entity.
- * @property {string} cause - The cause of the entity's death.
- * @property {Entity} entity - The entity that died.
- * @property {Entity} killer - The entity that killed the entity.
- * @property {string} projectile_type - The type of the projectile that killed the entity.
- */
-export interface EntityDeath {
-  block_position: Position;
-  cause: string;
-  entity: Entity;
-  killer: Entity;
-  projectile_type: string;
-}
-
-/**
- * `EntityDroppedItem` event data.
- *
- * @type {EntityDroppedItem}
- * @property {Entity} entity - The entity who dropped the item.
- * @property {ItemStack} item_stack - The item that was dropped.
- */
-export interface EntityDroppedItem {
-  entity: Entity;
-  item_stack: ItemStack;
-}
-
-/**
- * `EntityEquippedArmor` event data.
- *
- * @type {EntityEquippedArmor}
- * @property {Entity} entity - The entity who is equipping the armor.
- * @property {ItemStack} item_stack - The armor that is being equipped.
- * @property {string} slot - Defines which slot the item was equipped to.
- */
-export interface EntityEquippedArmor {
-  entity: Entity;
-  item_stack: ItemStack;
-  slot: string;
-}
-
-/**
- * `EntityHurt` event data.
- *
- * @type {EntityHurt}
- * @property {number} absorbed_damage - The amount the damage was reduced by by the entity's absorption effect.
- * @property {Entity} attacker - Present only when damaged by an entity or projectile. The entity that attacked and caused the damage.
- * @property {Vector} block_position - Present only when damaged by a block. This is the position of the block that hit the entity.
- * @property {string} cause - The way the entity took damage. Refer to the Damage Source documentation for a complete list of sources.
- * @property {number} damage - The amount of damage the entity took after immunity and armor are taken into account.
- * @property {Entity} entity - The entity that took damage.
- * @property {string} projectile_type - Present only when damaged by a projectile. This is the identifier of the projectile that hit the entity.
- */
-export interface EntityHurt {
-  absorbed_damage: number;
-  attacker: Entity;
-  block_position: Vector;
-  cause: string;
-  damage: number;
-  entity: Entity;
-  projectile_type: string;
-}
-
-/**
- * `EntityMove` event data.
- *
- * @type {EntityMove}
- * @property {Entity} entity - The entity that moved.
- */
-export interface EntityMove {
-  entity: Entity;
-}
-
-/**
- * `EntitySneak` event data.
- *
- * @type {EntitySneak}
- * @property {Entity} entity - The entity that changed their sneaking state.
- * @property {boolean} sneaking - If true, the entity just started sneaking. If false, the entity just stopped sneaking.
- */
-export interface EntitySneak {
-  entity: Entity;
-  sneaking: boolean;
-}
-
-/**
- * `EntityStartRiding` event data.
- *
- * @type {EntityStartRiding}
- * @property {Entity} entity - The rider.
- * @property {Entity} ride - The entity being ridden.
- */
-export interface EntityStartRiding {
-  entity: Entity;
-  ride: Entity;
-}
-
-/**
- * `EntityStopRiding` event data.
- *
- * @type {EntityStopRiding}
- * @property {Entity} entity - The entity that was riding another entity.
- * @property {boolean} entity_is_being_destroyed - If true, the rider stopped riding because they are now dead.
- * @property {boolean} exit_from_rider - If true, the rider stopped riding by their own decision.
- * @property {boolean} switching_rides - If true, the rider stopped riding because they are now riding a different entity.
- */
-export interface EntityStopRiding {
-  entity: Entity;
-  entity_is_being_destroyed: boolean;
-  exit_from_rider: boolean;
-  switching_rides: boolean;
-}
-
-/**
- * `EntityTick` event data.
- *
- * @type {EntityTick}
- * @property {Entity} entity - The entity that was ticked.
- */
-export interface EntityTick {
-  entity: Entity;
-}
-
-/**
  * `EntityTickingArea` is an entity ticking area.
  *
  * @type {EntityTickingArea}
@@ -413,20 +155,6 @@ export interface EntityTick {
 export interface EntityTickingArea {
   readonly __type__: "entity_ticking_area";
   readonly entity_ticking_area_id: number;
-}
-
-/**
- * `EntityUseItem` event data.
- *
- * @type {EntityUseItem}
- * @property {Entity} entity - The entity who is using the item.
- * @property {ItemStack} item_stack - The item that is being used.
- * @property {string} use_method - The way the entity used the item.
- */
-export interface EntityUseItem {
-  entity: Entity;
-  item_stack: ItemStack;
-  use_method: string;
 }
 
 /**
@@ -464,16 +192,6 @@ export interface EventData {
   __type__: "event_data";
   __identifier__: EventIdentifiers;
   data: unknown;
-}
-
-/**
- * `ExecuteCommand` event data.
- *
- * @type {Explode}
- * @property {string} command - The command that will be run.
- */
-export interface Explode {
-  command: string;
 }
 
 /**
@@ -541,30 +259,6 @@ export interface Healable {
 export interface Health {
   value: number;
   max: number;
-}
-
-/**
- * `HitResultChanged` event data.
- *
- * @type {HitResultChanged}
- * @property {Entity} entity - The entity that was hit or null if it fired when moving off of an entity.
- * @property {Vector} position - The position of the entity that was hit or null if it fired when moving off an entity.
- */
-export interface HitResultChanged {
-  entity: Entity;
-  position: Vector;
-}
-
-/**
- * `HitResultContinuous` event data.
- *
- * @type {HitResultContinuous}
- * @property {Entity} entity - The entity that was hit or null if it not pointing at an entity.
- * @property {Vector} position - The position of the entity that was hit or block that was hit.
- */
-export interface HitResultContinuous {
-  entity: Entity;
-  position: Vector;
 }
 
 /**
@@ -719,40 +413,6 @@ export interface LevelTickingArea {
 }
 
 /**
- * `LoadUI` event data.
- *
- * @type {LoadUI}
- * @property {LoadUIOptions} options - You can define the following options for the screen by setting their value to true or false.
- * @property {string} path - The file path to the screen's HTML file.
- */
-export interface LoadUI {
-  options: LoadUIOptions;
-  path: string;
-}
-
-/**
- * `LoadUIOptions` can define the following options for the screen by setting their value to true or false.
- *
- * @type {LoadUIOptions}
- * @property {boolean} absorbs_input - If true, input will not be passed down to any other screens underneath.
- * @property {boolean} always_accepts_input - If true, the screen will always accept and process input for as long as it is in the stack, even if other custom UI screens appear on top of it.
- * @property {boolean} force_render_below - If true, this screen will be rendered even if another screen is on top of it and will render over them, including the HUD.
- * @property {boolean} is_showing_menu - If true, the screen will be treated as the pause menu and the pause menu won't be allowed to show on top of this screen.
- * @property {boolean} render_game_behind - If true, the game will continue to be rendered underneath this screen.
- * @property {boolean} render_only_when_topmost - If true, this screen will only be rendered if it is the screen at the top of the stack.
- * @property {boolean} should_steal_mouse - If true, the screen will capture the mouse pointer and limit its movement to the UI screen.
- */
-export interface LoadUIOptions {
-  absorbs_input: boolean;
-  always_accepts_input: boolean;
-  force_render_below: boolean;
-  is_showing_menu: boolean;
-  render_game_behind: boolean;
-  render_only_when_topmost: boolean;
-  should_steal_mouse: boolean;
-}
-
-/**
  * `LookAt` defines the behavior when another entity looks at this entity.
  *
  * @type {LookAt}
@@ -812,98 +472,6 @@ export interface Nameable {
 }
 
 /**
- * `PickHitResultChanged` event data.
- *
- * @type {HitResultChanged}
- * @property {Entity} entity - The entity that was hit or null if it fired when moving off of an entity.
- * @property {Vector} position - The position of the entity that was hit or null if it fired when moving off an entity.
- */
-export interface HitResultChanged {
-  entity: Entity;
-  position: Vector;
-}
-
-/**
- * `PickHitResultContinuous` event data.
- *
- * @type {HitResultContinuous}
- * @property {Entity} entity - The entity that was hit or null if it not pointing at an entity.
- * @property {Vector} position - The position of the entity that was hit or block that was hit.
- */
-export interface HitResultContinuous {
-  entity: Entity;
-  position: Vector;
-}
-
-/**
- * `PlayerAttackedEntity` event data.
- *
- * @type {PlayerAttackedEntity}
- * @property {Entity} attacked_entity - The entity that was attacked by the player.
- * @property {Entity} player - The player that attacked an entity.
- */
-export interface PlayerAttackedEntity {
-  attacked_entity: Entity;
-  player: Entity;
-}
-
-/**
- * `PlayerDestroyedBlock` event data.
- *
- * @type {PlayerDestroyedBlock}
- * @property {string} block_identifier - The identifier of the block that was destroyed.
- * @property {Position} block_position - The position of the block that was destroyed.
- * @property {Entity} player - The player that destroyed the block.
- */
-export interface PlayerDestroyedBlock {
-  block_identifier: string;
-  block_position: Position;
-  player: Entity;
-}
-
-/**
- * `PlayerPlacedBlock` event data.
- *
- * @type {PlayerPlacedBlock}
- * @property {Position} block_position - The position of the block that was placed.
- * @property {Entity} player - The player that placed the block.
- */
-export interface PlayerPlacedBlock {
-  block_position: Position;
-  player: Entity;
-}
-
-/**
- * `PlaySound` event data.
- *
- * @type {PlaySound}
- * @property {number} pitch - The pitch of the sound effect. A value of 1.0 will play the sound effect with regular pitch. Double. Default: 1.0.
- * @property {Vector} position - The position in the world we want to play the sound at. Default: [0, 0, 0].
- * @property {string} sound - The identifier of the sound you want to play. Only sounds defined in the applied resource packs can be played.
- * @property {number} volume - The volume of the sound effect. A value of 1.0 will play the sound effect at the volume it was recorded at. Decimal. Default: 1.0.
- */
-export interface PlaySound {
-  pitch: number;
-  position: Vector;
-  sound: string;
-  volume: number;
-}
-
-/**
- * `PistonMovedBlock` event data.
- *
- * @type {PistonMovedBlock}
- * @property {Position} block_position - The position of the block that was moved.
- * @property {string} piston_action - The action the piston took, "extended" or "retracted".
- * @property {Position} piston_position - The position of the piston that moved the block.
- */
-export interface PistonMovedBlock {
-  block_position: Position;
-  piston_action: "extended" | "retracted";
-  piston_position: Position;
-}
-
-/**
  * `Position` is a position.
  *
  * @type {Position}
@@ -915,22 +483,6 @@ export interface Position {
   x: number;
   y: number;
   z: number;
-}
-
-/**
- * `ProjectileHit` is a position.
- *
- * @type {ProjectileHit}
- * @property {Entity} entity - The entity that was hit by the projectile, if any.
- * @property {Entity} owner - The entity that fired the projectile.
- * @property {Vector} position - The position of the collision.
- * @property {Entity} projectile - The projectile in question.
- */
-export interface ProjectileHit {
-  entity: Entity;
-  owner: Entity;
-  position: Vector;
-  projectile: Entity;
 }
 
 /**
@@ -968,32 +520,6 @@ export interface Range {
 export interface Rotation {
   x: number;
   y: number;
-}
-
-/**
- * `ScriptLoggerConfig` event data.
- *
- * @type {ScriptLoggerConfig}
- * @property {boolean} log_errors - Set to true to log any scripting errors that occur on the client. Default: false.
- * @property {boolean} log_information - Set to true to log any general scripting information that occurs on the client. This includes any logging done with client.log(). Default: false.
- * @property {boolean} log_warnings - Set to true to log any scripting warnings that occur on the client. Default: false.
- */
-export interface ScriptLoggerConfig {
-  log_errors: boolean;
-  log_information: boolean;
-  log_warnings: boolean;
-}
-
-/**
- * `SendUIEvent` event data.
- *
- * @type {SendUIEvent}
- * @property {string} data - The data for the UI event being triggered.
- * @property {string} eventIdentifier - The identifier of the UI event.
- */
-export interface SendUIEvent {
-  data: string;
-  eventIdentifier: string;
 }
 
 /**
@@ -1056,32 +582,6 @@ export interface SpawnEntity {
   spawn_item: string;
   spawn_method: string;
   spawn_sound: string;
-}
-
-/**
- * `SpawnParticleAttachedEntity` event data.
- *
- * @type {SpawnParticleAttachedEntity}
- * @property {string} effect - The identifier of the particle effect you want to attach to the entity. This is the same name you gave the effect in its JSON file.
- * @property {Entity} entity - The entity object you want to attach the effect to.
- * @property {Vector} offset - The offset from the entity's "center" where you want to spawn the effect. Default: [0, 0, 0].
- */
-export interface SpawnParticleAttachedEntity {
-  effect: string;
-  entity: Entity;
-  offset: Vector;
-}
-
-/**
- * `SpawnParticleInWorld` event data.
- *
- * @type {SpawnParticleInWorld}
- * @property {string} effect - The identifier of the particle effect you want to attach to spawn. This is the same name you gave the effect in its JSON file.
- * @property {Vector} position - The position in the world where you want to spawn the effect. Default: [0, 0, 0].
- */
-export interface SpawnParticleInWorld {
-  effect: string;
-  position: Vector;
 }
 
 /**
@@ -1221,13 +721,6 @@ export interface UniqueID {
 }
 
 /**
- * `UnloadUI` event data.
- *
- * @type {UnloadUI}
- */
-export type UnloadUI = unknown;
-
-/**
  * `Vector`
  *
  * @type {Vector}
@@ -1258,18 +751,4 @@ export interface Weather {
   lightning_time: number;
   rain_level: number;
   rain_time: number;
-}
-
-/**
- * `WeatherChanged` event data.
- *
- * @type {WeatherChanged}
- * @property {string} dimension - The name of the dimension where the weather change happened.
- * @property {boolean} lightning - Tells if the new weather has lightning.
- * @property {boolean} raining - Tells if the new weather has rain.
- */
-export interface WeatherChanged {
-  dimension: string;
-  lightning: boolean;
-  raining: boolean;
 }
