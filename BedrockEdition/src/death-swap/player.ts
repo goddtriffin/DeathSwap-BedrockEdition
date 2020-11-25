@@ -14,8 +14,8 @@ import { DeathSwapItem, PlayerState } from "./enums";
 import { debug } from "../settings";
 
 export class Player {
-  data: Entity;
-  state: PlayerState = PlayerState.Lobby;
+  private data: Entity;
+  private state: PlayerState = PlayerState.Lobby;
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -29,11 +29,20 @@ export class Player {
   }
 
   /**
+   * `getState` returns the state of the player.
+   *
+   * @return {PlayerState}
+   */
+  public getState(): PlayerState {
+    return this.state;
+  }
+
+  /**
    * `getID` returns the ID of the player.
    *
    * @return {number}
    */
-  getID(): number {
+  public getID(): number {
     return this.data.id;
   }
 
@@ -42,7 +51,7 @@ export class Player {
    *
    * @return {string}
    */
-  getName(): string {
+  public getName(): string {
     const nameable: Nameable = this.system.getComponent(
       this.data,
       ComponentIdentifier.Nameable
@@ -55,7 +64,7 @@ export class Player {
    *
    * @return {Position}
    */
-  getPosition(): Position {
+  public getPosition(): Position {
     const position: Position = this.system.getComponent(
       this.data,
       ComponentIdentifier.Position
@@ -68,7 +77,7 @@ export class Player {
    *
    * @return {Rotation}
    */
-  getRotation(): Rotation {
+  public getRotation(): Rotation {
     const rotation: Rotation = this.system.getComponent(
       this.data,
       ComponentIdentifier.Rotation
@@ -81,7 +90,7 @@ export class Player {
    *
    * @param {PlayerState} state - The state you want the player to switch to.
    */
-  setState(state: PlayerState): void {
+  public setState(state: PlayerState): void {
     switch (state) {
       case PlayerState.Lobby:
         this.toggleLobbyState();
@@ -105,7 +114,7 @@ export class Player {
    *
    * @param {Gamemode} gamemode - The gamemode you want the player to switch to.
    */
-  setGamemode(gamemode: Gamemode): void {
+  private setGamemode(gamemode: Gamemode): void {
     this.system.executeCommand(
       `/gamemode ${gamemode} "${this.getName()}"`,
       (commandResult: CommandResult) =>
@@ -116,7 +125,7 @@ export class Player {
   /**
    * `emptyInventory` clears the player's inventory.
    */
-  emptyInventory(): void {
+  private emptyInventory(): void {
     this.system.executeCommand(
       `/clear "${this.getName()}"`,
       (commandResult: CommandResult) =>
@@ -127,7 +136,7 @@ export class Player {
   /**
    * `resetInventory` clears the player's inventory and gives them a single, filled blood chalice.
    */
-  resetInventory(): void {
+  private resetInventory(): void {
     this.emptyInventory();
 
     this.system.executeCommand(
@@ -141,7 +150,7 @@ export class Player {
    * `toggleAbility` toggles player ability.
    * This is only available if Education Edition is enabled.
    */
-  toggleAbility(ability: PlayerAbility, toggle: boolean): void {
+  private toggleAbility(ability: PlayerAbility, toggle: boolean): void {
     this.system.executeCommand(
       `/ability "${this.getName()}" ${ability} ${toggle.toString()}`,
       (commandResult: CommandResult) =>
@@ -152,7 +161,7 @@ export class Player {
   /**
    * `toggleLobbyState` handles prepping the player for the Lobby state.
    */
-  toggleLobbyState(): void {
+  private toggleLobbyState(): void {
     // check that we came from the previous state
     if (
       !this.isState(PlayerState.DeathSwap) &&
@@ -168,7 +177,7 @@ export class Player {
   /**
    * `toggleReadyState` handles prepping the player for the Ready state.
    */
-  toggleReadyState(): void {
+  private toggleReadyState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.Lobby)) {
       return;
@@ -180,7 +189,7 @@ export class Player {
   /**
    * `toggleDeathSwapState` handles prepping the player for the Death Swap state.
    */
-  toggleDeathSwapState(): void {
+  private toggleDeathSwapState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.Ready)) {
       return;
@@ -193,7 +202,7 @@ export class Player {
   /**
    * `toggleSpectatorState` handles prepping the player for the Spectator state.
    */
-  toggleSpectatorState(): void {
+  private toggleSpectatorState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.DeathSwap)) {
       return;
@@ -206,7 +215,7 @@ export class Player {
   /**
    * `isState` returns true if the player's state matches the given state; false otherwise.
    */
-  isState(state: PlayerState): boolean {
+  private isState(state: PlayerState): boolean {
     if (this.state === state) {
       return true;
     }
