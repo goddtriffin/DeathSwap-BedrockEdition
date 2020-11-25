@@ -1,14 +1,4 @@
 /**
- * `UseMethod` defines the possible use method.
- */
-export enum UseMethod {
-  /**
-   * `Eat` is when an entity eats.
-   */
-  Eat = "eat",
-}
-
-/**
  * `TargetSelector` defines the possible target selectors.
  */
 export enum TargetSelector {
