@@ -2,6 +2,12 @@
 
 ## File Definitions
 
+### Manifest.json
+
+https://bedrock.dev/docs/stable/Addons#manifest.json
+
+- `manifest.ts`
+
 ### Server system / Client system
 
 https://bedrock.dev/docs/stable/Scripting#Structure%20of%20a%20Script

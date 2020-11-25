@@ -14,6 +14,7 @@ export * from "./event-data-triggerable";
 export * from "./event-identifiers";
 export * from "./gamemode";
 export * from "./gamerules";
+export * from "./manifest";
 export * from "./objects";
 export * from "./player-ability";
 export * from "./server";
