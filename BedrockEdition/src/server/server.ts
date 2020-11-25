@@ -37,3 +37,7 @@ systemServer.initialize = function (): void {
     deathSwapServer.onEntityUseItem(eventData)
   );
 };
+
+systemServer.update = function (): void {
+  deathSwapServer.update();
+};

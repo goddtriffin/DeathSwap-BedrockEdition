@@ -9,14 +9,31 @@ import {
   UseMethod,
   TargetSelector,
 } from "../minecraft-bedrock-edition/index";
-import { commandCallback, log } from "./utils";
+import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
-import { debug, GameRuleSetting } from "../settings";
+import { debug, GameRuleSetting, secondsBetweenSwap } from "../settings";
 
 export class DeathSwapServer {
-  players: { [id: number]: Player };
-  state: DeathSwapState = DeathSwapState.Lobby;
+  private players: { [id: number]: Player };
+  private state: DeathSwapState = DeathSwapState.Lobby;
+
+  /**
+   * `tickCounter` tracks number of ticks.
+   * It is used to help trigger things that need to happen once per second.
+   */
+  private tickCounter = 0;
+
+  /**
+   * `secondsCounter` track number of seconds.
+   * It is used to help trigger the swap and the swap countdown.
+   */
+  private secondsCounter = 0;
+
+  /**
+   * `isSwapTimerOn` defines whether or not the swap timer is on.
+   */
+  private isSwapTimerOn = false;
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -36,7 +53,7 @@ export class DeathSwapServer {
    *
    * @param {DeathSwapState} state - The state you want the game to switch to.
    */
-  setState(state: DeathSwapState): void {
+  private setState(state: DeathSwapState): void {
     switch (state) {
       case DeathSwapState.Lobby:
         this.toggleLobbyState();
@@ -55,13 +72,13 @@ export class DeathSwapServer {
   /**
    * `checkState` handles switching between states depending on current game state and related data.
    */
-  checkState(): void {
+  private checkState(): void {
     if (this.state === DeathSwapState.Lobby) {
       let ready = true;
 
       for (const id in this.players) {
         const player = this.players[id];
-        if (player.state !== PlayerState.Ready) {
+        if (player.getState() !== PlayerState.Ready) {
           ready = false;
         }
       }
@@ -70,16 +87,25 @@ export class DeathSwapServer {
         this.setState(DeathSwapState.DeathSwap);
       }
     } else if (this.state === DeathSwapState.DeathSwap) {
-      // TODO
-    } else if (this.state === DeathSwapState.GameOver) {
-      // TODO
+      let numberOfPlayersAlive = 0;
+
+      for (const id in this.players) {
+        const player = this.players[id];
+        if (player.getState() !== PlayerState.DeathSwap) {
+          numberOfPlayersAlive++;
+        }
+      }
+
+      if (numberOfPlayersAlive === 1) {
+        this.setState(DeathSwapState.GameOver);
+      }
     }
   }
 
   /**
    * `toggleLobbyState` handles prepping the player for the Lobby state.
    */
-  toggleLobbyState(): void {
+  private toggleLobbyState(): void {
     // check that we came from the previous state
     if (
       !this.isState(DeathSwapState.GameOver) &&
@@ -92,30 +118,34 @@ export class DeathSwapServer {
   /**
    * `toggleDeathSwapState` handles prepping the player for the Death Swap state.
    */
-  toggleDeathSwapState(): void {
+  private toggleDeathSwapState(): void {
     // check that we came from the previous state
     if (!this.isState(DeathSwapState.Lobby)) {
       return;
     }
 
     this.setAllPlayersState(PlayerState.DeathSwap);
+    this.startSwapTimer();
     this.displayTitle("Death Swap... BEGINS!!");
   }
 
   /**
    * `toggleGameOverState` handles prepping the player for the Game Over state.
    */
-  toggleGameOverState(): void {
+  private toggleGameOverState(): void {
     // check that we came from the previous state
     if (!this.isState(DeathSwapState.DeathSwap)) {
       return;
     }
+
+    this.stopSwapTimer();
+    this.displayTitle("GAME OVER");
   }
 
   /**
    * `isState` returns true if the player's state matches the given state; false otherwise.
    */
-  isState(state: DeathSwapState): boolean {
+  private isState(state: DeathSwapState): boolean {
     if (this.state === state) {
       return true;
     }
@@ -134,7 +164,7 @@ export class DeathSwapServer {
    *
    * @param {Entity} playerData - The data that defines the incoming player.
    */
-  addPlayer(playerData: Entity): void {
+  private addPlayer(playerData: Entity): void {
     const player = new Player(this.system, playerData);
     this.players[player.getID()] = player;
 
@@ -146,7 +176,7 @@ export class DeathSwapServer {
    *
    * @param {number} id - The ID of the player to remove from the game.
    */
-  removePlayer(id: number): void {
+  private removePlayer(id: number): void {
     delete this.players[id];
   }
 
@@ -155,7 +185,7 @@ export class DeathSwapServer {
    *
    * @param {number} id - The ID of the player to set the state of.
    */
-  setPlayerState(id: number, state: PlayerState): void {
+  private setPlayerState(id: number, state: PlayerState): void {
     this.players[id].setState(state);
     this.checkState();
   }
@@ -163,7 +193,7 @@ export class DeathSwapServer {
   /**
    * `setAllPlayersState` sets all players to a given state.
    */
-  setAllPlayersState(state: PlayerState): void {
+  private setAllPlayersState(state: PlayerState): void {
     for (const id in this.players) {
       this.players[id].setState(state);
     }
@@ -171,11 +201,29 @@ export class DeathSwapServer {
   }
 
   /**
+   * `swapTwoPlayerPositions` swaps the positions of two players.
+   */
+  private swapTwoPlayerPositions(id1: number, id2: number): void {
+    const playerToSwap = this.players[id1];
+    const destinationPlayer = this.players[id2];
+
+    log(
+      this.system,
+      `teleporting ${playerToSwap.getName()} to ${destinationPlayer.getName()}`
+    );
+
+    playerToSwap.teleport(
+      destinationPlayer.getCachedPosition(),
+      destinationPlayer.getCachedRotation()
+    );
+  }
+
+  /**
    * `setDifficulty` sets the game's difficulty.
    *
    * @param {Difficulty} difficulty - The difficulty to set the game to.
    */
-  setDifficulty(difficulty: Difficulty): void {
+  private setDifficulty(difficulty: Difficulty): void {
     this.system.executeCommand(
       `/difficulty ${difficulty}`,
       (commandResult: CommandResult) =>
@@ -186,7 +234,7 @@ export class DeathSwapServer {
   /**
    * `setGamerules` overwrites the Minecraft world settings to the values necessary to run a clean, cheat-free, smooth Death Swap game.
    */
-  setGamerules(): void {
+  private setGamerules(): void {
     const gamerules = [
       {
         rule: GameRule.CommandBlocksEnabled,
@@ -302,7 +350,7 @@ export class DeathSwapServer {
   /**
    * `setGamerule` sets a gamerule.
    */
-  setGamerule(rule: GameRule, value: GameRuleSetting): void {
+  private setGamerule(rule: GameRule, value: GameRuleSetting): void {
     this.system.executeCommand(
       `/gamerule ${rule} ${value}`,
       (commandResult: CommandResult) =>
@@ -315,7 +363,7 @@ export class DeathSwapServer {
    *
    * @param {string} title - The message to display.
    */
-  displayTitle(title: string): void {
+  private displayTitle(title: string): void {
     this.system.executeCommand(
       `/title ${TargetSelector.EveryPlayer} title ${title}`,
       (commandResult: CommandResult) =>
@@ -324,11 +372,100 @@ export class DeathSwapServer {
   }
 
   /**
+   * `startSwapTimer` starts the timer that triggers the next swap.
+   */
+  private startSwapTimer(): void {
+    this.isSwapTimerOn = true;
+    this.secondsCounter = 0;
+  }
+
+  /**
+   * `stopSwapTimer` stops the timer that triggers the next swap.
+   */
+  private stopSwapTimer(): void {
+    this.isSwapTimerOn = false;
+    this.secondsCounter = 0;
+  }
+
+  /**
+   * `swap` handles swapping all players still in the game.
+   */
+  private swap(): void {
+    log(this.system, "Swapping!");
+
+    // contains all players who have survived all death swaps
+    const survivingPlayersById: Array<number> = [];
+
+    for (const id in this.players) {
+      const player = this.players[id];
+      if (player.getState() === PlayerState.DeathSwap) {
+        // store all IDs from players who have survived all death swaps
+        survivingPlayersById.push(player.getID());
+
+        // cache the player's position/rotation for later, so their swap buddy knows where to teleport to and where to look
+        player.savePositionToCache();
+        player.saveRotationToCache();
+      }
+    }
+
+    // randomize order
+    shuffleArray(survivingPlayersById);
+
+    // teleport the players
+    for (let i = 0; i < survivingPlayersById.length; i++) {
+      // the index of the first ID we want to pull
+      const index1 = i;
+
+      // the index of the second ID we want to pull, but make sure it isn't outside the bounds of the array
+      // if it is, make the last player in the array swap with the first player, completing the loop
+      const index2 =
+        index1 + 1 > survivingPlayersById.length - 1 ? 0 : index1 + 1;
+
+      // swap them
+      this.swapTwoPlayerPositions(
+        survivingPlayersById[index1],
+        survivingPlayersById[index2]
+      );
+    }
+  }
+
+  /**
+   * `update` is called by this.system.update.
+   * It ticks 20 times per second.
+   */
+  public update(): void {
+    this.tickCounter++;
+
+    if (this.tickCounter === 20) {
+      this.tickCounter = 0;
+
+      this.updateOncePerSecond();
+    }
+  }
+
+  /**
+   * `updateOncePerSecond` ticks once per second
+   */
+  public updateOncePerSecond(): void {
+    // handles the death swap
+    if (this.isSwapTimerOn) {
+      this.secondsCounter++;
+
+      // should only trigger every so often
+      if (this.secondsCounter === secondsBetweenSwap) {
+        this.secondsCounter = 0;
+
+        this.swap();
+      }
+    }
+  }
+
+  /**
    * `onClientEnteredWorld` handles the 'DeathSwap:client_entered_world' event.
    *
    * @param {EventData} eventData - The event data.
    */
-  onClientEnteredWorld(eventData: EventData): void {
+  public onClientEnteredWorld(eventData: EventData): void {
     // TODO check the actual value of eventData.data here and create a type/interface for it if it doesn't exist
     const player: Entity = (eventData.data as { player: Entity }).player;
     this.addPlayer(player);
@@ -339,7 +476,7 @@ export class DeathSwapServer {
    *
    * @param {EventData} eventData - The event data.
    */
-  onEntityUseItem(eventData: EventData): void {
+  public onEntityUseItem(eventData: EventData): void {
     const entityUseItem: EntityUseItem = eventData.data as EntityUseItem;
     if (entityUseItem.use_method === UseMethod.Eat) {
       if (entityUseItem.item_stack.item === DeathSwapItem.BloodChaliceFull) {

@@ -14,8 +14,25 @@ import { DeathSwapItem, PlayerState } from "./enums";
 import { debug } from "../settings";
 
 export class Player {
-  data: Entity;
-  state: PlayerState = PlayerState.Lobby;
+  /**
+   * `data` is the raw value returned by Bedrock of a player when they first join the game.
+   */
+  private data: Entity;
+
+  /**
+   * `state` is the player's state.
+   */
+  private state: PlayerState = PlayerState.Lobby;
+
+  /**
+   * `positionCache` is used to store the player's location pre-swap, so that the player that will eventually swap with them will know where to go.
+   */
+  private positionCache: Position = { x: 0, y: 0, z: 0 };
+
+  /**
+   * `rotationCache` is used to store the player's rotation pre-swap, so that the player that will eventually swap with them will know how to rotate.
+   */
+  private rotationCache: Rotation = { x: 0, y: 0 };
 
   /**
    * @param {System} system - Minecraft server/client system.
@@ -29,11 +46,20 @@ export class Player {
   }
 
   /**
+   * `getState` returns the state of the player.
+   *
+   * @return {PlayerState}
+   */
+  public getState(): PlayerState {
+    return this.state;
+  }
+
+  /**
    * `getID` returns the ID of the player.
    *
    * @return {number}
    */
-  getID(): number {
+  public getID(): number {
     return this.data.id;
   }
 
@@ -42,7 +68,7 @@ export class Player {
    *
    * @return {string}
    */
-  getName(): string {
+  public getName(): string {
     const nameable: Nameable = this.system.getComponent(
       this.data,
       ComponentIdentifier.Nameable
@@ -51,11 +77,11 @@ export class Player {
   }
 
   /**
-   * `getPosition` returns the position of the player.
+   * `getPosition` returns the player's position.
    *
    * @return {Position}
    */
-  getPosition(): Position {
+  public getPosition(): Position {
     const position: Position = this.system.getComponent(
       this.data,
       ComponentIdentifier.Position
@@ -64,11 +90,27 @@ export class Player {
   }
 
   /**
-   * `getRotation` returns the rotation of the player.
+   * `getCachedPosition` returns the player's cached position.
+   *
+   * @return {Position}
+   */
+  public getCachedPosition(): Position {
+    return this.positionCache;
+  }
+
+  /**
+   * `savePositionToCache` saves the player's position to cache.
+   */
+  public savePositionToCache(): void {
+    this.positionCache = this.getPosition();
+  }
+
+  /**
+   * `getRotation` returns the player's rotation.
    *
    * @return {Rotation}
    */
-  getRotation(): Rotation {
+  public getRotation(): Rotation {
     const rotation: Rotation = this.system.getComponent(
       this.data,
       ComponentIdentifier.Rotation
@@ -77,11 +119,27 @@ export class Player {
   }
 
   /**
+   * `getCachedRotation` returns the player's cached rotation.
+   *
+   * @return {Rotation}
+   */
+  public getCachedRotation(): Rotation {
+    return this.rotationCache;
+  }
+
+  /**
+   * `saveRotationToCache` saves the player's rotation to cache.
+   */
+  public saveRotationToCache(): void {
+    this.rotationCache = this.getRotation();
+  }
+
+  /**
    * `setState` sets the state of the player.
    *
    * @param {PlayerState} state - The state you want the player to switch to.
    */
-  setState(state: PlayerState): void {
+  public setState(state: PlayerState): void {
     switch (state) {
       case PlayerState.Lobby:
         this.toggleLobbyState();
@@ -105,7 +163,7 @@ export class Player {
    *
    * @param {Gamemode} gamemode - The gamemode you want the player to switch to.
    */
-  setGamemode(gamemode: Gamemode): void {
+  private setGamemode(gamemode: Gamemode): void {
     this.system.executeCommand(
       `/gamemode ${gamemode} "${this.getName()}"`,
       (commandResult: CommandResult) =>
@@ -116,7 +174,7 @@ export class Player {
   /**
    * `emptyInventory` clears the player's inventory.
    */
-  emptyInventory(): void {
+  private emptyInventory(): void {
     this.system.executeCommand(
       `/clear "${this.getName()}"`,
       (commandResult: CommandResult) =>
@@ -127,7 +185,7 @@ export class Player {
   /**
    * `resetInventory` clears the player's inventory and gives them a single, filled blood chalice.
    */
-  resetInventory(): void {
+  private resetInventory(): void {
     this.emptyInventory();
 
     this.system.executeCommand(
@@ -140,8 +198,11 @@ export class Player {
   /**
    * `toggleAbility` toggles player ability.
    * This is only available if Education Edition is enabled.
+   *
+   * @param {PlayerAbility} ability - The ability to toggle.
+   * @param {boolean} toggle - Wether to toggle the ability on (true) or off (false).
    */
-  toggleAbility(ability: PlayerAbility, toggle: boolean): void {
+  private toggleAbility(ability: PlayerAbility, toggle: boolean): void {
     this.system.executeCommand(
       `/ability "${this.getName()}" ${ability} ${toggle.toString()}`,
       (commandResult: CommandResult) =>
@@ -150,9 +211,31 @@ export class Player {
   }
 
   /**
+   * `teleport` teleports the player to the given position.
+   *
+   * @param {Position} position - The position to teleport the player to.
+   * @param {Rotation} rotation - The rotation to rotate the player to.
+   */
+  public teleport(position: Position, rotation: Rotation): void {
+    /**
+     * `checkForBlocks` if set to true, teleports the target(s) only if the target(s) would not collide with a block it cannot be inside (Note: this allows teleporting into flowers as well as midair).
+     * If false or not specified, the default behavior applies (do no check; just teleport the target(s)).
+     */
+    const checkForBlocks = false;
+
+    this.system.executeCommand(
+      `/teleport "${this.getName()}" ${position.x} ${position.y} ${
+        position.z
+      } ${rotation.y} ${rotation.x} ${checkForBlocks.toString()}`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
    * `toggleLobbyState` handles prepping the player for the Lobby state.
    */
-  toggleLobbyState(): void {
+  private toggleLobbyState(): void {
     // check that we came from the previous state
     if (
       !this.isState(PlayerState.DeathSwap) &&
@@ -168,7 +251,7 @@ export class Player {
   /**
    * `toggleReadyState` handles prepping the player for the Ready state.
    */
-  toggleReadyState(): void {
+  private toggleReadyState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.Lobby)) {
       return;
@@ -180,7 +263,7 @@ export class Player {
   /**
    * `toggleDeathSwapState` handles prepping the player for the Death Swap state.
    */
-  toggleDeathSwapState(): void {
+  private toggleDeathSwapState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.Ready)) {
       return;
@@ -193,7 +276,7 @@ export class Player {
   /**
    * `toggleSpectatorState` handles prepping the player for the Spectator state.
    */
-  toggleSpectatorState(): void {
+  private toggleSpectatorState(): void {
     // check that we came from the previous state
     if (!this.isState(PlayerState.DeathSwap)) {
       return;
@@ -206,7 +289,7 @@ export class Player {
   /**
    * `isState` returns true if the player's state matches the given state; false otherwise.
    */
-  isState(state: PlayerState): boolean {
+  private isState(state: PlayerState): boolean {
     if (this.state === state) {
       return true;
     }
