@@ -8,6 +8,7 @@ import {
   System,
   UseMethod,
   TargetSelector,
+  Integer,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
@@ -20,20 +21,27 @@ import {
 } from "../settings";
 
 export class DeathSwapServer {
+  /**
+   * `players` contains all players that have joined the world.
+   */
   private players: { [id: number]: Player };
+
+  /**
+   * `state` stores the current game state.
+   */
   private state: DeathSwapState = DeathSwapState.Lobby;
 
   /**
    * `tickCounter` tracks number of ticks.
    * It is used to help trigger things that need to happen once per second.
    */
-  private tickCounter = 0;
+  private tickCounter: Integer = 0;
 
   /**
    * `secondsCounter` track number of seconds.
    * It is used to help trigger the swap and the swap countdown.
    */
-  private secondsCounter = 0;
+  private secondsCounter: Integer = 0;
 
   /**
    * `isSwapTimerOn` defines whether or not the swap timer is on.
@@ -149,6 +157,8 @@ export class DeathSwapServer {
 
   /**
    * `isState` returns true if the player's state matches the given state; false otherwise.
+   *
+   * @param {DeathSwapState} state - The state that the game should currently be in.
    */
   private isState(state: DeathSwapState): boolean {
     if (this.state === state) {
@@ -179,24 +189,26 @@ export class DeathSwapServer {
   /**
    * `removePlayer` removes the given player from Death Swap.
    *
-   * @param {number} id - The ID of the player to remove from the game.
+   * @param {Integer} id - The ID of the player to remove from the game.
    */
-  private removePlayer(id: number): void {
+  private removePlayer(id: Integer): void {
     delete this.players[id];
   }
 
   /**
    * `setPlayerState` sets a player state by ID.
    *
-   * @param {number} id - The ID of the player to set the state of.
+   * @param {Integer} id - The ID of the player to set the state of.
+   * @param {PlayerState} state - The state to set the player to.
    */
-  private setPlayerState(id: number, state: PlayerState): void {
+  private setPlayerState(id: Integer, state: PlayerState): void {
     this.players[id].setState(state);
     this.checkState();
   }
 
   /**
    * `setAllPlayersState` sets all players to a given state.
+   * @param {PlayerState} state - The state to set the players to.
    */
   private setAllPlayersState(state: PlayerState): void {
     for (const id in this.players) {
@@ -207,8 +219,11 @@ export class DeathSwapServer {
 
   /**
    * `swapTwoPlayerPositions` swaps the positions of two players.
+   *
+   * @param {Integer} id1 - The ID of the player to swap.
+   * @param {Integer} id2 - The ID of the player that the `id1` player will swap to.
    */
-  private swapTwoPlayerPositions(id1: number, id2: number): void {
+  private swapTwoPlayerPositions(id1: Integer, id2: Integer): void {
     const playerToSwap = this.players[id1];
     const destinationPlayer = this.players[id2];
 
@@ -342,7 +357,7 @@ export class DeathSwapServer {
       },
     ];
 
-    for (let i = 0; i < gamerules.length; i++) {
+    for (let i: Integer = 0; i < gamerules.length; i++) {
       this.setGamerule(gamerules[i].rule, gamerules[i].value);
     }
   }

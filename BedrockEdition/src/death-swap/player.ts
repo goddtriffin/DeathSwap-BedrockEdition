@@ -8,6 +8,7 @@ import {
   Position,
   CommandResult,
   PlayerAbility,
+  Integer,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, PlayerState } from "./enums";
@@ -57,9 +58,9 @@ export class Player {
   /**
    * `getID` returns the ID of the player.
    *
-   * @return {number}
+   * @return {Integer}
    */
-  public getID(): number {
+  public getID(): Integer {
     return this.data.id;
   }
 
@@ -288,6 +289,8 @@ export class Player {
 
   /**
    * `isState` returns true if the player's state matches the given state; false otherwise.
+   *
+   * @param {PlayerState} state - The state that the player should currently be in.
    */
   private isState(state: PlayerState): boolean {
     if (this.state === state) {
