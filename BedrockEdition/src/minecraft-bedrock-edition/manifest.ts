@@ -1,11 +1,12 @@
 import { Vector } from "./objects";
+import { Integer } from "./utils/index";
 
 /**
  * `Manifest` contains all the basic information about the pack that Minecraft needs to identify it.
  * This is the `manifest.json`.
  *
  * @type {Manifest}
- * @property {number} format_version - Defines which format version of the manifest.
+ * @property {Integer} format_version - Defines which format version of the manifest.
  * @property {ManifestHeader} header - Defines the header of the manifest.
  * @property {ManifestModules} modules - Defines the modules of the manifest.
  * @property {ManifestDependencies} dependencies - Defines the dependencies of the manifest.
@@ -13,7 +14,7 @@ import { Vector } from "./objects";
  * @property {ManifestMetadata} metadata - Defines the metadata of the manifest.
  */
 export interface Manifest {
-  format_version: number;
+  format_version: Integer;
   header: ManifestHeader;
   modules: ManifestModules;
   dependencies: ManifestDependencies;

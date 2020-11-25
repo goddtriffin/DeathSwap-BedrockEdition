@@ -7,7 +7,7 @@
  *
  * @type {BlockState}
  * @property {boolean} age_bit - Determines if saplings should grow.
- * @property {number} age - Represents the age of the block.
+ * @property {Integer} age - Represents the age of the block.
  * @property {string} portal_axis - Determines the orientation of portal blocks.
  */
 export interface BlockState {

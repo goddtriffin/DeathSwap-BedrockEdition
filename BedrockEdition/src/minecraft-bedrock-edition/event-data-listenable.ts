@@ -1,5 +1,6 @@
 import { Position } from "./components-server";
 import { Entity, ItemStack, Vector } from "./objects";
+import { Double, Integer } from "./utils/index";
 
 /**
  * `BlockDestructionStarted` is the event data returned by the `minecraft:block_destruction_started` event identifier.
@@ -18,12 +19,12 @@ export interface BlockDestructionStarted {
  *
  * @type {BlockDestructionStopped}
  * @property {Position} block_position - The position of the block that was being destroyed.
- * @property {number} destruction_progress - How far along the destruction was before it was stopped (0 - 1 range). Double.
+ * @property {Double} destruction_progress - How far along the destruction was before it was stopped (0 - 1 range).
  * @property {Entity} player - The player that stopped destoying the block.
  */
 export interface BlockDestructionStopped {
   block_position: Position;
-  destruction_progress: number;
+  destruction_progress: Double;
   player: Entity;
 }
 
@@ -71,14 +72,14 @@ export interface EntityAttack {
  * `EntityAcquiredItem` is the event data returned by the `minecraft:entity_acquired_item` event identifier.
  *
  * @type {EntityAcquiredItem}
- * @property {number} acquired_amount - The total number of items acquired by the entity during this event. Integer.
+ * @property {Integer} acquired_amount - The total number of items acquired by the entity during this event.
  * @property {string} acquisition_method - The way the entity acquired the item.
  * @property {Entity} entity - The entity who acquired the item.
  * @property {ItemStack} item_stack - The item that was acquired.
  * @property {Entity} secondary_entity - If it exists, the entity that affected the item before it was acquired. Example: A player completes a trade with a villager. The `entity` property would be the player and the `secondary_entity` would be the villager.
  */
 export interface EntityAcquiredItem {
-  acquired_amount: number;
+  acquired_amount: Integer;
   acquisition_method: string;
   entity: Entity;
   item_stack: ItemStack;
@@ -159,20 +160,20 @@ export interface EntityEquippedArmor {
  * `EntityHurt` is the event data returned by the `minecraft:entity_hurt` event identifier.
  *
  * @type {EntityHurt}
- * @property {number} absorbed_damage - The amount the damage was reduced by by the entity's absorption effect.
+ * @property {Integer} absorbed_damage - The amount the damage was reduced by by the entity's absorption effect.
  * @property {Entity} attacker - Present only when damaged by an entity or projectile. The entity that attacked and caused the damage.
  * @property {Vector} block_position - Present only when damaged by a block. This is the position of the block that hit the entity.
  * @property {string} cause - The way the entity took damage. Refer to the Damage Source documentation for a complete list of sources.
- * @property {number} damage - The amount of damage the entity took after immunity and armor are taken into account.
+ * @property {Integer} damage - The amount of damage the entity took after immunity and armor are taken into account.
  * @property {Entity} entity - The entity that took damage.
  * @property {string} projectile_type - Present only when damaged by a projectile. This is the identifier of the projectile that hit the entity.
  */
 export interface EntityHurt {
-  absorbed_damage: number;
+  absorbed_damage: Integer;
   attacker: Entity;
   block_position: Vector;
   cause: string;
-  damage: number;
+  damage: Integer;
   entity: Entity;
   projectile_type: string;
 }

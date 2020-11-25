@@ -1,5 +1,6 @@
 import { EventIdentifiers } from "./event-identifiers";
 import { Entity, Vector } from "./objects";
+import { Double } from "./utils/index";
 
 /**
  * `DisplayChatEvent` is the event data associated with the `minecraft:display_chat_event` event identifier.
@@ -27,16 +28,16 @@ export interface EntityDefinitionEvent {
  * `PlaySound` is the event data associated with the `minecraft:play_sound` event identifier.
  *
  * @type {PlaySound}
- * @property {number} pitch - The pitch of the sound effect. A value of 1.0 will play the sound effect with regular pitch. Double. Default: 1.0.
+ * @property {Double} pitch - The pitch of the sound effect. A value of 1.0 will play the sound effect with regular pitch. Default: 1.0.
  * @property {Vector} position - The position in the world we want to play the sound at. Default: [0, 0, 0].
  * @property {string} sound - The identifier of the sound you want to play. Only sounds defined in the applied resource packs can be played.
- * @property {number} volume - The volume of the sound effect. A value of 1.0 will play the sound effect at the volume it was recorded at. Decimal. Default: 1.0.
+ * @property {Double} volume - The volume of the sound effect. A value of 1.0 will play the sound effect at the volume it was recorded at. Default: 1.0.
  */
 export interface PlaySound {
-  pitch: number;
+  pitch: Double;
   position: Vector;
   sound: string;
-  volume: number;
+  volume: Double;
 }
 
 /**

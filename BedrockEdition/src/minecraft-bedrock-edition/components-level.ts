@@ -1,4 +1,5 @@
 import { TickingArea } from "./objects";
+import { Double, Integer } from "./utils/index";
 
 /**
  * TickingAreas
@@ -13,15 +14,15 @@ export type TickingAreas = Array<TickingArea>;
  *
  * @type {Weather}
  * @property {boolean} do_weather_cycle - This is the world option that determines if the vanilla weather cycle will be used.
- * @property {number} lightning_level - A value between 0 and 1 that determines how much lightning and thunder there is.
- * @property {number} lightning_time - How long, in ticks, it will lightning and thunder for.
- * @property {number} rain_level - A value between 0 and 1 that determains how heavy the rainfall is.
- * @property {number} rain_time - How long, in ticks, it will rain for.
+ * @property {Double} lightning_level - A value between 0 and 1 that determines how much lightning and thunder there is.
+ * @property {Integer} lightning_time - How long, in ticks, it will lightning and thunder for.
+ * @property {Double} rain_level - A value between 0 and 1 that determains how heavy the rainfall is.
+ * @property {Integer} rain_time - How long, in ticks, it will rain for.
  */
 export interface Weather {
   do_weather_cycle: boolean;
-  lightning_level: number;
-  lightning_time: number;
-  rain_level: number;
-  rain_time: number;
+  lightning_level: Double;
+  lightning_time: Integer;
+  rain_level: Double;
+  rain_time: Integer;
 }

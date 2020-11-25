@@ -1,1 +1,1 @@
-export * from "./fixed-length-array";
+export * from "./extra-types";

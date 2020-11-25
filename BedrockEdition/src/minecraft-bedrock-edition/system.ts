@@ -9,6 +9,7 @@ import {
   Query,
   TickingArea,
 } from "./objects";
+import { Double, Integer } from "./utils/index";
 
 export interface System {
   /**
@@ -60,16 +61,16 @@ export interface System {
    * The block must be within a ticking area.
    *
    * @param {TickingArea} tickingArea - The ticking area the block is in.
-   * @param {number} x - The x position of the block you want. Integer.
-   * @param {number} y - The y position of the block you want. Integer.
-   * @param {number} z - The z position of the block you want. Integer.
+   * @param {Integer} x - The x position of the block you want.
+   * @param {Integer} y - The y position of the block you want.
+   * @param {Integer} z - The z position of the block you want.
    * @return {Block | null}
    */
   getBlock(
     tickingArea: TickingArea,
-    x: number,
-    y: number,
-    z: number
+    x: Integer,
+    y: Integer,
+    z: Integer
   ): Block | null;
 
   /**
@@ -94,22 +95,22 @@ export interface System {
    * This call can be slow if given a lot of blocks, and should be used infrequently.
    *
    * @param {TickingArea} tickingArea - The ticking area the block is in.
-   * @param {number} minX - The minimum x position of the blocks you want.
-   * @param {number} minY - The minimum y position of the blocks you want.
-   * @param {number} minZ - The minimum z position of the blocks you want.
-   * @param {number} maxX - The maximum x position of the blocks you want.
-   * @param {number} maxY - The maximum y position of the blocks you want.
-   * @param {number} maxZ - The maximum z position of the blocks you want.
+   * @param {Integer} minX - The minimum x position of the blocks you want.
+   * @param {Integer} minY - The minimum y position of the blocks you want.
+   * @param {Integer} minZ - The minimum z position of the blocks you want.
+   * @param {Integer} maxX - The maximum x position of the blocks you want.
+   * @param {Integer} maxY - The maximum y position of the blocks you want.
+   * @param {Integer} maxZ - The maximum z position of the blocks you want.
    * @return {Array<Array<Array<Block>>> | null}
    */
   getBlocks(
     tickingArea: TickingArea,
-    minX: number,
-    minY: number,
-    minZ: number,
-    maxX: number,
-    maxY: number,
-    maxZ: number
+    minX: Integer,
+    minY: Integer,
+    minZ: Integer,
+    maxX: Integer,
+    maxY: Integer,
+    maxZ: Integer
   ): Array<Array<Array<Block>>> | null;
 
   /**
@@ -282,22 +283,22 @@ export interface System {
    * The only entities that will be returned are those entities that have the component that was defined when the query was registered and that have a value in the three fields on that component that were defined in the query within the values specified in the call to getEntitiesFromQuery.
    *
    * @param {Query} query - This is the query you created earlier using registerQuery(...).
-   * @param {number} componentField1Min - The minimum value that the first component field needs to be on an entity for that entity to be included in the query.
-   * @param {number} componentField2Min - The minimum value that the second component field needs to be on an entity for that entity to be included in the query.
-   * @param {number} componentField3Min - The minimum value that the third component field needs to be on an entity for that entity to be included in the query.
-   * @param {number} componentField1Max - The maximum value that the first component field needs to be on an entity for that entity to be included in the query.
-   * @param {number} componentField2Max - The maximum value that the second component field needs to be on an entity for that entity to be included in the query.
-   * @param {number} componentField3Max - The maximum value that the third component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField1Min - The minimum value that the first component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField2Min - The minimum value that the second component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField3Min - The minimum value that the third component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField1Max - The maximum value that the first component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField2Max - The maximum value that the second component field needs to be on an entity for that entity to be included in the query.
+   * @param {Double} componentField3Max - The maximum value that the third component field needs to be on an entity for that entity to be included in the query.
    * @return {Array<Entity>} - An array of Entitys representing the entities found within the query.
    */
   getEntitiesFromQuery(
     query: Query,
-    componentField1Min: number,
-    componentField2Min: number,
-    componentField3Min: number,
-    componentField1Max: number,
-    componentField2Max: number,
-    componentField3Max: number
+    componentField1Min: Double,
+    componentField2Min: Double,
+    componentField3Min: Double,
+    componentField1Max: Double,
+    componentField2Max: Double,
+    componentField3Max: Double
   ): Array<Entity>;
 
   /**

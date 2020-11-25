@@ -7,6 +7,7 @@ import {
   TransformationComponents,
   TransformationDelay,
 } from "./objects";
+import { Double, Integer } from "./utils/index";
 
 /**
  * `ArmorContainer` represents the armor contents of an entity.
@@ -40,12 +41,12 @@ export interface Attack {
  * WARNING: If the change of the collision box dimensions would cause the entity to be inside a block, the entity might become stuck there and start suffocating.
  *
  * @type {CollisionBox}
- * @property {number} height - Height of the collision box in blocks. A negative value will be assumed to be 0. Double. Default is 1.0.
- * @property {number} width - Width and Depth of the collision box in blocks. A negative value will be assumed to be 0. Double. Default is 1.0.
+ * @property {Double} height - Height of the collision box in blocks. A negative value will be assumed to be 0. Default is 1.0.
+ * @property {Double} width - Width and Depth of the collision box in blocks. A negative value will be assumed to be 0. Default is 1.0.
  */
 export interface CollisionBox {
-  height: number;
-  width: number;
+  height: Double;
+  width: Double;
 }
 
 /**
@@ -66,14 +67,14 @@ export type Container = Array<unknown>;
  *
  * @type {DamageSensor}
  * @property {string} cause - Type of damage that triggers the events.
- * @property {number} damage_multiplier - A multiplier that modifies the base damage from the damage cause. If deals_damage is true the multiplier can only reduce the damage the entity will take to a minimum of 1. Double.
+ * @property {Double} damage_multiplier - A multiplier that modifies the base damage from the damage cause. If deals_damage is true the multiplier can only reduce the damage the entity will take to a minimum of 1.
  * @property {boolean} deals_damage - If true, the damage dealt to the entity will take away health from it, set to false to make the entity ignore that damage.
  * @property {string} on_damage - Specifies filters for entity definitions and events.
  * @property {string} on_damage_sound_event - Defines what sound to play, if any, when the on_damage filters are met.
  */
 export type DamageSensor = Array<{
   cause: string;
-  damage_multiplier: number;
+  damage_multiplier: Double;
   deals_damage: boolean;
   on_damage: string;
   on_damage_sound_event: string;
@@ -102,8 +103,8 @@ export interface Equipment {
  * @property {boolean} fire_affected_by_griefing - If true, whether the explosion causes fire is affected by the mob griefing game rule.
  * @property {Range} fuse_length - The range for the random amount of time the fuse will be lit before exploding, a negative value means the explosion will be immediate.
  * @property {boolean} fuse_lit - If true, the fuse is already lit when this component is added to the entity.
- * @property {number} max_resistance - A blocks explosion resistance will be capped at this value when an explosion occurs. Double.
- * @property {number} power - The radius of the explosion in blocks and the amount of damage the explosion deals. Double.
+ * @property {number} max_resistance - A blocks explosion resistance will be capped at this value when an explosion occurs.
+ * @property {number} power - The radius of the explosion in blocks and the amount of damage the explosion deals.
  */
 export interface Explode {
   breaks_blocks: boolean;
@@ -112,8 +113,8 @@ export interface Explode {
   fire_affected_by_griefing: boolean;
   fuse_length: Range;
   fuse_lit: boolean;
-  max_resistance: number;
-  power: number;
+  max_resistance: Double;
+  power: Double;
 }
 
 /**
@@ -151,12 +152,12 @@ export interface Healable {
  * If it reaches 0 or below the entity will die.
  *
  * @type {Health}
- * @property {number} value - Current health of the entity.
- * @property {number} max - The maximum health the entity can heal.
+ * @property {Integer} value - Current health of the entity.
+ * @property {Integer} max - The maximum health the entity can heal.
  */
 export interface Health {
-  value: number;
-  max: number;
+  value: Integer;
+  max: Integer;
 }
 
 /**
@@ -194,8 +195,8 @@ export interface HotbarContainer {
  *
  * @type {Interact}
  * @property {LootTable} add_items - Loot table with items to add to the player's inventory upon successful interaction.
- * @property {number} cooldown - Time in seconds before this entity can be interacted with again. Double. Default: 0.0.
- * @property {number} hurt_item - The amount of damage the item will take when used to interact with this entity. A value of 0 means the item won't lose durability. Integer. Default: 0.
+ * @property {Double} cooldown - Time in seconds before this entity can be interacted with again. Default: 0.0.
+ * @property {Integer} hurt_item - The amount of damage the item will take when used to interact with this entity. A value of 0 means the item won't lose durability. Default: 0.
  * @property {string} interact_text - Text to show when the player is able to interact in this way with this entity when playing with Touch-screen controls.
  * @property {string} on_interact - An event identifier to fire when the interaction occurs.
  * @property {Object} particle_on_start - Particle effect that will be triggered at the start of the interaction.
@@ -208,19 +209,19 @@ export interface HotbarContainer {
  */
 export interface Interact {
   add_items: LootTable;
-  cooldown: number;
-  hurt_item: number;
+  cooldown: Double;
+  hurt_item: Integer;
   interact_text: string;
   on_interact: string;
   particle_on_start: {
     /**
      * @property {boolean} particle_offset_towards_interactor - Whether or not the particle will appear closer to who performed the interaction. Default: false.
      * @property {string} particle_type - The type of particle that will be spawned
-     * @property {number} particle_y_offset - Will offset the particle this amount in the y direction. Double. Default: 0.0.
+     * @property {Double} particle_y_offset - Will offset the particle this amount in the y direction. Default: 0.0.
      */
     particle_offset_towards_interactor: boolean;
     particle_type: string;
-    particle_y_offset: number;
+    particle_y_offset: Double;
   };
   play_sounds: Array<string>;
   spawn_entities: Array<string>;
@@ -235,15 +236,15 @@ export interface Interact {
  * Currently this does not allow changing the entity's inventory contents.
  *
  * @type {Inventory}
- * @property {number} additional_slots_per_strength - Number of slots that this entity can gain per extra strength. Integer. Default: 0.
+ * @property {Integer} additional_slots_per_strength - Number of slots that this entity can gain per extra strength. Default: 0.
  * @property {boolean} can_be_siphoned_from - If true, the contents of this inventory can be removed by a hopper. Default: false.
  * @property {string} container_type - Type of container this entity has.
- * @property {number} inventory_size - Number of slots the container has. Integer. Default: 5.
+ * @property {Integer} inventory_size - Number of slots the container has. Default: 5.
  * @property {boolean} private - If true, only the entity can access the inventory. Default: false.
  * @property {boolean} restrict_to_owner - If true, the entity's inventory can only be accessed by its owner or itself. Default: false.
  */
 export interface Inventory {
-  additional_slots_per_strength: number;
+  additional_slots_per_strength: Integer;
   can_be_siphoned_from: boolean;
   container_type:
     | "horse"
@@ -252,7 +253,7 @@ export interface Inventory {
     | "inventory"
     | "container"
     | "hopper";
-  inventory_size: number;
+  inventory_size: Integer;
   private: boolean;
   restrict_to_owner: boolean;
 }
@@ -276,7 +277,7 @@ export type InventoryContainer = Array<ItemStack>;
  * @property {unknown} filters - Defines the entities that can trigger this component.
  * @property {Range} look_cooldown - The range for the random amount of time during which the entity is 'cooling down' and won't get angered or look for a target. Default: [0, 0].
  * @property {string} look_event - The event identifier to run when the entities specified in filters look at this entity.
- * @property {number} search_radius - Maximum distance this entity will look for another entity looking at it. Double. Default: 10.
+ * @property {Double} search_radius - Maximum distance this entity will look for another entity looking at it. Default: 10.
  * @property {boolean} set_target - If true, this entity will set the attack target as the entity that looked at it. Default: true.
  */
 export interface LookAt {
@@ -284,7 +285,7 @@ export interface LookAt {
   filters: unknown;
   look_cooldown: Range;
   look_event: string;
-  search_radius: number;
+  search_radius: Double;
   set_target: boolean;
 }
 
@@ -314,14 +315,14 @@ export interface Nameable {
  * `Position` is a position.
  *
  * @type {Position}
- * @property {number} x - Position along the X-Axis (east-west) of the entity. Decimal.
- * @property {number} y - Position along the Y-Axis (height) of the entity. Decimal.
- * @property {number} z - Position along the Z-Axis (north-south) of the entity. Decimal.
+ * @property {Double} x - Position along the X-Axis (east-west) of the entity.
+ * @property {Double} y - Position along the Y-Axis (height) of the entity.
+ * @property {Double} z - Position along the Z-Axis (north-south) of the entity.
  */
 export interface Position {
-  x: number;
-  y: number;
-  z: number;
+  x: Double;
+  y: Double;
+  z: Double;
 }
 
 /**
@@ -329,23 +330,23 @@ export interface Position {
  * Once applied, the entity will be rotated as specified.
  *
  * @type {Rotation}
- * @property {number} x - Controls the head rotation looking up and down. Decimal.
- * @property {number} y - Controls the body rotation parallel to the floor. Decimal.
+ * @property {Double} x - Controls the head rotation looking up and down.
+ * @property {Double} y - Controls the body rotation parallel to the floor.
  */
 export interface Rotation {
-  x: number;
-  y: number;
+  x: Double;
+  y: Double;
 }
 
 /**
  * `Shooter` component data.
  *
  * @type {Shooter}
- * @property {number} auxVal - ID of the Potion effect to be applied on hit. Default: -1.
+ * @property {Integer} auxVal - ID of the Potion effect to be applied on hit. Default: -1.
  * @property {string} def - Entity identifier to use as projectile for the ranged attack. The entity must have the projectile component to be able to be shot as a projectile.
  */
 export interface Shooter {
-  auxVal: number;
+  auxVal: Integer;
   def: string;
 }
 
@@ -354,9 +355,9 @@ export interface Shooter {
  *
  * @type {SpawnEntity}
  * @property {unknown} filters - If present, the specified entity will only spawn if the filter evaluates to true.
- * @property {number} max_wait_time - Maximum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 600.
- * @property {number} min_wait_time - Minimum amount of time to randomly wait in seconds before another entity is spawned. Integer. Default: 300.
- * @property {number} num_to_spawn - The number of entities of this type to spawn each time that this triggers. Integer. Default: 1.
+ * @property {Integer} max_wait_time - Maximum amount of time to randomly wait in seconds before another entity is spawned. Default: 600.
+ * @property {Integer} min_wait_time - Minimum amount of time to randomly wait in seconds before another entity is spawned. Default: 300.
+ * @property {Integer} num_to_spawn - The number of entities of this type to spawn each time that this triggers. Default: 1.
  * @property {boolean} should_leash - If true, this the spawned entity will be leashed to the parent. Default: false.
  * @property {boolean} single_use - If true, this component will only ever spawn the specified entity once. Default: false.
  * @property {string} spawn_entity - Identifier of the entity to spawn, leave empty to spawn the item defined above instead.
@@ -367,9 +368,9 @@ export interface Shooter {
  */
 export interface SpawnEntity {
   filters: unknown;
-  max_wait_time: number;
-  min_wait_time: number;
-  num_to_spawn: number;
+  max_wait_time: Integer;
+  min_wait_time: Integer;
+  num_to_spawn: Integer;
   should_leash: boolean;
   single_use: boolean;
   spawn_entity: string;
@@ -390,24 +391,24 @@ export type Tag = unknown;
  * `Teleport` component data.
  *
  * @type {Teleport}
- * @property {number} dark_teleport_chance - Modifies the chance that the entity will teleport if the entity is in darkness. Decimal. Default: 0.01.
- * @property {number} light_teleport_chance - Modifies the chance that the entity will teleport if the entity is in daylight. Decimal. Default: 0.01.
- * @property {number} max_random_teleport_time - Maximum amount of time in seconds between random teleports. Decimal. Default: 20.
- * @property {number} min_random_teleport_time - Minimum amount of time in seconds between random teleports. Decimal. Default: 0.
+ * @property {Double} dark_teleport_chance - Modifies the chance that the entity will teleport if the entity is in darkness. Default: 0.01.
+ * @property {Double} light_teleport_chance - Modifies the chance that the entity will teleport if the entity is in daylight. Default: 0.01.
+ * @property {Double} max_random_teleport_time - Maximum amount of time in seconds between random teleports. Default: 20.
+ * @property {Double} min_random_teleport_time - Minimum amount of time in seconds between random teleports. Default: 0.
  * @property {Vector} random_teleport_cube - Entity will teleport to a random position within the area defined by this cube. Default: [32, 16, 32].
  * @property {boolean} random_teleports - If true, the entity will teleport randomly. Default: true.
- * @property {number} target_distance - Maximum distance the entity will teleport when chasing a target. Decimal. Default: 16.
- * @property {number} target_teleport_chance - The chance that the entity will teleport between 0.0 and 1.0. 1.0 means 100%. Decimal. Default: 1.
+ * @property {Double} target_distance - Maximum distance the entity will teleport when chasing a target. Default: 16.
+ * @property {Double} target_teleport_chance - The chance that the entity will teleport between 0.0 and 1.0. 1.0 means 100%. Default: 1.
  */
 export interface Teleport {
-  dark_teleport_chance: number;
-  light_teleport_chance: number;
-  max_random_teleport_time: number;
-  min_random_teleport_time: number;
+  dark_teleport_chance: Double;
+  light_teleport_chance: Double;
+  max_random_teleport_time: Double;
+  min_random_teleport_time: Double;
   random_teleport_cube: Vector;
   random_teleports: boolean;
-  target_distance: number;
-  target_teleport_chance: number;
+  target_distance: Double;
+  target_teleport_chance: Double;
 }
 
 /**
@@ -432,15 +433,15 @@ export interface TickingAreaDescription {
  * `TickWorld` component data.
  *
  * @type {TickWorld}
- * @property {number} distance_to_players - distance_to_players. Decimal.
+ * @property {Double} distance_to_players - distance_to_players.
  * @property {boolean} never_despawn - Whether or not this ticking area will despawn when a player is out of range.
- * @property {number} radius - The radius in chunks of the ticking area. Integer.
+ * @property {Integer} radius - The radius in chunks of the ticking area.
  * @property {TickingArea} ticking_area - The ticking area entity that is attached to this entity.
  */
 export interface TickWorld {
-  distance_to_players: number;
+  distance_to_players: Double;
   never_despawn: boolean;
-  radius: number;
+  radius: Integer;
   ticking_area: TickingArea;
 }
 

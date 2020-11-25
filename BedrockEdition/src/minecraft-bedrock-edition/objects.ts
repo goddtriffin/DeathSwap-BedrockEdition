@@ -1,6 +1,6 @@
 import { Position } from "./components-server";
 import { EventIdentifiers } from "./event-identifiers";
-import { FixedLengthArray } from "./utils/index";
+import { Double, FixedLengthArray, Integer } from "./utils/index";
 
 /**
  * `Block` is a block.
@@ -49,13 +49,13 @@ export interface Component {
  * @property {string} __identifier__ - This is the identifier for the object in the format namespace:name. For example, if the type is entity and the object is representing a vanilla cow, the identifier would be minecraft:cow.
  * @property {string} __type__ - This defines the type of object. Can be: "entity" or "item_entity".
  * @property {UniqueID} __unique_id__ - This defines the type of object. Can be: "entity" or "item_entity".
- * @property {number} id - This is the unique identifier of the entity. Positive integer.
+ * @property {Integer} id - This is the unique identifier of the entity.
  */
 export interface Entity {
   readonly __identifier__: string;
   readonly __type__: "entity" | "item_entity";
   readonly __unique_id__: UniqueID;
-  readonly id: number;
+  readonly id: Integer;
 }
 
 /**
@@ -63,11 +63,11 @@ export interface Entity {
  *
  * @type {EntityTickingArea}
  * @property {string} __type__ - This defines the type of object. Will be: "entity_ticking_area".
- * @property {number} entity_ticking_area_id - This is the unique identifier of the ticking area. Positive integer.
+ * @property {Integer} entity_ticking_area_id - This is the unique identifier of the ticking area.
  */
 export interface EntityTickingArea {
   readonly __type__: "entity_ticking_area";
-  readonly entity_ticking_area_id: number;
+  readonly entity_ticking_area_id: Integer;
 }
 
 /**
@@ -102,14 +102,14 @@ export interface EventData {
  * @property {string} __type__ - This defines the type of object. Will be: "item_stack".
  * @property {string} count - This is the number of items in the stack.
  * @property {string} item - This is the identifier of the item.
- * @property {number} heal_amount - The amount of health this entity gains when fed this item. Integer.
+ * @property {Integer} heal_amount - The amount of health this entity gains when fed this item.
  */
 export interface ItemStack {
   readonly __identifier__: string;
   readonly __type__: "item_stack";
   readonly count: string;
   readonly item: string;
-  heal_amount?: number;
+  heal_amount?: Integer;
 }
 
 /**
@@ -117,11 +117,11 @@ export interface ItemStack {
  *
  * @type {Level}
  * @property {string} __type__ - This defines the type of object. Will be: "level".
- * @property {number} level_id - This is the unique identifier of the level. Positive integer.
+ * @property {Integer} level_id - This is the unique identifier of the level.
  */
 export interface Level {
   readonly __type__: "level";
-  readonly level_id: number;
+  readonly level_id: Integer;
 }
 
 /**
@@ -173,23 +173,23 @@ export interface LootTable {
  *
  * @type {Query}
  * @property {string} __type__ - This defines the type of object. Will be: "query".
- * @property {number} query_id - This is the unique identifier of the query. Positive integer.
+ * @property {Integer} query_id - This is the unique identifier of the query.
  */
 export interface Query {
   readonly __type__: "query";
-  readonly query_id: number;
+  readonly query_id: Integer;
 }
 
 /**
  * `Range` is an array with two indices that define a minimum and a maximum.
  *
  * @type {Range}
- * @property {number} 0 - The minimum. Double.
- * @property {number} 1 - The maximum. Double.
+ * @property {Double} 0 - The minimum.
+ * @property {Double} 1 - The maximum.
  */
 export interface Range {
-  0: number;
-  1: number;
+  0: Double;
+  1: Double;
 }
 
 /**
@@ -201,7 +201,7 @@ export interface Range {
  * @property {string} item - Identifier of the item that can be equipped for this slot.
  * @property {string} on_equip - Event to trigger when this entity is equipped with this item.
  * @property {string} on_unequip - Event to trigger when this item is removed from this entity.
- * @property {number} slot - The slot number of this slot. Integer.
+ * @property {number} slot - The slot number of this slot.
  */
 export interface Slot {
   accepted_items: Array<unknown>;
@@ -209,7 +209,7 @@ export interface Slot {
   item: string;
   on_equip: string;
   on_unequip: string;
-  slot: number;
+  slot: Integer;
 }
 
 /**
@@ -233,22 +233,22 @@ export interface TransformationComponents {
  * `TransformationDelay` defines the properties of the delay for the transformation.
  *
  * @type {TransformationDelay}
- * @property {number} block_assist_chance - Chance that the entity will look for nearby blocks that can speed up the transformation. Value must be between 0.0 and 1.0. Decimal. Default: 0.0.
- * @property {number} block_chance - Chance that, once a block is found, will help speed up the transformation. Decimal. Default: 0.0.
- * @property {number} block_max - Maximum number of blocks the entity will look for to aid in the transformation. If not defined or set to 0, it will be set to the block radius. Integer. Default: 0.
- * @property {number} block_radius - Distance in Blocks that the entity will search for blocks that can help the transformation. Integer. Default: 0.
+ * @property {number} block_assist_chance - Chance that the entity will look for nearby blocks that can speed up the transformation. Value must be between 0.0 and 1.0. Default: 0.0.
+ * @property {number} block_chance - Chance that, once a block is found, will help speed up the transformation. Default: 0.0.
+ * @property {number} block_max - Maximum number of blocks the entity will look for to aid in the transformation. If not defined or set to 0, it will be set to the block radius. Default: 0.
+ * @property {number} block_radius - Distance in Blocks that the entity will search for blocks that can help the transformation. Default: 0.
  * @property {Array<string>} block_types - List of blocks that can help the transformation of this entity.
  * @property {boolean} keep_owner - If this entity is owned by another entity, it should remain owned after transformation.
- * @property {number} value - Time in seconds before the entity transforms. Decimal. Default: 0.0.
+ * @property {number} value - Time in seconds before the entity transforms. Default: 0.0.
  */
 export interface TransformationDelay {
-  block_assist_chance: number;
-  block_chance: number;
-  block_max: number;
-  block_radius: number;
+  block_assist_chance: Double;
+  block_chance: Double;
+  block_max: Integer;
+  block_radius: Integer;
   block_types: Array<string>;
   keep_owner: boolean;
-  value: number;
+  value: Double;
 }
 
 /**
@@ -264,8 +264,8 @@ export interface UniqueID {
 }
 
 /**
- * `Vector` is a tuple. e.g. [0, 1, 2]
+ * `Vector` is a tuple with 3 spots.
  *
  * @type {Vector}
  */
-export type Vector = FixedLengthArray<[number, number, number]>;
+export type Vector = FixedLengthArray<[Integer, Integer, Integer]>;
