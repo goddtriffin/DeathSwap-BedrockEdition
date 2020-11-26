@@ -6,7 +6,7 @@ import {
   System,
 } from "../minecraft-bedrock-edition/index";
 import { debug } from "../settings";
-import { DeathSwapEventIdentifier, DeathSwapServer } from "../death-swap/index";
+import { DeathSwapServer } from "../death-swap/index";
 
 // attach scripting system to the server threads
 declare const server: Server;
@@ -27,12 +27,6 @@ systemServer.initialize = function (): void {
 
   // init vars
   deathSwapServer = new DeathSwapServer(this);
-
-  // listen: client entered world
-  this.listenForEvent(
-    DeathSwapEventIdentifier.ClientEnteredWorld,
-    (eventData: EventData) => deathSwapServer.onClientEnteredWorld(eventData)
-  );
 
   // listen: entity used item
   this.listenForEvent(EventIdentifier.EntityUseItem, (eventData: EventData) =>
