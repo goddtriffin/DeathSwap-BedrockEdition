@@ -9,6 +9,7 @@ import {
   UseMethod,
   TargetSelector,
   Integer,
+  EntityDeath,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
@@ -87,31 +88,57 @@ export class DeathSwapServer {
    */
   private checkState(): void {
     if (this.state === DeathSwapState.Lobby) {
-      let ready = true;
-
-      for (const id in this.players) {
-        const player = this.players[id];
-        if (player.getState() !== PlayerState.Ready) {
-          ready = false;
-        }
-      }
-
-      if (ready) {
-        this.setState(DeathSwapState.DeathSwap);
-      }
+      this.checkLobbyState();
     } else if (this.state === DeathSwapState.DeathSwap) {
-      let numberOfPlayersAlive = 0;
+      this.checkDeathSwapState();
+    }
+  }
 
-      for (const id in this.players) {
-        const player = this.players[id];
-        if (player.getState() !== PlayerState.DeathSwap) {
-          numberOfPlayersAlive++;
-        }
-      }
+  /**
+   * `checkLobbyState` checks the current state/data, and decides whether or not to promote the game to the Death Swap state.
+   */
+  private checkLobbyState(): void {
+    let ready = true;
 
-      if (numberOfPlayersAlive === 1) {
-        this.setState(DeathSwapState.GameOver);
+    for (const id in this.players) {
+      const player = this.players[id];
+      if (player.getState() !== PlayerState.Ready) {
+        ready = false;
       }
+    }
+
+    if (ready) {
+      this.setState(DeathSwapState.DeathSwap);
+    }
+  }
+
+  /**
+   * `checkDeathSwapState` checks the current state/data, and decides whether or not to promote the game to the Game Over state.
+   */
+  private checkDeathSwapState(): void {
+    /**
+     * `survivingPlayers` contains a list of IDs of the players that have survived all swaps so far
+     */
+    const survivingPlayers: Array<number> = [];
+
+    for (const id in this.players) {
+      const player = this.players[id];
+      if (player.getState() === PlayerState.DeathSwap) {
+        survivingPlayers.push(player.getID());
+      }
+    }
+
+    // if there's only one player left, they won!
+    if (survivingPlayers.length === 1) {
+      this.setState(DeathSwapState.GameOver);
+
+      const winningPlayer: Player = this.players[survivingPlayers[0]];
+      winningPlayer.setState(PlayerState.Spectating);
+      this.displayTitle(`${winningPlayer.getName()} wins the game!`);
+    }
+
+    if (survivingPlayers.length === 0) {
+      this.displayTitle(`Everyone died... no winner!`);
     }
   }
 
@@ -193,6 +220,16 @@ export class DeathSwapServer {
    */
   private removePlayer(id: Integer): void {
     delete this.players[id];
+  }
+
+  /**
+   * `playerExists` returns true if player exists.
+   *
+   * @param {Integer} id - The player ID to check.
+   * @return {boolean}
+   */
+  private playerExists(id: Integer): boolean {
+    return Object.prototype.hasOwnProperty.call(this.players, id);
   }
 
   /**
@@ -510,6 +547,21 @@ export class DeathSwapServer {
       if (entityUseItem.item_stack.item === DeathSwapItem.BloodChaliceFull) {
         this.setPlayerState(entityUseItem.entity.id, PlayerState.Ready);
       }
+    }
+  }
+
+  /**
+   * `onEntityDeath` handles the 'minecraft:entity_use_item' event.
+   *
+   * @param {EventData} eventData - The event data.
+   */
+  public onEntityDeath(eventData: EventData): void {
+    const entityDeath: EntityDeath = eventData.data as EntityDeath;
+
+    // if player, set them to spectate and check state to see who else is alive
+    if (this.playerExists(entityDeath.entity.id)) {
+      this.setPlayerState(entityDeath.entity.id, PlayerState.Spectating);
+      this.checkState();
     }
   }
 }
