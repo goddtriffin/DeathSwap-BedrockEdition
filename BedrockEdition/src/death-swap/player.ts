@@ -16,6 +16,11 @@ import { debug } from "../settings";
 
 export class Player {
   /**
+   * `hasActuallyJoinedTheGameForReal` tells whether the player has fully joined the server.
+   */
+  private hasActuallyJoinedTheGameForReal = false;
+
+  /**
    * `data` is the raw value returned by Bedrock of a player when they first join the game.
    */
   private data: Entity;
@@ -23,7 +28,7 @@ export class Player {
   /**
    * `state` is the player's state.
    */
-  private state: PlayerState = PlayerState.Lobby;
+  private state: PlayerState = PlayerState.Spectating;
 
   /**
    * `positionCache` is used to store the player's location pre-swap, so that the player that will eventually swap with them will know where to go.
@@ -41,9 +46,35 @@ export class Player {
    */
   constructor(public system: System, playerData: Entity) {
     this.data = playerData;
+  }
 
-    // need to set this again so that state is set properly
-    this.setState(PlayerState.Lobby);
+  /**
+   * `updateOncePerSecond` returns the state of the player.
+   */
+  public updateOncePerSecond(): void {
+    // the player is sometimes half loaded at the very beginning - keep trying to execute a command on them until one works
+    // this way you know when the player has truly fully loaded into the server, and can start playing
+    if (!this.hasActuallyJoinedTheGameForReal) {
+      // try clearing inventory to see if the player is now able to be acted upon
+      this.system.executeCommand(
+        `/xp 1 "${this.getName()}"`,
+        (commandResult: CommandResult) =>
+          this.checkPlayerCanBeActedUpon(commandResult)
+      );
+    }
+  }
+
+  /**
+   * `checkPlayerCanBeActedUpon` checks the status code of a test command, and if it passes, we know that the player has truly fully loaded into the server.
+   *
+   * @param {CommandResult} commandResult - the result of the test command
+   */
+  private checkPlayerCanBeActedUpon(commandResult: CommandResult): void {
+    if ((commandResult.data as { statusCode: Integer }).statusCode === 0) {
+      this.hasActuallyJoinedTheGameForReal = true;
+
+      this.setState(PlayerState.Lobby);
+    }
   }
 
   /**
@@ -238,10 +269,7 @@ export class Player {
    */
   private toggleLobbyState(): void {
     // check that we came from the previous state
-    if (
-      !this.isState(PlayerState.DeathSwap) &&
-      !this.isState(PlayerState.Lobby) // this is needed because the default player state when first spawned is Lobby
-    ) {
+    if (!this.isState(PlayerState.Spectating)) {
       return;
     }
 

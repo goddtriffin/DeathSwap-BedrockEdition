@@ -18,13 +18,6 @@ export enum PlayerState {
 }
 
 /**
- * `DeathSwapEventIdentifier` defines the possible events that can be sent between client and server.
- */
-export enum DeathSwapEventIdentifier {
-  ClientEnteredWorld = "DeathSwap:client_entered_world",
-}
-
-/**
  * `DeathSwapItem` defines all possible items.
  */
 export enum DeathSwapItem {

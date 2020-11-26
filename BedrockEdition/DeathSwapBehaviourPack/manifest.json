@@ -18,12 +18,6 @@
       "type": "data",
       "uuid": "281f121f-56ff-426c-a197-77c7628972e1",
       "version": [0, 0, 9]
-    },
-    {
-      "description": "Death Swap client scripts module",
-      "type": "client_data",
-      "uuid": "b230642c-ca36-4e65-a13c-2561031eb2b4",
-      "version": [0, 0, 9]
     }
   ],
   "dependencies": [

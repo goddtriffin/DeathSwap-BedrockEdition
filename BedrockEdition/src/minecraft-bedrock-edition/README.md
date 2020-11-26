@@ -45,6 +45,13 @@ https://bedrock.dev/docs/stable/Scripting#Script%20Events
 - `event-data-triggerable.ts`
 - `event-idenitifiers.ts`
 
+### Commands
+
+https://minecraft.gamepedia.com/Commands#List_and_summary_of_commands
+
+- `commands.ts`
+- `command-data.ts`
+
 ### UI
 
 https://bedrock.dev/docs/stable/UI
@@ -53,8 +60,6 @@ https://bedrock.dev/docs/stable/UI
 
 ### Enums
 
-- `commands.ts`
-  - https://minecraft.gamepedia.com/Commands#List_and_summary_of_commands
 - `damage-sources.ts`
   - https://bedrock.dev/docs/stable/Addons#Entity%20Damage%20Source
 - `difficulty.ts`

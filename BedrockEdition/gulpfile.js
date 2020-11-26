@@ -37,7 +37,7 @@ function lintWithEslint() {
 // bundles the server and client javascript code into bundles via webpack
 function compile() {
   return gulp
-    .src(["./src/server/server.ts", "./src/client/client.ts"])
+    .src(["./src/server/server.ts"])
     .pipe(
       webpack(require("./webpack.config.js"), compiler, function (err) {
         if (err) {
