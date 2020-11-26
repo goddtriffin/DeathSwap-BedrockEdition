@@ -11,7 +11,7 @@ export class DeathSwapClient {
    * `onClientEnteredWorld` handles the 'minecraft:client_entered_world' event.
    * Forwards the event data to the server.
    *
-   * @param {any} eventData - The event data.
+   * @param {EventData} eventData - The event data.
    */
   onClientEnteredWorld(eventData: EventData): void {
     const playerData: EventData = this.system.createEventData(

@@ -1,14 +1,15 @@
 import { System } from "system";
+import { Integer } from "./utils/index";
 
 export interface Client {
   /**
    * `registerSystem` signs up our script to be set-up on the client threads of the game.
    *
-   * @param {number} majorVersion - This is the major version of the Minecraft Script Engine your script was designed to work with. Integer.
-   * @param {number} minorVersion - This is the revision of the Minecraft Script Engine your script was designed to work with. Integer.
+   * @param {Integer} majorVersion - This is the major version of the Minecraft Script Engine your script was designed to work with.
+   * @param {Integer} minorVersion - This is the revision of the Minecraft Script Engine your script was designed to work with.
    * @return {System}
    */
-  registerSystem(majorVersion: number, minorVersion: number): System;
+  registerSystem(majorVersion: Integer, minorVersion: Integer): System;
 
   /**
    * `log` allows for logging a message to the ContentLog file.

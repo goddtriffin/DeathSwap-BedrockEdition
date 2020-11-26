@@ -112,20 +112,47 @@ function zipAddon() {
     .pipe(gulp.dest("./bin"));
 }
 
+const handleBehaviourPackChanges = series(
+  cleanMinecraftDevBehaviourPack,
+  transferBehaviourPack
+);
+
+const handleResourcePackChanges = series(
+  cleanMinecraftDevResourcePack,
+  transferResourcePack
+);
+
+const handleJavascriptTypescriptChanges = series(
+  lintWithEslint,
+  cleanInternalPackJavascript,
+  compile
+);
+
+const createProdBehaviourPack = series(
+  lintWithEslint,
+  cleanInternalPackJavascript,
+  compile,
+  zipBehaviourPack
+);
+
+const creatProdAddon = series(
+  cleanBin,
+  parallel(createProdBehaviourPack, zipResourcePack),
+  zipAddon
+);
+
+exports.test = handleJavascriptTypescriptChanges;
+
 // hot reload dev packs on save
 exports.development = function () {
   // watch behaviour pack changes
-  watch(
-    devBehaviourPackPath,
-    { events: "all" },
-    series(cleanMinecraftDevBehaviourPack, transferBehaviourPack)
-  );
+  watch(devBehaviourPackPath, { events: "all" }, handleBehaviourPackChanges);
 
   // watch resource pack changes
   watch(
     devResourcePackPath,
     { events: "all", ignoreInitial: false },
-    series(cleanMinecraftDevResourcePack, transferResourcePack)
+    handleResourcePackChanges
   );
 
   // watch typescript changes
@@ -133,21 +160,9 @@ exports.development = function () {
   watch(
     javascriptTypescript,
     { events: "all", ignoreInitial: false },
-    series(lintWithEslint, cleanInternalPackJavascript, compile)
+    handleJavascriptTypescriptChanges
   );
 };
 
 // create zipped .mcpack for distribution
-exports.production = series(
-  cleanBin,
-  parallel(
-    series(
-      lintWithEslint,
-      cleanInternalPackJavascript,
-      compile,
-      zipBehaviourPack
-    ),
-    zipResourcePack
-  ),
-  zipAddon
-);
+exports.production = creatProdAddon;
