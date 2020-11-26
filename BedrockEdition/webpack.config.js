@@ -5,7 +5,6 @@ module.exports = {
   target: "web",
   entry: {
     server: "./src/server/server.ts",
-    client: "./src/client/client.ts",
   },
   module: {
     rules: [
