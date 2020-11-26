@@ -28,6 +28,11 @@ systemServer.initialize = function (): void {
   // init vars
   deathSwapServer = new DeathSwapServer(this);
 
+  // listen: entity created
+  this.listenForEvent(EventIdentifier.EntityCreated, (eventData: EventData) =>
+    deathSwapServer.onEntityCreated(eventData)
+  );
+
   // listen: entity used item
   this.listenForEvent(EventIdentifier.EntityUseItem, (eventData: EventData) =>
     deathSwapServer.onEntityUseItem(eventData)

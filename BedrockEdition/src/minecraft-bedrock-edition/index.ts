@@ -1,4 +1,5 @@
 export * from "./client";
+export * from "./command-data";
 export * from "./commands";
 export * from "./component-identifiers";
 export * from "./components-block";

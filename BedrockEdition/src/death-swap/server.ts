@@ -10,6 +10,7 @@ import {
   TargetSelector,
   Integer,
   EntityDeath,
+  EntityCreated,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
@@ -523,17 +524,24 @@ export class DeathSwapServer {
         log(this.system, `Swapping in ${secondsLeftBeforeSwap} seconds!`);
       }
     }
+
+    // update all players
+    for (const id in this.players) {
+      this.players[id].updateOncePerSecond();
+    }
   }
 
   /**
-   * `onClientEnteredWorld` handles the 'DeathSwap:client_entered_world' event.
+   * `onEntityCreated` handles the 'minecraft:entity_created' event.
    *
    * @param {EventData} eventData - The event data.
    */
-  public onClientEnteredWorld(eventData: EventData): void {
-    // TODO check the actual value of eventData.data here and create a type/interface for it if it doesn't exist
-    const player: Entity = (eventData.data as { player: Entity }).player;
-    this.addPlayer(player);
+  public onEntityCreated(eventData: EventData): void {
+    const entityCreated: EntityCreated = eventData.data as EntityCreated;
+
+    if (entityCreated.entity.__identifier__ === "minecraft:player") {
+      this.addPlayer(entityCreated.entity);
+    }
   }
 
   /**
