@@ -69,3 +69,8 @@ https://bedrock.dev/docs/stable/UI
   - https://minecraft.gamepedia.com/Commands#Target_selectors
 - `use-method.ts`
   - Undocumented as far as I can tell.
+
+### Utils
+
+- `extra-types.ts`
+  - Creates types: Integer, Double, FixedLength, Array
