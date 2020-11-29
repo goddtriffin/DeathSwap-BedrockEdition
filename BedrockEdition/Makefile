@@ -32,11 +32,15 @@ update: ## update all dependencies to latest
 
 .PHONY: test
 test: ## checks if codebase successfully lints and compiles
-	npx gulp test
+	npx gulp testLintAndCompilation
 
 .PHONY: dev
 dev: ## hot reloads packs on file save
 	npx gulp development
+
+.PHONY: buildlocal
+buildlocal: ## refreshes the resource/behaviour packs in the Bedrock dev pack folders
+	npx gulp buildlocal
 
 .PHONY: prod
 prod: ## generates production packs for release

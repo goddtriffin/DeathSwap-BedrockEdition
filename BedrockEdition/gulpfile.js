@@ -112,22 +112,26 @@ function zipAddon() {
     .pipe(gulp.dest("./bin"));
 }
 
+// the steps to run to hot-reload the behaviour pack
 const handleBehaviourPackChanges = series(
   cleanMinecraftDevBehaviourPack,
   transferBehaviourPack
 );
 
+// the steps to run to hot-reload the resource pack
 const handleResourcePackChanges = series(
   cleanMinecraftDevResourcePack,
   transferResourcePack
 );
 
+// the steps to run to hot-reload the Javascript/Typescript
 const handleJavascriptTypescriptChanges = series(
   lintWithEslint,
   cleanInternalPackJavascript,
   compile
 );
 
+// the steps to take to create the production behaviour pack
 const createProdBehaviourPack = series(
   lintWithEslint,
   cleanInternalPackJavascript,
@@ -135,13 +139,19 @@ const createProdBehaviourPack = series(
   zipBehaviourPack
 );
 
+// the steps to take to create the production .mcaddon
 const creatProdAddon = series(
   cleanBin,
   parallel(createProdBehaviourPack, zipResourcePack),
   zipAddon
 );
 
-exports.test = handleJavascriptTypescriptChanges;
+// the steps to take to build the entire pack locally
+// this doesn't create the .mcaddon, it instead refreshs the version stored in the Bedrock dev pack folders
+const buildlocal = parallel(
+  handleResourcePackChanges,
+  series(handleJavascriptTypescriptChanges, handleBehaviourPackChanges)
+);
 
 // hot reload dev packs on save
 exports.development = function () {
@@ -155,8 +165,7 @@ exports.development = function () {
     handleResourcePackChanges
   );
 
-  // watch typescript changes
-  // this doesn't listen for configuration changes; restart `make dev` to make those take effect
+  // watch javascript/typescript changes
   watch(
     javascriptTypescript,
     { events: "all", ignoreInitial: false },
@@ -164,5 +173,11 @@ exports.development = function () {
   );
 };
 
+// builds the resource/behaviour packs and places them in the Bedrock dev pack folders
+exports.buildlocal = buildlocal;
+
 // create zipped .mcpack for distribution
 exports.production = creatProdAddon;
+
+// tests the linting and compilation of the Javascript/Typescript
+exports.testLintAndCompilation = handleJavascriptTypescriptChanges;
