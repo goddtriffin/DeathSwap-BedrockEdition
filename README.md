@@ -46,8 +46,8 @@ I wanted to play this gamemode with my friends after watching Dream and GeorgeNo
 
 ## F.A.Q.
 
-- What devices/consoles can play Death Swap?
-  - Death Swap only works on `Minecraft: Bedrock Edition for Windows 10`. You will **NOT** be able to play this custom gamemode on your `Android`, `iPhone/iPad`, `XBox`, `Playstation`, `Nintendo Switch`, `Amazon Fire/Fire Phone`, or `Amazon Fire TV`. This is not a limitation of the mod nor a limitation of me, the sole developer, but a limitation of all mods that utilize JavaScript scripts. JavaScript is necessary to make this custom gamemode possible, so until `Microsoft` decides to allow it on every device/console there is nothing that I can do. Sorry!
+- What devices/consoles can play host a Death Swap world?
+  - Death Swap only works if the host is using `Minecraft: Bedrock Edition for Windows 10`. You will **NOT** be able to host this custom gamemode on your `Android`, `iPhone/iPad`, `XBox`, `Playstation`, `Nintendo Switch`, `Amazon Fire/Fire Phone`, or `Amazon Fire TV`. This is not a limitation of the mod nor a limitation of me, the sole developer, but a limitation of all mods that utilize JavaScript scripts. JavaScript is necessary to make this custom gamemode possible, so until `Microsoft` decides to allow it on every device/console there is nothing that I can do. Sorry!
 
 ## Development
 
