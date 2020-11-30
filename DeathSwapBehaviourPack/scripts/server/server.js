@@ -1127,15 +1127,18 @@ class Player {
         this.rotationCache = { x: 0, y: 0 };
         this.data = playerData;
     }
+    onFullyLoaded() {
+        this.hasActuallyJoinedTheGameForReal = true;
+        this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].Lobby);
+    }
     updateOncePerSecond() {
         if (!this.hasActuallyJoinedTheGameForReal) {
-            this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Xp} 1 "${this.getName()}"`, (commandResult) => this.checkPlayerCanBeActedUpon(commandResult));
+            this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Xp} 1L "${this.getName()}"`, (commandResult) => this.checkPlayerCanBeActedUpon(commandResult));
         }
     }
     checkPlayerCanBeActedUpon(commandResult) {
         if (commandResult.data.statusCode === 0) {
-            this.hasActuallyJoinedTheGameForReal = true;
-            this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].Lobby);
+            this.onFullyLoaded();
         }
     }
     getState() {
@@ -1198,6 +1201,9 @@ class Player {
     toggleAbility(ability, toggle) {
         this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Ability} "${this.getName()}" ${ability} ${toggle.toString()}`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
     }
+    addExperienceLevels(levels) {
+        this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Xp} ${levels}L "${this.getName()}"`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
+    }
     teleport(position, rotation) {
         const checkForBlocks = false;
         this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Teleport} "${this.getName()}" ${position.x} ${position.y} ${position.z} ${rotation.y} ${rotation.x} ${checkForBlocks.toString()}`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
@@ -1219,8 +1225,9 @@ class Player {
         if (!this.isState(_enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].Ready)) {
             return;
         }
-        this.setGamemode(_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Gamemode"].Survival);
+        this.addExperienceLevels(-2147483648);
         this.emptyInventory();
+        this.setGamemode(_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Gamemode"].Survival);
     }
     toggleSpectatorState() {
         if (!this.isState(_enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].DeathSwap)) {

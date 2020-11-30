@@ -50,6 +50,16 @@ export class Player {
   }
 
   /**
+   * `onFullyLoaded` runs once, when the player has truly fully loaded into the server.
+   */
+  public onFullyLoaded(): void {
+    this.hasActuallyJoinedTheGameForReal = true;
+
+    // set state to lobby; this kicks everything off
+    this.setState(PlayerState.Lobby);
+  }
+
+  /**
    * `updateOncePerSecond` returns the state of the player.
    */
   public updateOncePerSecond(): void {
@@ -58,7 +68,7 @@ export class Player {
     if (!this.hasActuallyJoinedTheGameForReal) {
       // try clearing inventory to see if the player is now able to be acted upon
       this.system.executeCommand(
-        `${Command.Xp} 1 "${this.getName()}"`,
+        `${Command.Xp} 1L "${this.getName()}"`,
         (commandResult: CommandResult) =>
           this.checkPlayerCanBeActedUpon(commandResult)
       );
@@ -72,9 +82,7 @@ export class Player {
    */
   private checkPlayerCanBeActedUpon(commandResult: CommandResult): void {
     if ((commandResult.data as { statusCode: Integer }).statusCode === 0) {
-      this.hasActuallyJoinedTheGameForReal = true;
-
-      this.setState(PlayerState.Lobby);
+      this.onFullyLoaded();
     }
   }
 
@@ -244,6 +252,19 @@ export class Player {
   }
 
   /**
+   * `addExperienceLevels` adds to the player's experience levels.
+   *
+   * @param {Integer} levels - The amount of XP to give.
+   */
+  public addExperienceLevels(levels: Integer): void {
+    this.system.executeCommand(
+      `${Command.Xp} ${levels}L "${this.getName()}"`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
    * `teleport` teleports the player to the given position.
    *
    * @param {Position} position - The position to teleport the player to.
@@ -299,8 +320,11 @@ export class Player {
       return;
     }
 
-    this.setGamemode(Gamemode.Survival);
+    // reset XP
+    this.addExperienceLevels(-2147483648);
+
     this.emptyInventory();
+    this.setGamemode(Gamemode.Survival);
   }
 
   /**

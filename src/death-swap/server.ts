@@ -120,7 +120,7 @@ export class DeathSwapServer {
     /**
      * `survivingPlayers` contains a list of IDs of the players that have survived all swaps so far
      */
-    const survivingPlayers: Array<number> = [];
+    const survivingPlayers: Array<Integer> = [];
 
     for (const id in this.players) {
       const player = this.players[id];
@@ -447,7 +447,7 @@ export class DeathSwapServer {
     log(this.system, "Swapping!");
 
     // contains all players who have survived all death swaps
-    const survivingPlayersById: Array<number> = [];
+    const survivingPlayersById: Array<Integer> = [];
 
     for (const id in this.players) {
       const player = this.players[id];
