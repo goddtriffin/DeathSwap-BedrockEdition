@@ -1,3 +1,5 @@
+import { Time } from "../minecraft-bedrock-edition/time";
+
 export class DeathSwapSettings {
   /**
    * `secondsBetweenSwapDefault` defines the number of seconds between swaps.
@@ -8,6 +10,11 @@ export class DeathSwapSettings {
    * `countdownTimeDefault` defines how much time, in seconds, players are alerted to the next swap taking place.
    */
   countdownTime = 10;
+
+  /**
+   * `startingTimeOfDay` defines what time of day Death Swap should start in.
+   */
+  startingTimeOfDay = Time.Noon;
 
   /**
    * `GameRuleSetting` defines the values for all Bedrock gamerules.

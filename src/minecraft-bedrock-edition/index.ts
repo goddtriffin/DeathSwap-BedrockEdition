@@ -21,5 +21,6 @@ export * from "./player-ability";
 export * from "./server";
 export * from "./system";
 export * from "./target-selector";
+export * from "./time";
 export * from "./use-method";
 export * from "./utils/index";

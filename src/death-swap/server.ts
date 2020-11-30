@@ -13,6 +13,7 @@ import {
   EntityCreated,
   GameRuleValue,
   Command,
+  Time,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
@@ -165,6 +166,7 @@ export class DeathSwapServer {
       return;
     }
 
+    this.setTime(this.settings.startingTimeOfDay);
     this.setAllPlayersState(PlayerState.DeathSwap);
     this.startSwapTimer();
     this.displayTitle("Death Swap... BEGINS!!");
@@ -279,6 +281,19 @@ export class DeathSwapServer {
   private setDifficulty(difficulty: Difficulty): void {
     this.system.executeCommand(
       `${Command.Difficulty} ${difficulty}`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
+   * `setTime` sets the game's time.
+   *
+   * @param {Time} time - The time to set.
+   */
+  private setTime(time: Time): void {
+    this.system.executeCommand(
+      `${Command.Time} set ${time}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
