@@ -22,6 +22,10 @@ help: # displays Makefile target info
 install: ## installs dependencies
 	npm install
 
+.PHONY: installAsCI
+installAsCI: # installs dependencies as part of Continuous Integration
+	npm ci
+
 .PHONY: checkupdates
 checkupdates: ## checks if any dependencies have updates
 	npx ncu

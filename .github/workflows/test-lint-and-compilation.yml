@@ -1,0 +1,14 @@
+name: test-lint-and-compilation
+on: pull_request
+jobs:
+  lint-and-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout commit
+        uses: actions/checkout@v2
+      - name: set up Node.js
+        uses: actions/setup-node@v1
+      - name: install dependencies
+        run: make installAsCI
+      - name: lint and compile
+        run: make test
