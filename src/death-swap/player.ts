@@ -14,6 +14,7 @@ import {
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, PlayerState } from "./enums";
 import { debug } from "../settings";
+import { StatusEffect } from "../minecraft-bedrock-edition/status-effects";
 
 export class Player {
   /**
@@ -72,6 +73,13 @@ export class Player {
         (commandResult: CommandResult) =>
           this.checkPlayerCanBeActedUpon(commandResult)
       );
+    }
+
+    // if the player isn't currently in Death Swap, clear all status effects and make sure they're instantly fulled healed and food-saturated
+    if (this.state !== PlayerState.DeathSwap) {
+      this.clearAllStatusEffects();
+      this.setStatusEffect(StatusEffect.Saturation, 1, 255, true);
+      this.setStatusEffect(StatusEffect.InstantHealth, 1, 255, true);
     }
   }
 
@@ -265,6 +273,48 @@ export class Player {
   }
 
   /**
+   * `setStatusEffect` sets/clears a status effect.
+   *
+   * @param {StatusEffect} effect - Specifies the effect to be added.
+   * @param {Integer} seconds - Specifies the effect's duration in seconds (or in gameticks for instant_damage, instant_health, and saturation). If not specified, defaults to 30 seconds (or 1 gameticks for instant_damage, instant_health, and saturation). Must be between 1 and 2147483647 (inclusive).
+   * @param {Integer} amplifier - Specifies the number of additional levels to add to the effect. If not specified, defaults to 0. Note that the first tier of a status effect (e.g. Regeneration I) is 0, so the second tier, for example Regeneration II, would be specified by an amplifier level of 1. Must be between 0 and 255 (inclusive).
+   * @param {boolean} hideParticles - Specifies whether the particles and the HUD indicator‌ of the status effect should be hidden. If not specified, defaults to false.
+   */
+  public setStatusEffect(
+    effect: StatusEffect,
+    seconds: Integer,
+    amplifier: Integer,
+    hideParticles = false
+  ): void {
+    let builder = `${Command.Effect} "${this.getName()}" ${effect}`;
+
+    if (seconds) {
+      builder += ` ${seconds}`;
+    }
+
+    if (amplifier) {
+      builder += ` ${amplifier}`;
+    }
+
+    builder += ` ${hideParticles.toString()}`;
+
+    this.system.executeCommand(builder, (commandResult: CommandResult) =>
+      commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
+   * `removeAllEffects` clears all status effects from the player.
+   */
+  public clearAllStatusEffects(): void {
+    this.system.executeCommand(
+      `${Command.Effect} "${this.getName()}"`,
+      (commandResult: CommandResult) =>
+        commandCallback(this.system, commandResult)
+    );
+  }
+
+  /**
    * `teleport` teleports the player to the given position.
    *
    * @param {Position} position - The position to teleport the player to.
@@ -322,6 +372,9 @@ export class Player {
 
     // reset XP
     this.addExperienceLevels(-2147483648);
+
+    // clear all status effects
+    this.clearAllStatusEffects();
 
     this.emptyInventory();
     this.setGamemode(Gamemode.Survival);

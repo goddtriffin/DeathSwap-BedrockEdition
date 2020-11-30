@@ -91,8 +91,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
-/* harmony import */ var _death_swap_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _death_swap_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
 
 
 
@@ -157,18 +157,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PlayerAbility", function() { return _player_ability__WEBPACK_IMPORTED_MODULE_19__["PlayerAbility"]; });
 
 /* harmony import */ var _server__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(22);
-/* empty/unused harmony star reexport *//* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(23);
-/* empty/unused harmony star reexport *//* harmony import */ var _target_selector__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(24);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TargetSelector", function() { return _target_selector__WEBPACK_IMPORTED_MODULE_22__["TargetSelector"]; });
+/* empty/unused harmony star reexport *//* harmony import */ var _status_effects__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(23);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StatusEffect", function() { return _status_effects__WEBPACK_IMPORTED_MODULE_21__["StatusEffect"]; });
 
-/* harmony import */ var _time__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(25);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Time", function() { return _time__WEBPACK_IMPORTED_MODULE_23__["Time"]; });
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(24);
+/* empty/unused harmony star reexport *//* harmony import */ var _target_selector__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(25);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TargetSelector", function() { return _target_selector__WEBPACK_IMPORTED_MODULE_23__["TargetSelector"]; });
 
-/* harmony import */ var _use_method__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(26);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UseMethod", function() { return _use_method__WEBPACK_IMPORTED_MODULE_24__["UseMethod"]; });
+/* harmony import */ var _time__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(26);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Time", function() { return _time__WEBPACK_IMPORTED_MODULE_24__["Time"]; });
 
-/* harmony import */ var _utils_index__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(27);
+/* harmony import */ var _use_method__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(27);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UseMethod", function() { return _use_method__WEBPACK_IMPORTED_MODULE_25__["UseMethod"]; });
+
+/* harmony import */ var _utils_index__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(28);
 /* empty/unused harmony star reexport */
+
 
 
 
@@ -613,11 +617,56 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StatusEffect", function() { return StatusEffect; });
+var StatusEffect;
+(function (StatusEffect) {
+    StatusEffect["Speed"] = "speed";
+    StatusEffect["Slowness"] = "slowness";
+    StatusEffect["Haste"] = "haste";
+    StatusEffect["MiningFatigue"] = "mining_fatigue";
+    StatusEffect["strength"] = "strength";
+    StatusEffect["weakness"] = "weakness";
+    StatusEffect["InstantHealth"] = "instant_health";
+    StatusEffect["InstantDamage"] = "instant_damage";
+    StatusEffect["JumpBoost"] = "jump_boost";
+    StatusEffect["Nausea"] = "nausea";
+    StatusEffect["Regeneration"] = "regeneration";
+    StatusEffect["Resistance"] = "resistance";
+    StatusEffect["FireResistance"] = "fire_resistance";
+    StatusEffect["WaterBreathing"] = "water_breathing";
+    StatusEffect["Invisibility"] = "invisibility";
+    StatusEffect["Blindness"] = "blindness";
+    StatusEffect["NightVision"] = "night_vision";
+    StatusEffect["Hunger"] = "hunger";
+    StatusEffect["Poison"] = "poison";
+    StatusEffect["Wither"] = "wither";
+    StatusEffect["HealthBoost"] = "health_boost";
+    StatusEffect["Absorption"] = "absorption";
+    StatusEffect["Saturation"] = "saturation";
+    StatusEffect["Glowing"] = "glowing";
+    StatusEffect["Levitation"] = "levitation";
+    StatusEffect["Luck"] = "luck";
+    StatusEffect["BadLuck"] = "unluck";
+    StatusEffect["FatalPoison"] = "fatal_poison";
+    StatusEffect["SlowFalling"] = "slow_falling";
+    StatusEffect["ConduitPower"] = "conduit_power";
+    StatusEffect["DolphinsGrace"] = "dolphins_grace";
+    StatusEffect["BadOmen"] = "bad_omen";
+    StatusEffect["HeroOfTheVillage"] = "village_hero";
+})(StatusEffect || (StatusEffect = {}));
 
 
 /***/ }),
 /* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -634,7 +683,7 @@ var TargetSelector;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -652,7 +701,7 @@ var Time;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -665,26 +714,26 @@ var UseMethod;
 
 
 /***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _extra_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
-/* empty/unused harmony star reexport */
-
-
-/***/ }),
 /* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
+/* harmony import */ var _extra_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* empty/unused harmony star reexport */
 
 
 /***/ }),
 /* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -694,30 +743,30 @@ const debug = true;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _server__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(31);
+/* harmony import */ var _server__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DeathSwapServer", function() { return _server__WEBPACK_IMPORTED_MODULE_0__["DeathSwapServer"]; });
 
 
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeathSwapServer", function() { return DeathSwapServer; });
 /* harmony import */ var _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
-/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
-/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(34);
-/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
-/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(35);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(34);
+/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(35);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(36);
 
 
 
@@ -1044,7 +1093,7 @@ class DeathSwapServer {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1053,7 +1102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "commandCallback", function() { return commandCallback; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shuffleArray", function() { return shuffleArray; });
 /* harmony import */ var _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 function log(system, ...items) {
@@ -1101,7 +1150,7 @@ function shuffleArray(array) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1130,16 +1179,18 @@ var DeathSwapItem;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Player", function() { return Player; });
 /* harmony import */ var _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
-/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
-/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(29);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(34);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
+/* harmony import */ var _minecraft_bedrock_edition_status_effects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(23);
+
 
 
 
@@ -1160,6 +1211,11 @@ class Player {
     updateOncePerSecond() {
         if (!this.hasActuallyJoinedTheGameForReal) {
             this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Xp} 1L "${this.getName()}"`, (commandResult) => this.checkPlayerCanBeActedUpon(commandResult));
+        }
+        if (this.state !== _enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].DeathSwap) {
+            this.clearAllStatusEffects();
+            this.setStatusEffect(_minecraft_bedrock_edition_status_effects__WEBPACK_IMPORTED_MODULE_4__["StatusEffect"].Saturation, 1, 255, true);
+            this.setStatusEffect(_minecraft_bedrock_edition_status_effects__WEBPACK_IMPORTED_MODULE_4__["StatusEffect"].InstantHealth, 1, 255, true);
         }
     }
     checkPlayerCanBeActedUpon(commandResult) {
@@ -1230,6 +1286,20 @@ class Player {
     addExperienceLevels(levels) {
         this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Xp} ${levels}L "${this.getName()}"`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
     }
+    setStatusEffect(effect, seconds, amplifier, hideParticles = false) {
+        let builder = `${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Effect} "${this.getName()}" ${effect}`;
+        if (seconds) {
+            builder += ` ${seconds}`;
+        }
+        if (amplifier) {
+            builder += ` ${amplifier}`;
+        }
+        builder += ` ${hideParticles.toString()}`;
+        this.system.executeCommand(builder, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
+    }
+    clearAllStatusEffects() {
+        this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Effect} "${this.getName()}"`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
+    }
     teleport(position, rotation) {
         const checkForBlocks = false;
         this.system.executeCommand(`${_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Command"].Teleport} "${this.getName()}" ${position.x} ${position.y} ${position.z} ${rotation.y} ${rotation.x} ${checkForBlocks.toString()}`, (commandResult) => Object(_utils__WEBPACK_IMPORTED_MODULE_1__["commandCallback"])(this.system, commandResult));
@@ -1252,6 +1322,7 @@ class Player {
             return;
         }
         this.addExperienceLevels(-2147483648);
+        this.clearAllStatusEffects();
         this.emptyInventory();
         this.setGamemode(_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Gamemode"].Survival);
     }
@@ -1275,13 +1346,13 @@ class Player {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeathSwapSettings", function() { return DeathSwapSettings; });
-/* harmony import */ var _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+/* harmony import */ var _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 
 class DeathSwapSettings {
     constructor() {

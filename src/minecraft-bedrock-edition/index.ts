@@ -19,6 +19,7 @@ export * from "./manifest";
 export * from "./objects";
 export * from "./player-ability";
 export * from "./server";
+export * from "./status-effects";
 export * from "./system";
 export * from "./target-selector";
 export * from "./time";
