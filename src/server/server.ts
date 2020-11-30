@@ -15,15 +15,13 @@ const systemServer: System = server.registerSystem(0, 0);
 let deathSwapServer: DeathSwapServer;
 
 systemServer.initialize = function (): void {
-  if (debug) {
-    const scriptLoggerConfig: EventData = this.createEventData(
-      EventIdentifier.ScriptLoggerConfig
-    ) as EventData;
-    (scriptLoggerConfig.data as ScriptLoggerConfig).log_errors = true;
-    (scriptLoggerConfig.data as ScriptLoggerConfig).log_information = true;
-    (scriptLoggerConfig.data as ScriptLoggerConfig).log_warnings = true;
-    this.broadcastEvent(EventIdentifier.ScriptLoggerConfig, scriptLoggerConfig);
-  }
+  const scriptLoggerConfig: EventData = this.createEventData(
+    EventIdentifier.ScriptLoggerConfig
+  ) as EventData;
+  (scriptLoggerConfig.data as ScriptLoggerConfig).log_errors = debug;
+  (scriptLoggerConfig.data as ScriptLoggerConfig).log_information = debug;
+  (scriptLoggerConfig.data as ScriptLoggerConfig).log_warnings = debug;
+  this.broadcastEvent(EventIdentifier.ScriptLoggerConfig, scriptLoggerConfig);
 
   // init vars
   deathSwapServer = new DeathSwapServer(this);

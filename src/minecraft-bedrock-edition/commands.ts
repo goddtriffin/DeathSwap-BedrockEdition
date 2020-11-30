@@ -1,7 +1,7 @@
 /**
- * `Commands` are advanced features activated by typing certain strings of text.
+ * `Command` are advanced features activated by typing certain strings of text.
  */
-export enum Commands {
+export enum Command {
   /**
    * `Ability` grants or revokes a player ability.
    */

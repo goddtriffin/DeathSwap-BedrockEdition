@@ -1,3 +1,10 @@
+import { Integer } from "./utils/index";
+
+/**
+ * `GameRuleValue` is the type of the value accepted by gamerules.
+ */
+export type GameRuleValue = boolean | Integer;
+
 /**
  * `GameRule` defines the possible game rules.
  */

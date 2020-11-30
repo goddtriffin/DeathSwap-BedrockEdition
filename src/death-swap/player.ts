@@ -9,6 +9,7 @@ import {
   CommandResult,
   PlayerAbility,
   Integer,
+  Command,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log } from "./utils";
 import { DeathSwapItem, PlayerState } from "./enums";
@@ -57,7 +58,7 @@ export class Player {
     if (!this.hasActuallyJoinedTheGameForReal) {
       // try clearing inventory to see if the player is now able to be acted upon
       this.system.executeCommand(
-        `/xp 1 "${this.getName()}"`,
+        `${Command.Xp} 1 "${this.getName()}"`,
         (commandResult: CommandResult) =>
           this.checkPlayerCanBeActedUpon(commandResult)
       );
@@ -197,7 +198,7 @@ export class Player {
    */
   private setGamemode(gamemode: Gamemode): void {
     this.system.executeCommand(
-      `/gamemode ${gamemode} "${this.getName()}"`,
+      `${Command.Gamemode} ${gamemode} "${this.getName()}"`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -208,7 +209,7 @@ export class Player {
    */
   private emptyInventory(): void {
     this.system.executeCommand(
-      `/clear "${this.getName()}"`,
+      `${Command.Clear} "${this.getName()}"`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -221,7 +222,7 @@ export class Player {
     this.emptyInventory();
 
     this.system.executeCommand(
-      `/give "${this.getName()}" ${DeathSwapItem.BloodChaliceFull}`,
+      `${Command.Give} "${this.getName()}" ${DeathSwapItem.BloodChaliceFull}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -236,7 +237,7 @@ export class Player {
    */
   private toggleAbility(ability: PlayerAbility, toggle: boolean): void {
     this.system.executeCommand(
-      `/ability "${this.getName()}" ${ability} ${toggle.toString()}`,
+      `${Command.Ability} "${this.getName()}" ${ability} ${toggle.toString()}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -256,7 +257,7 @@ export class Player {
     const checkForBlocks = false;
 
     this.system.executeCommand(
-      `/teleport "${this.getName()}" ${position.x} ${position.y} ${
+      `${Command.Teleport} "${this.getName()}" ${position.x} ${position.y} ${
         position.z
       } ${rotation.y} ${rotation.x} ${checkForBlocks.toString()}`,
       (commandResult: CommandResult) =>

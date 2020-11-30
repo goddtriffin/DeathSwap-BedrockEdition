@@ -11,16 +11,14 @@ import {
   Integer,
   EntityDeath,
   EntityCreated,
+  GameRuleValue,
+  Command,
 } from "../minecraft-bedrock-edition/index";
 import { commandCallback, log, shuffleArray } from "./utils";
 import { DeathSwapItem, DeathSwapState, PlayerState } from "./enums";
 import { Player } from "./player";
-import {
-  countdownTime,
-  debug,
-  GameRuleSetting,
-  secondsBetweenSwap,
-} from "../settings";
+import { debug } from "../settings";
+import { DeathSwapSettings } from "./settings";
 
 export class DeathSwapServer {
   /**
@@ -32,6 +30,8 @@ export class DeathSwapServer {
    * `state` stores the current game state.
    */
   private state: DeathSwapState = DeathSwapState.Lobby;
+
+  private settings: DeathSwapSettings = new DeathSwapSettings();
 
   /**
    * `tickCounter` tracks number of ticks.
@@ -278,7 +278,7 @@ export class DeathSwapServer {
    */
   private setDifficulty(difficulty: Difficulty): void {
     this.system.executeCommand(
-      `/difficulty ${difficulty}`,
+      `${Command.Difficulty} ${difficulty}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -288,124 +288,124 @@ export class DeathSwapServer {
    * `setGamerules` overwrites the Minecraft world settings to the values necessary to run a clean, cheat-free, smooth Death Swap game.
    */
   private setGamerules(): void {
-    const gamerules = [
+    const gamerules: Array<{ rule: GameRule; value: GameRuleValue }> = [
       {
         rule: GameRule.CommandBlocksEnabled,
-        value: GameRuleSetting.CommandBlocksEnabled,
+        value: this.settings.CommandBlocksEnabled,
       },
       {
         rule: GameRule.CommandBlockOutput,
-        value: GameRuleSetting.CommandBlockOutput,
+        value: this.settings.CommandBlockOutput,
       },
       {
         rule: GameRule.DoDaylightCycle,
-        value: GameRuleSetting.DoDaylightCycle,
+        value: this.settings.DoDaylightCycle,
       },
       {
         rule: GameRule.DoEntityDrops,
-        value: GameRuleSetting.DoEntityDrops,
+        value: this.settings.DoEntityDrops,
       },
       {
         rule: GameRule.DoFireTick,
-        value: GameRuleSetting.DoFireTick,
+        value: this.settings.DoFireTick,
       },
       {
         rule: GameRule.DoInsomnia,
-        value: GameRuleSetting.DoInsomnia,
+        value: this.settings.DoInsomnia,
       },
       {
         rule: GameRule.DoImmediateRespawn,
-        value: GameRuleSetting.DoImmediateRespawn,
+        value: this.settings.DoImmediateRespawn,
       },
       {
         rule: GameRule.DoMobLoot,
-        value: GameRuleSetting.DoMobLoot,
+        value: this.settings.DoMobLoot,
       },
       {
         rule: GameRule.DoMobSpawning,
-        value: GameRuleSetting.DoMobSpawning,
+        value: this.settings.DoMobSpawning,
       },
       {
         rule: GameRule.DoTileDrops,
-        value: GameRuleSetting.DoTileDrops,
+        value: this.settings.DoTileDrops,
       },
       {
         rule: GameRule.DoWeatherCycle,
-        value: GameRuleSetting.DoWeatherCycle,
+        value: this.settings.DoWeatherCycle,
       },
       {
         rule: GameRule.DrowningDamage,
-        value: GameRuleSetting.DrowningDamage,
+        value: this.settings.DrowningDamage,
       },
       {
         rule: GameRule.FallDamage,
-        value: GameRuleSetting.FallDamage,
+        value: this.settings.FallDamage,
       },
       {
         rule: GameRule.FireDamage,
-        value: GameRuleSetting.FireDamage,
+        value: this.settings.FireDamage,
       },
       {
         rule: GameRule.KeepInventory,
-        value: GameRuleSetting.KeepInventory,
+        value: this.settings.KeepInventory,
       },
       {
         rule: GameRule.MaxCommandChainLength,
-        value: GameRuleSetting.MaxCommandChainLength,
+        value: this.settings.MaxCommandChainLength,
       },
       {
         rule: GameRule.MobGriefing,
-        value: GameRuleSetting.MobGriefing,
+        value: this.settings.MobGriefing,
       },
       {
         rule: GameRule.NaturalRegeneration,
-        value: GameRuleSetting.NaturalRegeneration,
+        value: this.settings.NaturalRegeneration,
       },
       {
         rule: GameRule.Pvp,
-        value: GameRuleSetting.Pvp,
+        value: this.settings.Pvp,
       },
       {
         rule: GameRule.RandomTickSpeed,
-        value: GameRuleSetting.RandomTickSpeed,
+        value: this.settings.RandomTickSpeed,
       },
       {
         rule: GameRule.SendCommandFeedback,
-        value: GameRuleSetting.SendCommandFeedback,
+        value: this.settings.SendCommandFeedback,
       },
       {
         rule: GameRule.ShowCoordinates,
-        value: GameRuleSetting.ShowCoordinates,
+        value: this.settings.ShowCoordinates,
       },
       {
         rule: GameRule.ShowDeathMessages,
-        value: GameRuleSetting.ShowDeathMessages,
+        value: this.settings.ShowDeathMessages,
       },
       {
         rule: GameRule.SpawnRadius,
-        value: GameRuleSetting.SpawnRadius,
+        value: this.settings.SpawnRadius,
       },
       {
         rule: GameRule.TntExplodes,
-        value: GameRuleSetting.TntExplodes,
+        value: this.settings.TntExplodes,
       },
       {
         rule: GameRule.ShowTags,
-        value: GameRuleSetting.ShowTags,
+        value: this.settings.ShowTags,
       },
     ];
 
     for (let i: Integer = 0; i < gamerules.length; i++) {
-      this.setGamerule(gamerules[i].rule, gamerules[i].value);
+      this.setGamerule(gamerules[i].rule, gamerules[i].value.toString());
     }
   }
 
   /**
    * `setGamerule` sets a gamerule.
    */
-  private setGamerule(rule: GameRule, value: GameRuleSetting): void {
+  private setGamerule(rule: GameRule, value: string): void {
     this.system.executeCommand(
-      `/gamerule ${rule} ${value}`,
+      `${Command.Gamerule} ${rule} ${value}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -418,7 +418,7 @@ export class DeathSwapServer {
    */
   private displayTitle(title: string): void {
     this.system.executeCommand(
-      `/title ${TargetSelector.EveryPlayer} title ${title}`,
+      `${Command.Title} ${TargetSelector.EveryPlayer} title ${title}`,
       (commandResult: CommandResult) =>
         commandCallback(this.system, commandResult)
     );
@@ -507,7 +507,8 @@ export class DeathSwapServer {
       /**
        * `secondsLeftBeforeSwap` defines how much time, in seconds, is left before the next swap occurs.
        */
-      const secondsLeftBeforeSwap = secondsBetweenSwap - this.secondsCounter;
+      const secondsLeftBeforeSwap =
+        this.settings.secondsBetweenSwap - this.secondsCounter;
 
       // if no time left, trigger the swap
       if (secondsLeftBeforeSwap === 0) {
@@ -518,7 +519,7 @@ export class DeathSwapServer {
 
       // when there's a little time left before the next swap, display a countdown timer
       if (
-        secondsLeftBeforeSwap <= countdownTime &&
+        secondsLeftBeforeSwap <= this.settings.countdownTime &&
         secondsLeftBeforeSwap !== 0
       ) {
         log(this.system, `Swapping in ${secondsLeftBeforeSwap} seconds!`);
