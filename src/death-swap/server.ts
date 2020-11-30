@@ -58,7 +58,7 @@ export class DeathSwapServer {
     this.players = {};
 
     this.setGamerules();
-    this.setDifficulty(Difficulty.Hard);
+    this.setDifficulty(this.settings.difficulty);
 
     // need to set this again so that state is set properly
     this.setState(DeathSwapState.Lobby);
@@ -102,10 +102,12 @@ export class DeathSwapServer {
   private checkLobbyState(): void {
     let ready = true;
 
+    // check that all players are in the ready state
     for (const id in this.players) {
       const player = this.players[id];
       if (player.getState() !== PlayerState.Ready) {
         ready = false;
+        break;
       }
     }
 
@@ -119,10 +121,11 @@ export class DeathSwapServer {
    */
   private checkDeathSwapState(): void {
     /**
-     * `survivingPlayers` contains a list of IDs of the players that have survived all swaps so far
+     * `survivingPlayers` contains a list of IDs of the players that are still alive in Death Swap
      */
     const survivingPlayers: Array<Integer> = [];
 
+    // see who is still alive
     for (const id in this.players) {
       const player = this.players[id];
       if (player.getState() === PlayerState.DeathSwap) {
@@ -132,15 +135,18 @@ export class DeathSwapServer {
 
     // if there's only one player left, they won!
     if (survivingPlayers.length === 1) {
-      this.setState(DeathSwapState.GameOver);
-
       const winningPlayer: Player = this.players[survivingPlayers[0]];
       winningPlayer.setState(PlayerState.Spectating);
       this.displayTitle(`${winningPlayer.getName()} wins the game!`);
+
+      this.setState(DeathSwapState.GameOver);
     }
 
+    // if there is no one left, something weird happened...
     if (survivingPlayers.length === 0) {
       this.displayTitle(`Everyone died... no winner!`);
+
+      this.setState(DeathSwapState.GameOver);
     }
   }
 
@@ -182,7 +188,8 @@ export class DeathSwapServer {
     }
 
     this.stopSwapTimer();
-    this.displayTitle("GAME OVER");
+
+    this.setState(DeathSwapState.Lobby);
   }
 
   /**
@@ -306,107 +313,107 @@ export class DeathSwapServer {
     const gamerules: Array<{ rule: GameRule; value: GameRuleValue }> = [
       {
         rule: GameRule.CommandBlocksEnabled,
-        value: this.settings.CommandBlocksEnabled,
+        value: this.settings.commandBlocksEnabled,
       },
       {
         rule: GameRule.CommandBlockOutput,
-        value: this.settings.CommandBlockOutput,
+        value: this.settings.commandBlockOutput,
       },
       {
         rule: GameRule.DoDaylightCycle,
-        value: this.settings.DoDaylightCycle,
+        value: this.settings.doDaylightCycle,
       },
       {
         rule: GameRule.DoEntityDrops,
-        value: this.settings.DoEntityDrops,
+        value: this.settings.doEntityDrops,
       },
       {
         rule: GameRule.DoFireTick,
-        value: this.settings.DoFireTick,
+        value: this.settings.doFireTick,
       },
       {
         rule: GameRule.DoInsomnia,
-        value: this.settings.DoInsomnia,
+        value: this.settings.doInsomnia,
       },
       {
         rule: GameRule.DoImmediateRespawn,
-        value: this.settings.DoImmediateRespawn,
+        value: this.settings.doImmediateRespawn,
       },
       {
         rule: GameRule.DoMobLoot,
-        value: this.settings.DoMobLoot,
+        value: this.settings.doMobLoot,
       },
       {
         rule: GameRule.DoMobSpawning,
-        value: this.settings.DoMobSpawning,
+        value: this.settings.doMobSpawning,
       },
       {
         rule: GameRule.DoTileDrops,
-        value: this.settings.DoTileDrops,
+        value: this.settings.doTileDrops,
       },
       {
         rule: GameRule.DoWeatherCycle,
-        value: this.settings.DoWeatherCycle,
+        value: this.settings.doWeatherCycle,
       },
       {
         rule: GameRule.DrowningDamage,
-        value: this.settings.DrowningDamage,
+        value: this.settings.drowningDamage,
       },
       {
         rule: GameRule.FallDamage,
-        value: this.settings.FallDamage,
+        value: this.settings.fallDamage,
       },
       {
         rule: GameRule.FireDamage,
-        value: this.settings.FireDamage,
+        value: this.settings.fireDamage,
       },
       {
         rule: GameRule.KeepInventory,
-        value: this.settings.KeepInventory,
+        value: this.settings.keepInventory,
       },
       {
         rule: GameRule.MaxCommandChainLength,
-        value: this.settings.MaxCommandChainLength,
+        value: this.settings.maxCommandChainLength,
       },
       {
         rule: GameRule.MobGriefing,
-        value: this.settings.MobGriefing,
+        value: this.settings.mobGriefing,
       },
       {
         rule: GameRule.NaturalRegeneration,
-        value: this.settings.NaturalRegeneration,
+        value: this.settings.naturalRegeneration,
       },
       {
         rule: GameRule.Pvp,
-        value: this.settings.Pvp,
+        value: this.settings.pvp,
       },
       {
         rule: GameRule.RandomTickSpeed,
-        value: this.settings.RandomTickSpeed,
+        value: this.settings.randomTickSpeed,
       },
       {
         rule: GameRule.SendCommandFeedback,
-        value: this.settings.SendCommandFeedback,
+        value: this.settings.sendCommandFeedback,
       },
       {
         rule: GameRule.ShowCoordinates,
-        value: this.settings.ShowCoordinates,
+        value: this.settings.showCoordinates,
       },
       {
         rule: GameRule.ShowDeathMessages,
-        value: this.settings.ShowDeathMessages,
+        value: this.settings.showDeathMessages,
       },
       {
         rule: GameRule.SpawnRadius,
-        value: this.settings.SpawnRadius,
+        value: this.settings.spawnRadius,
       },
       {
         rule: GameRule.TntExplodes,
-        value: this.settings.TntExplodes,
+        value: this.settings.tntExplodes,
       },
       {
         rule: GameRule.ShowTags,
-        value: this.settings.ShowTags,
+        value: this.settings.showTags,
       },
     ];
 

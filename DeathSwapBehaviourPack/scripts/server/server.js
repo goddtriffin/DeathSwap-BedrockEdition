@@ -739,7 +739,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debug", function() { return debug; });
-const debug = true;
+const debug = false;
 
 
 /***/ }),
@@ -783,7 +783,7 @@ class DeathSwapServer {
         this.isSwapTimerOn = false;
         this.players = {};
         this.setGamerules();
-        this.setDifficulty(_minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Difficulty"].Hard);
+        this.setDifficulty(this.settings.difficulty);
         this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["DeathSwapState"].Lobby);
     }
     setState(state) {
@@ -814,6 +814,7 @@ class DeathSwapServer {
             const player = this.players[id];
             if (player.getState() !== _enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].Ready) {
                 ready = false;
+                break;
             }
         }
         if (ready) {
@@ -829,13 +830,14 @@ class DeathSwapServer {
             }
         }
         if (survivingPlayers.length === 1) {
-            this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["DeathSwapState"].GameOver);
             const winningPlayer = this.players[survivingPlayers[0]];
             winningPlayer.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["PlayerState"].Spectating);
             this.displayTitle(`${winningPlayer.getName()} wins the game!`);
+            this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["DeathSwapState"].GameOver);
         }
         if (survivingPlayers.length === 0) {
             this.displayTitle(`Everyone died... no winner!`);
+            this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["DeathSwapState"].GameOver);
         }
     }
     toggleLobbyState() {
@@ -858,7 +860,7 @@ class DeathSwapServer {
             return;
         }
         this.stopSwapTimer();
-        this.displayTitle("GAME OVER");
+        this.setState(_enums__WEBPACK_IMPORTED_MODULE_2__["DeathSwapState"].Lobby);
     }
     isState(state) {
         if (this.state === state) {
@@ -905,107 +907,107 @@ class DeathSwapServer {
         const gamerules = [
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].CommandBlocksEnabled,
-                value: this.settings.CommandBlocksEnabled,
+                value: this.settings.commandBlocksEnabled,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].CommandBlockOutput,
-                value: this.settings.CommandBlockOutput,
+                value: this.settings.commandBlockOutput,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoDaylightCycle,
-                value: this.settings.DoDaylightCycle,
+                value: this.settings.doDaylightCycle,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoEntityDrops,
-                value: this.settings.DoEntityDrops,
+                value: this.settings.doEntityDrops,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoFireTick,
-                value: this.settings.DoFireTick,
+                value: this.settings.doFireTick,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoInsomnia,
-                value: this.settings.DoInsomnia,
+                value: this.settings.doInsomnia,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoImmediateRespawn,
-                value: this.settings.DoImmediateRespawn,
+                value: this.settings.doImmediateRespawn,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoMobLoot,
-                value: this.settings.DoMobLoot,
+                value: this.settings.doMobLoot,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoMobSpawning,
-                value: this.settings.DoMobSpawning,
+                value: this.settings.doMobSpawning,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoTileDrops,
-                value: this.settings.DoTileDrops,
+                value: this.settings.doTileDrops,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DoWeatherCycle,
-                value: this.settings.DoWeatherCycle,
+                value: this.settings.doWeatherCycle,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].DrowningDamage,
-                value: this.settings.DrowningDamage,
+                value: this.settings.drowningDamage,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].FallDamage,
-                value: this.settings.FallDamage,
+                value: this.settings.fallDamage,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].FireDamage,
-                value: this.settings.FireDamage,
+                value: this.settings.fireDamage,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].KeepInventory,
-                value: this.settings.KeepInventory,
+                value: this.settings.keepInventory,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].MaxCommandChainLength,
-                value: this.settings.MaxCommandChainLength,
+                value: this.settings.maxCommandChainLength,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].MobGriefing,
-                value: this.settings.MobGriefing,
+                value: this.settings.mobGriefing,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].NaturalRegeneration,
-                value: this.settings.NaturalRegeneration,
+                value: this.settings.naturalRegeneration,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].Pvp,
-                value: this.settings.Pvp,
+                value: this.settings.pvp,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].RandomTickSpeed,
-                value: this.settings.RandomTickSpeed,
+                value: this.settings.randomTickSpeed,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].SendCommandFeedback,
-                value: this.settings.SendCommandFeedback,
+                value: this.settings.sendCommandFeedback,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].ShowCoordinates,
-                value: this.settings.ShowCoordinates,
+                value: this.settings.showCoordinates,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].ShowDeathMessages,
-                value: this.settings.ShowDeathMessages,
+                value: this.settings.showDeathMessages,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].SpawnRadius,
-                value: this.settings.SpawnRadius,
+                value: this.settings.spawnRadius,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].TntExplodes,
-                value: this.settings.TntExplodes,
+                value: this.settings.tntExplodes,
             },
             {
                 rule: _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["GameRule"].ShowTags,
-                value: this.settings.ShowTags,
+                value: this.settings.showTags,
             },
         ];
         for (let i = 0; i < gamerules.length; i++) {
@@ -1352,39 +1354,42 @@ class Player {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeathSwapSettings", function() { return DeathSwapSettings; });
-/* harmony import */ var _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+
 
 class DeathSwapSettings {
     constructor() {
         this.secondsBetweenSwap = 300;
         this.countdownTime = 10;
-        this.startingTimeOfDay = _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_0__["Time"].Noon;
-        this.CommandBlocksEnabled = false;
-        this.CommandBlockOutput = true;
-        this.DoDaylightCycle = true;
-        this.DoEntityDrops = true;
-        this.DoFireTick = true;
-        this.DoInsomnia = false;
-        this.DoImmediateRespawn = false;
-        this.DoMobLoot = true;
-        this.DoMobSpawning = true;
-        this.DoTileDrops = true;
-        this.DoWeatherCycle = true;
-        this.DrowningDamage = true;
-        this.FallDamage = true;
-        this.FireDamage = true;
-        this.KeepInventory = false;
-        this.MaxCommandChainLength = 65536;
-        this.MobGriefing = true;
-        this.NaturalRegeneration = true;
-        this.Pvp = false;
-        this.RandomTickSpeed = 1;
-        this.SendCommandFeedback = false;
-        this.ShowCoordinates = false;
-        this.ShowDeathMessages = true;
-        this.SpawnRadius = 5;
-        this.TntExplodes = true;
-        this.ShowTags = true;
+        this.startingTimeOfDay = _minecraft_bedrock_edition_time__WEBPACK_IMPORTED_MODULE_1__["Time"].Noon;
+        this.difficulty = _minecraft_bedrock_edition_index__WEBPACK_IMPORTED_MODULE_0__["Difficulty"].Easy;
+        this.commandBlocksEnabled = false;
+        this.commandBlockOutput = true;
+        this.doDaylightCycle = true;
+        this.doEntityDrops = true;
+        this.doFireTick = true;
+        this.doInsomnia = false;
+        this.doImmediateRespawn = false;
+        this.doMobLoot = true;
+        this.doMobSpawning = true;
+        this.doTileDrops = true;
+        this.doWeatherCycle = true;
+        this.drowningDamage = true;
+        this.fallDamage = true;
+        this.fireDamage = true;
+        this.keepInventory = false;
+        this.maxCommandChainLength = 65536;
+        this.mobGriefing = true;
+        this.naturalRegeneration = true;
+        this.pvp = false;
+        this.randomTickSpeed = 1;
+        this.sendCommandFeedback = false;
+        this.showCoordinates = false;
+        this.showDeathMessages = true;
+        this.spawnRadius = 5;
+        this.tntExplodes = true;
+        this.showTags = true;
     }
 }
 

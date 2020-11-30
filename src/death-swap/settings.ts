@@ -1,3 +1,4 @@
+import { Difficulty } from "../minecraft-bedrock-edition/index";
 import { Time } from "../minecraft-bedrock-edition/time";
 
 export class DeathSwapSettings {
@@ -17,32 +18,37 @@ export class DeathSwapSettings {
   startingTimeOfDay = Time.Noon;
 
   /**
+   * `difficulty` defines what the difficulty of the world.
+   */
+  difficulty = Difficulty.Easy;
+
+  /**
    * `GameRuleSetting` defines the values for all Bedrock gamerules.
    */
-  CommandBlocksEnabled = false;
-  CommandBlockOutput = true;
-  DoDaylightCycle = true;
-  DoEntityDrops = true;
-  DoFireTick = true;
-  DoInsomnia = false;
-  DoImmediateRespawn = false;
-  DoMobLoot = true;
-  DoMobSpawning = true;
-  DoTileDrops = true;
-  DoWeatherCycle = true;
-  DrowningDamage = true;
-  FallDamage = true;
-  FireDamage = true;
-  KeepInventory = false;
-  MaxCommandChainLength = 65536;
-  MobGriefing = true;
-  NaturalRegeneration = true;
-  Pvp = false;
-  RandomTickSpeed = 1;
-  SendCommandFeedback = false;
-  ShowCoordinates = false;
-  ShowDeathMessages = true;
-  SpawnRadius = 5;
-  TntExplodes = true;
-  ShowTags = true;
+  commandBlocksEnabled = false;
+  commandBlockOutput = true;
+  doDaylightCycle = true;
+  doEntityDrops = true;
+  doFireTick = true;
+  doInsomnia = false;
+  doImmediateRespawn = false;
+  doMobLoot = true;
+  doMobSpawning = true;
+  doTileDrops = true;
+  doWeatherCycle = true;
+  drowningDamage = true;
+  fallDamage = true;
+  fireDamage = true;
+  keepInventory = false;
+  maxCommandChainLength = 65536;
+  mobGriefing = true;
+  naturalRegeneration = true;
+  pvp = false;
+  randomTickSpeed = 1;
+  sendCommandFeedback = false;
+  showCoordinates = false;
+  showDeathMessages = true;
+  spawnRadius = 5;
+  tntExplodes = true;
+  showTags = true;
 }
