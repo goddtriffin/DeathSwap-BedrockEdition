@@ -187,10 +187,7 @@ export interface Query {
  * @property {Double} 0 - The minimum.
  * @property {Double} 1 - The maximum.
  */
-export interface Range {
-  0: Double;
-  1: Double;
-}
+export type Range = FixedLengthArray<[Double, Double]>;
 
 /**
  * `Slot` is an item slot.
